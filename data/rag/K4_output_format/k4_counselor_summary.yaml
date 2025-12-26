@@ -1,0 +1,28 @@
+doc_id: K4_COUNSELOR_SUMMARY
+knowledge_type: K4
+target: COUNSELOR
+sections:
+- order: 1
+  key: overview
+  title: 사건 개요
+  content_rule: 사용자 표현을 쉬운 말로 요약
+  source: summary
+  style: 친절한 톤
+- order: 2
+  key: missing
+  title: 추가로 필요한 정보
+  content_rule: 누락 필드/추가 질문 정리
+  source: validation
+  style: 체크리스트
+- order: 3
+  key: emotion
+  title: 감정
+  content_rule: 주요 감정 태그 요약
+  source: emotion
+  style: 공감 표현 가능
+- order: 4
+  key: handoff
+  title: 상담 연결 가이드
+  content_rule: 위험도/긴급도에 따른 안내
+  source: risk_rules
+  style: 안내 톤

@@ -1,0 +1,34 @@
+# K1 문서: 민사 - 불법행위
+doc_id: K1-CIVIL-TORT-001
+knowledge_type: K1
+main_case_type: 민사
+sub_case_type: 불법행위
+node_scope:
+  - CASE_CLASSIFICATION
+version: v1.0
+last_updated: 2025-01-01T00:00:00Z
+
+definition:
+  - 고의 또는 과실로 인한 불법행위로 인한 손해
+  - 타인의 권리를 침해하여 발생한 손해배상 청구
+  - 불법행위로 인한 재산상·정신상 손해
+
+typical_keywords:
+  - 불법행위
+  - 손해배상
+  - 과실
+  - 고의
+  - 침해
+  - 권리 침해
+  - 불법
+  - 과실책임
+  - 불법행위책임
+
+exclusion_rules:
+  - 형사 범죄와 중복되는 경우 형사 절차 병행 필요
+  - 계약 위반과 구분 필요
+
+related_case_types:
+  - 계약
+  - 손해배상
+

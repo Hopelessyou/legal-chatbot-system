@@ -1,0 +1,51 @@
+doc_id: K2-ADMIN_LITIGATION_CANCEL
+knowledge_type: K2
+level1: ADMIN
+level2: ADMIN_LITIGATION
+scenario: ADMIN_LITIGATION_CANCEL
+required_fields:
+- documents
+- disposition_date
+- authority
+- disposition_type
+questions:
+- order: 1
+  field: disposition_date
+  question: 처분(통지) 날짜는 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: authority
+  question: 처분한 행정청(기관)은 어디인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: disposition_type
+  question: 어떤 처분을 다투나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: prior_appeal
+  question: 행정심판 등 전심절차를 거쳤나요?
+  answer_type: boolean
+  required: false
+- order: 5
+  field: documents
+  question: 처분서/관련 자료를 보유하고 있나요?
+  answer_type: boolean
+  required: true
+- order: 6
+  field: desired_outcome
+  question: 원하시는 결과(취소/집행정지 등)가 있나요?
+  answer_type: string
+  required: false
+- order: 7
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 8
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

@@ -1,0 +1,56 @@
+doc_id: K2-EXECUTION_GARNISHMENT
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_EXECUTION
+scenario: EXECUTION_GARNISHMENT
+required_fields:
+- documents
+- title_exists
+- amount
+- debtor_info
+questions:
+- order: 1
+  field: title_exists
+  question: 판결/지급명령/공정증서 등 집행권원이 있나요?
+  answer_type: boolean
+  required: true
+- order: 2
+  field: title_date
+  question: 집행권원이 확정된 날짜를 알고 있나요?
+  answer_type: date
+  required: false
+- order: 3
+  field: amount
+  question: 집행하려는 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 4
+  field: debtor_info
+  question: 채무자(상대방) 정보를 알려주세요.
+  answer_type: string
+  required: true
+- order: 5
+  field: asset_info
+  question: 채무자 재산(급여/계좌/부동산 등)을 알고 있나요?
+  answer_type: string
+  required: false
+- order: 6
+  field: execution_attempt
+  question: 이미 압류/추심 등 집행을 시도했나요?
+  answer_type: boolean
+  required: false
+- order: 7
+  field: documents
+  question: 판결문/집행문 등 서류를 보유하고 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

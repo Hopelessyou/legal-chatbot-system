@@ -1,0 +1,51 @@
+doc_id: FACT-TAX_ASSESSMENT
+knowledge_type: FACT
+level1: ADMIN
+level2: ADMIN_TAX
+scenario: TAX_ASSESSMENT
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_TAX
+  name: 과세
+  description: 과세/부과 처분 존재
+  critical: true
+  related_field: tax_type
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액
+  description: 부과 금액 확인
+  critical: true
+  related_field: amount
+- fact_code: FACT_NOTICE
+  name: 고지
+  description: 고지서/통지서 보유
+  critical: true
+  related_field: documents
+- fact_code: FACT_OBJECTION
+  name: 이의
+  description: 이의신청 이력
+  critical: false
+  related_field: objection_history

@@ -1,0 +1,57 @@
+doc_id: K2-FRAUD_PHISHING
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_FRAUD
+scenario: FRAUD_PHISHING
+required_fields:
+- incident_date
+- amount
+- evidence
+- method
+- account_info
+questions:
+- order: 1
+  field: incident_date
+  question: 피해가 발생한 날짜는 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: method
+  question: 어떤 방식이었나요? (전화/문자/앱/URL 등)
+  answer_type: string
+  required: true
+- order: 3
+  field: amount
+  question: 피해 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 4
+  field: account_info
+  question: 송금한 계좌/이체 경로를 알고 있나요?
+  answer_type: string
+  required: true
+- order: 5
+  field: contact_status
+  question: 가해자와 연락이 되나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 증거(통화녹취/문자/앱 화면/이체내역)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: report_status
+  question: 이미 신고/지급정지 요청을 했나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

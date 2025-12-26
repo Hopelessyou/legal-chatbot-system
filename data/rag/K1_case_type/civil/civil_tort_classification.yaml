@@ -1,0 +1,223 @@
+doc_id: K1-CIVIL-CIVIL_TORT
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_TORT
+level2_name: 불법행위(손해배상)
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: TORT_DEFAMATION
+  scenario_name: 명예훼손/모욕(민사)
+  keywords:
+  - 손해배상
+  - 불법행위
+  - 피해
+  - 가해자
+  - 사고
+  - 진단서
+  - 치료비
+  - 수리비
+  - 위자료
+  - 명예훼손
+  - 모욕
+  - 스토킹
+  - 개인정보
+  - 침해
+  - 캡처
+  - CCTV
+  - 악플
+  - 리뷰
+  - 게시글
+  - 허위
+  - 명예
+  typical_expressions:
+  - 명예훼손/모욕(민사) 관련 상담이 필요해요
+  - 명예훼손/모욕(민사) 때문에 문제가 생겼어요
+  - 명예훼손/모욕(민사) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TORT_TRAFFIC_ACCIDENT:교통사고 손해배상;TORT_INJURY:상해/사고 손해;TORT_PROPERTY_DAMAGE:재산상
+    손해(파손/손괴);TORT_DEFAMATION:명예훼손/모욕(민사);TORT_PRIVACY:사생활침해/스토킹(민사);TORT_MEDICAL_MALPRACTICE:의료사고/의료과실
+- scenario_code: TORT_INJURY
+  scenario_name: 상해/사고 손해
+  keywords:
+  - 손해배상
+  - 불법행위
+  - 피해
+  - 가해자
+  - 사고
+  - 진단서
+  - 치료비
+  - 수리비
+  - 위자료
+  - 명예훼손
+  - 모욕
+  - 스토킹
+  - 개인정보
+  - 침해
+  - 캡처
+  - CCTV
+  typical_expressions:
+  - 상해/사고 손해 관련 상담이 필요해요
+  - 상해/사고 손해 때문에 문제가 생겼어요
+  - 상해/사고 손해 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TORT_TRAFFIC_ACCIDENT:교통사고 손해배상;TORT_INJURY:상해/사고 손해;TORT_PROPERTY_DAMAGE:재산상
+    손해(파손/손괴);TORT_DEFAMATION:명예훼손/모욕(민사);TORT_PRIVACY:사생활침해/스토킹(민사);TORT_MEDICAL_MALPRACTICE:의료사고/의료과실
+- scenario_code: TORT_MEDICAL_MALPRACTICE
+  scenario_name: 의료사고/의료과실
+  keywords:
+  - 손해배상
+  - 불법행위
+  - 피해
+  - 가해자
+  - 사고
+  - 진단서
+  - 치료비
+  - 수리비
+  - 위자료
+  - 명예훼손
+  - 모욕
+  - 스토킹
+  - 개인정보
+  - 침해
+  - 캡처
+  - CCTV
+  typical_expressions:
+  - 의료사고/의료과실 관련 상담이 필요해요
+  - 의료사고/의료과실 때문에 문제가 생겼어요
+  - 의료사고/의료과실 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TORT_TRAFFIC_ACCIDENT:교통사고 손해배상;TORT_INJURY:상해/사고 손해;TORT_PROPERTY_DAMAGE:재산상
+    손해(파손/손괴);TORT_DEFAMATION:명예훼손/모욕(민사);TORT_PRIVACY:사생활침해/스토킹(민사);TORT_MEDICAL_MALPRACTICE:의료사고/의료과실
+- scenario_code: TORT_PRIVACY
+  scenario_name: 사생활침해/스토킹(민사)
+  keywords:
+  - 손해배상
+  - 불법행위
+  - 피해
+  - 가해자
+  - 사고
+  - 진단서
+  - 치료비
+  - 수리비
+  - 위자료
+  - 명예훼손
+  - 모욕
+  - 스토킹
+  - 개인정보
+  - 침해
+  - 캡처
+  - CCTV
+  - 사생활
+  - 협박
+  - 접근
+  typical_expressions:
+  - 사생활침해/스토킹(민사) 관련 상담이 필요해요
+  - 사생활침해/스토킹(민사) 때문에 문제가 생겼어요
+  - 사생활침해/스토킹(민사) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TORT_TRAFFIC_ACCIDENT:교통사고 손해배상;TORT_INJURY:상해/사고 손해;TORT_PROPERTY_DAMAGE:재산상
+    손해(파손/손괴);TORT_DEFAMATION:명예훼손/모욕(민사);TORT_PRIVACY:사생활침해/스토킹(민사);TORT_MEDICAL_MALPRACTICE:의료사고/의료과실
+- scenario_code: TORT_PROPERTY_DAMAGE
+  scenario_name: 재산상 손해(파손/손괴)
+  keywords:
+  - 손해배상
+  - 불법행위
+  - 피해
+  - 가해자
+  - 사고
+  - 진단서
+  - 치료비
+  - 수리비
+  - 위자료
+  - 명예훼손
+  - 모욕
+  - 스토킹
+  - 개인정보
+  - 침해
+  - 캡처
+  - CCTV
+  typical_expressions:
+  - 재산상 손해(파손/손괴) 관련 상담이 필요해요
+  - 재산상 손해(파손/손괴) 때문에 문제가 생겼어요
+  - 재산상 손해(파손/손괴) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TORT_TRAFFIC_ACCIDENT:교통사고 손해배상;TORT_INJURY:상해/사고 손해;TORT_PROPERTY_DAMAGE:재산상
+    손해(파손/손괴);TORT_DEFAMATION:명예훼손/모욕(민사);TORT_PRIVACY:사생활침해/스토킹(민사);TORT_MEDICAL_MALPRACTICE:의료사고/의료과실
+- scenario_code: TORT_TRAFFIC_ACCIDENT
+  scenario_name: 교통사고 손해배상
+  keywords:
+  - 손해배상
+  - 불법행위
+  - 피해
+  - 가해자
+  - 사고
+  - 진단서
+  - 치료비
+  - 수리비
+  - 위자료
+  - 명예훼손
+  - 모욕
+  - 스토킹
+  - 개인정보
+  - 침해
+  - 캡처
+  - CCTV
+  typical_expressions:
+  - 교통사고 손해배상 관련 상담이 필요해요
+  - 교통사고 손해배상 때문에 문제가 생겼어요
+  - 교통사고 손해배상 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TORT_TRAFFIC_ACCIDENT:교통사고 손해배상;TORT_INJURY:상해/사고 손해;TORT_PROPERTY_DAMAGE:재산상
+    손해(파손/손괴);TORT_DEFAMATION:명예훼손/모욕(민사);TORT_PRIVACY:사생활침해/스토킹(민사);TORT_MEDICAL_MALPRACTICE:의료사고/의료과실
+typical_keywords:
+- 가해자
+- 게시글
+- 손해배상
+- 악플
+- 치료비
+- 진단서
+- CCTV
+- 사고
+- 피해
+- 스토킹
+- 침해
+- 수리비
+- 허위
+- 명예
+- 사생활
+- 명예훼손
+- 모욕
+- 불법행위
+- 위자료
+- 협박
+- 개인정보
+- 리뷰
+- 접근
+- 캡처
+typical_expressions:
+- 재산상 손해(파손/손괴) 때문에 문제가 생겼어요
+- 상해/사고 손해 상황을 어떻게 해야 하나요?
+- 의료사고/의료과실 상황을 어떻게 해야 하나요?
+- 명예훼손/모욕(민사) 관련 상담이 필요해요
+- 재산상 손해(파손/손괴) 관련 상담이 필요해요
+- 상해/사고 손해 관련 상담이 필요해요
+- 사생활침해/스토킹(민사) 때문에 문제가 생겼어요
+- 의료사고/의료과실 관련 상담이 필요해요
+- 사생활침해/스토킹(민사) 관련 상담이 필요해요
+- 교통사고 손해배상 때문에 문제가 생겼어요
+- 교통사고 손해배상 관련 상담이 필요해요
+- 교통사고 손해배상 상황을 어떻게 해야 하나요?
+- 의료사고/의료과실 때문에 문제가 생겼어요
+- 사생활침해/스토킹(민사) 상황을 어떻게 해야 하나요?
+- 재산상 손해(파손/손괴) 상황을 어떻게 해야 하나요?
+- 명예훼손/모욕(민사) 때문에 문제가 생겼어요
+- 명예훼손/모욕(민사) 상황을 어떻게 해야 하나요?
+- 상해/사고 손해 때문에 문제가 생겼어요

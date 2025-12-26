@@ -1,0 +1,177 @@
+doc_id: K1-CIVIL-CIVIL_LOAN
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_LOAN
+level2_name: 대여금
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: LOAN_GUARANTOR
+  scenario_name: 보증인 포함 대여
+  keywords:
+  - 대여금
+  - 차용
+  - 차용증
+  - 빌려
+  - 빌려줌
+  - 갚
+  - 변제
+  - 연체
+  - 이자
+  - 연대보증
+  - 보증인
+  - 송금
+  - 현금
+  - 채권
+  - 추심
+  typical_expressions:
+  - 보증인 포함 대여 관련 상담이 필요해요
+  - 보증인 포함 대여 때문에 문제가 생겼어요
+  - 보증인 포함 대여 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LOAN_NONPAYMENT:대여금 미변제;LOAN_NO_DOCUMENT:차용증 없음;LOAN_PARTIAL_PAYMENT:일부 변제;LOAN_GUARANTOR:보증인
+    포함 대여;LOAN_INTEREST_DISPUTE:이자/연체이자 분쟁
+- scenario_code: LOAN_INTEREST_DISPUTE
+  scenario_name: 이자/연체이자 분쟁
+  keywords:
+  - 대여금
+  - 차용
+  - 차용증
+  - 빌려
+  - 빌려줌
+  - 갚
+  - 변제
+  - 연체
+  - 이자
+  - 연대보증
+  - 보증인
+  - 송금
+  - 현금
+  - 채권
+  - 추심
+  typical_expressions:
+  - 이자/연체이자 분쟁 관련 상담이 필요해요
+  - 이자/연체이자 분쟁 때문에 문제가 생겼어요
+  - 이자/연체이자 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LOAN_NONPAYMENT:대여금 미변제;LOAN_NO_DOCUMENT:차용증 없음;LOAN_PARTIAL_PAYMENT:일부 변제;LOAN_GUARANTOR:보증인
+    포함 대여;LOAN_INTEREST_DISPUTE:이자/연체이자 분쟁
+- scenario_code: LOAN_NONPAYMENT
+  scenario_name: 대여금 미변제
+  keywords:
+  - 대여금
+  - 차용
+  - 차용증
+  - 빌려
+  - 빌려줌
+  - 갚
+  - 변제
+  - 연체
+  - 이자
+  - 연대보증
+  - 보증인
+  - 송금
+  - 현금
+  - 채권
+  - 추심
+  - 안 갚
+  - 미변제
+  - 연락두절
+  typical_expressions:
+  - 돈을 빌려줬는데 안 갚아요
+  - 대여금 변제를 안 해요
+  - 빌려간 사람이 잠수했어요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LOAN_NONPAYMENT:대여금 미변제;LOAN_NO_DOCUMENT:차용증 없음;LOAN_PARTIAL_PAYMENT:일부 변제;LOAN_GUARANTOR:보증인
+    포함 대여;LOAN_INTEREST_DISPUTE:이자/연체이자 분쟁
+- scenario_code: LOAN_NO_DOCUMENT
+  scenario_name: 차용증 없음
+  keywords:
+  - 대여금
+  - 차용
+  - 차용증
+  - 빌려
+  - 빌려줌
+  - 갚
+  - 변제
+  - 연체
+  - 이자
+  - 연대보증
+  - 보증인
+  - 송금
+  - 현금
+  - 채권
+  - 추심
+  typical_expressions:
+  - 차용증 없음 관련 상담이 필요해요
+  - 차용증 없음 때문에 문제가 생겼어요
+  - 차용증 없음 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LOAN_NONPAYMENT:대여금 미변제;LOAN_NO_DOCUMENT:차용증 없음;LOAN_PARTIAL_PAYMENT:일부 변제;LOAN_GUARANTOR:보증인
+    포함 대여;LOAN_INTEREST_DISPUTE:이자/연체이자 분쟁
+- scenario_code: LOAN_PARTIAL_PAYMENT
+  scenario_name: 일부 변제
+  keywords:
+  - 대여금
+  - 차용
+  - 차용증
+  - 빌려
+  - 빌려줌
+  - 갚
+  - 변제
+  - 연체
+  - 이자
+  - 연대보증
+  - 보증인
+  - 송금
+  - 현금
+  - 채권
+  - 추심
+  typical_expressions:
+  - 일부 변제 관련 상담이 필요해요
+  - 일부 변제 때문에 문제가 생겼어요
+  - 일부 변제 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LOAN_NONPAYMENT:대여금 미변제;LOAN_NO_DOCUMENT:차용증 없음;LOAN_PARTIAL_PAYMENT:일부 변제;LOAN_GUARANTOR:보증인
+    포함 대여;LOAN_INTEREST_DISPUTE:이자/연체이자 분쟁
+typical_keywords:
+- 빌려줌
+- 추심
+- 차용증
+- 안 갚
+- 차용
+- 연락두절
+- 변제
+- 대여금
+- 이자
+- 연대보증
+- 보증인
+- 갚
+- 빌려
+- 연체
+- 현금
+- 미변제
+- 채권
+- 송금
+typical_expressions:
+- 차용증 없음 관련 상담이 필요해요
+- 일부 변제 관련 상담이 필요해요
+- 보증인 포함 대여 때문에 문제가 생겼어요
+- 보증인 포함 대여 관련 상담이 필요해요
+- 돈을 빌려줬는데 안 갚아요
+- 대여금 변제를 안 해요
+- 차용증 없음 상황을 어떻게 해야 하나요?
+- 일부 변제 상황을 어떻게 해야 하나요?
+- 이자/연체이자 분쟁 관련 상담이 필요해요
+- 일부 변제 때문에 문제가 생겼어요
+- 빌려간 사람이 잠수했어요
+- 이자/연체이자 분쟁 때문에 문제가 생겼어요
+- 이자/연체이자 분쟁 상황을 어떻게 해야 하나요?
+- 차용증 없음 때문에 문제가 생겼어요
+- 보증인 포함 대여 상황을 어떻게 해야 하나요?

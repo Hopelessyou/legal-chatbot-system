@@ -1,0 +1,50 @@
+# Core Dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# LangGraph & LangChain
+langgraph>=0.0.40
+langchain>=0.1.0
+langchain-openai>=0.0.2
+
+# OpenAI
+openai>=1.0.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.12.0
+pymysql>=1.1.0
+cryptography>=41.0.0
+
+# Vector DB (ChromaDB)
+chromadb>=0.4.0
+
+# Embeddings
+sentence-transformers>=2.2.0
+
+# Utilities
+python-dotenv>=1.0.0
+python-multipart>=0.0.6
+httpx>=0.25.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+pyyaml>=6.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Code Quality
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.6.0
+
+# Logging
+structlog>=23.2.0
+
+# Rate Limiting
+slowapi>=0.1.9
+

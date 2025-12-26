@@ -1,0 +1,69 @@
+doc_id: K2-FRAUD_REAL_ESTATE
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_FRAUD
+scenario: FRAUD_REAL_ESTATE
+required_fields:
+- incident_date
+- contact_status
+- amount
+- evidence
+- transfer_method
+- suspect_info
+- deception
+questions:
+- order: 1
+  field: incident_date
+  question: 피해가 발생한 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: suspect_info
+  question: 상대방(피의자) 정보(이름/계좌/연락처/닉네임 등)를 알고 있나요?
+  answer_type: string
+  required: true
+- order: 3
+  field: deception
+  question: 상대방이 어떤 거짓말/기망을 했나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: amount
+  question: 피해 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 5
+  field: transfer_method
+  question: 금전은 어떤 방식으로 전달했나요?
+  answer_type: string
+  required: true
+- order: 6
+  field: contact_status
+  question: 현재 상대방과 연락이 되나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: evidence
+  question: 증거(대화/계좌이체/게시글/계약서 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: multiple_victims
+  question: 다른 피해자도 있는 것으로 보이나요?
+  answer_type: boolean
+  required: false
+- order: 9
+  field: report_status
+  question: 이미 신고(고소/진정)했나요?
+  answer_type: boolean
+  required: false
+- order: 10
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 11
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

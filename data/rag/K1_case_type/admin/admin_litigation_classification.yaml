@@ -1,0 +1,55 @@
+doc_id: K1-ADMIN-ADMIN_LITIGATION
+knowledge_type: K1
+level1: ADMIN
+level2_code: ADMIN_LITIGATION
+level2_name: 행정소송
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: ADMIN_LITIGATION_CANCEL
+  scenario_name: 행정소송(취소)
+  keywords:
+  - 행정소송
+  - 취소소송
+  - 집행정지
+  - 전심절차
+  - 처분
+  - 소장
+  typical_expressions:
+  - 행정소송(취소) 관련 상담이 필요해요
+  - 행정소송(취소) 때문에 문제가 생겼어요
+  - 행정소송(취소) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ADMIN_LITIGATION_CANCEL:행정소송(취소);ADMIN_LITIGATION_STAY:집행정지/가처분(행정)
+- scenario_code: ADMIN_LITIGATION_STAY
+  scenario_name: 집행정지/가처분(행정)
+  keywords:
+  - 행정소송
+  - 취소소송
+  - 집행정지
+  - 전심절차
+  - 처분
+  - 소장
+  typical_expressions:
+  - 집행정지/가처분(행정) 관련 상담이 필요해요
+  - 집행정지/가처분(행정) 때문에 문제가 생겼어요
+  - 집행정지/가처분(행정) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ADMIN_LITIGATION_CANCEL:행정소송(취소);ADMIN_LITIGATION_STAY:집행정지/가처분(행정)
+typical_keywords:
+- 행정소송
+- 취소소송
+- 집행정지
+- 처분
+- 소장
+- 전심절차
+typical_expressions:
+- 행정소송(취소) 때문에 문제가 생겼어요
+- 행정소송(취소) 관련 상담이 필요해요
+- 집행정지/가처분(행정) 관련 상담이 필요해요
+- 집행정지/가처분(행정) 상황을 어떻게 해야 하나요?
+- 집행정지/가처분(행정) 때문에 문제가 생겼어요
+- 행정소송(취소) 상황을 어떻게 해야 하나요?

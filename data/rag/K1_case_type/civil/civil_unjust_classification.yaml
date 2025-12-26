@@ -1,0 +1,67 @@
+doc_id: K1-CIVIL-CIVIL_UNJUST
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_UNJUST
+level2_name: 부당이득
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: UNJUST_OVERPAYMENT
+  scenario_name: 중복지급/과오납 반환
+  keywords:
+  - 부당이득
+  - 착오송금
+  - 오지급
+  - 중복지급
+  - 과오납
+  - 반환
+  - 환급
+  - 잘못 보냄
+  - 계좌
+  - 송금
+  typical_expressions:
+  - 중복지급/과오납 반환 관련 상담이 필요해요
+  - 중복지급/과오납 반환 때문에 문제가 생겼어요
+  - 중복지급/과오납 반환 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - UNJUST_PAYMENT:착오송금/오지급 반환;UNJUST_OVERPAYMENT:중복지급/과오납 반환
+- scenario_code: UNJUST_PAYMENT
+  scenario_name: 착오송금/오지급 반환
+  keywords:
+  - 부당이득
+  - 착오송금
+  - 오지급
+  - 중복지급
+  - 과오납
+  - 반환
+  - 환급
+  - 잘못 보냄
+  - 계좌
+  - 송금
+  typical_expressions:
+  - 착오송금/오지급 반환 관련 상담이 필요해요
+  - 착오송금/오지급 반환 때문에 문제가 생겼어요
+  - 착오송금/오지급 반환 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - UNJUST_PAYMENT:착오송금/오지급 반환;UNJUST_OVERPAYMENT:중복지급/과오납 반환
+typical_keywords:
+- 잘못 보냄
+- 부당이득
+- 계좌
+- 중복지급
+- 착오송금
+- 반환
+- 오지급
+- 과오납
+- 환급
+- 송금
+typical_expressions:
+- 중복지급/과오납 반환 관련 상담이 필요해요
+- 중복지급/과오납 반환 때문에 문제가 생겼어요
+- 착오송금/오지급 반환 관련 상담이 필요해요
+- 착오송금/오지급 반환 때문에 문제가 생겼어요
+- 착오송금/오지급 반환 상황을 어떻게 해야 하나요?
+- 중복지급/과오납 반환 상황을 어떻게 해야 하나요?

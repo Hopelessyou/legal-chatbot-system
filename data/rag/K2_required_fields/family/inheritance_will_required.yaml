@@ -1,0 +1,62 @@
+doc_id: K2-INHERITANCE_WILL
+knowledge_type: K2
+level1: FAMILY
+level2: FAMILY_INHERITANCE
+scenario: INHERITANCE_WILL
+required_fields:
+- death_date
+- evidence
+- relationship
+- dispute_point
+- will_exists
+questions:
+- order: 1
+  field: death_date
+  question: 피상속인(돌아가신 분) 사망 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: relationship
+  question: 의뢰인과 피상속인의 관계는 무엇인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: will_exists
+  question: 유언장 또는 유언에 관한 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 4
+  field: estate_type
+  question: 상속 재산 종류(부동산/예금/채무 등)를 알고 있나요?
+  answer_type: string
+  required: false
+- order: 5
+  field: debt_known
+  question: 상속채무(빚)가 있는지 알고 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: dispute_point
+  question: 분쟁이 되는 핵심은 무엇인가요? (상속분/유류분/유언무효/채무 등)
+  answer_type: string
+  required: true
+- order: 7
+  field: evidence
+  question: 가족관계증명/등기부/통장 등 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: other_heirs
+  question: 다른 상속인(형제/배우자 등)이 있나요?
+  answer_type: boolean
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

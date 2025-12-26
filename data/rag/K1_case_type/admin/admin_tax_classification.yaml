@@ -1,0 +1,64 @@
+doc_id: K1-ADMIN-ADMIN_TAX
+knowledge_type: K1
+level1: ADMIN
+level2_code: ADMIN_TAX
+level2_name: 조세(세무)
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: TAX_ASSESSMENT
+  scenario_name: 과세처분/세무
+  keywords:
+  - 세금
+  - 과세
+  - 고지서
+  - 부과
+  - 가산세
+  - 체납
+  - 압류
+  - 이의신청
+  - 심사청구
+  typical_expressions:
+  - 과세처분/세무 관련 상담이 필요해요
+  - 과세처분/세무 때문에 문제가 생겼어요
+  - 과세처분/세무 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TAX_ASSESSMENT:과세처분/세무;TAX_PENALTY:가산세/체납처분
+- scenario_code: TAX_PENALTY
+  scenario_name: 가산세/체납처분
+  keywords:
+  - 세금
+  - 과세
+  - 고지서
+  - 부과
+  - 가산세
+  - 체납
+  - 압류
+  - 이의신청
+  - 심사청구
+  typical_expressions:
+  - 가산세/체납처분 관련 상담이 필요해요
+  - 가산세/체납처분 때문에 문제가 생겼어요
+  - 가산세/체납처분 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - TAX_ASSESSMENT:과세처분/세무;TAX_PENALTY:가산세/체납처분
+typical_keywords:
+- 세금
+- 체납
+- 고지서
+- 부과
+- 심사청구
+- 가산세
+- 압류
+- 이의신청
+- 과세
+typical_expressions:
+- 가산세/체납처분 상황을 어떻게 해야 하나요?
+- 과세처분/세무 관련 상담이 필요해요
+- 과세처분/세무 때문에 문제가 생겼어요
+- 과세처분/세무 상황을 어떻게 해야 하나요?
+- 가산세/체납처분 관련 상담이 필요해요
+- 가산세/체납처분 때문에 문제가 생겼어요

@@ -1,0 +1,100 @@
+doc_id: K1-CRIMINAL-CRIMINAL_DUI
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_DUI
+level2_name: 음주·교통범죄
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: DUI_ACCIDENT
+  scenario_name: 음주운전 교통사고
+  keywords:
+  - 음주운전
+  - 단속
+  - 측정
+  - 혈중알코올
+  - 사고
+  - 블랙박스
+  - 면허
+  - 정지
+  - 취소
+  - 거부
+  - 재판
+  - 부상
+  - 보험
+  - 합의
+  typical_expressions:
+  - 음주운전 교통사고 관련 상담이 필요해요
+  - 음주운전 교통사고 때문에 문제가 생겼어요
+  - 음주운전 교통사고 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DUI_ARREST:음주운전 단속;DUI_ACCIDENT:음주운전 교통사고;DUI_REFUSAL:음주측정 거부
+- scenario_code: DUI_ARREST
+  scenario_name: 음주운전 단속
+  keywords:
+  - 음주운전
+  - 단속
+  - 측정
+  - 혈중알코올
+  - 사고
+  - 블랙박스
+  - 면허
+  - 정지
+  - 취소
+  - 거부
+  - 재판
+  typical_expressions:
+  - 음주운전 단속 관련 상담이 필요해요
+  - 음주운전 단속 때문에 문제가 생겼어요
+  - 음주운전 단속 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DUI_ARREST:음주운전 단속;DUI_ACCIDENT:음주운전 교통사고;DUI_REFUSAL:음주측정 거부
+- scenario_code: DUI_REFUSAL
+  scenario_name: 음주측정 거부
+  keywords:
+  - 음주운전
+  - 단속
+  - 측정
+  - 혈중알코올
+  - 사고
+  - 블랙박스
+  - 면허
+  - 정지
+  - 취소
+  - 거부
+  - 재판
+  typical_expressions:
+  - 음주측정 거부 관련 상담이 필요해요
+  - 음주측정 거부 때문에 문제가 생겼어요
+  - 음주측정 거부 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DUI_ARREST:음주운전 단속;DUI_ACCIDENT:음주운전 교통사고;DUI_REFUSAL:음주측정 거부
+typical_keywords:
+- 부상
+- 거부
+- 취소
+- 사고
+- 면허
+- 재판
+- 합의
+- 정지
+- 블랙박스
+- 혈중알코올
+- 측정
+- 단속
+- 보험
+- 음주운전
+typical_expressions:
+- 음주운전 교통사고 때문에 문제가 생겼어요
+- 음주측정 거부 때문에 문제가 생겼어요
+- 음주운전 단속 때문에 문제가 생겼어요
+- 음주운전 단속 상황을 어떻게 해야 하나요?
+- 음주측정 거부 상황을 어떻게 해야 하나요?
+- 음주운전 교통사고 관련 상담이 필요해요
+- 음주운전 교통사고 상황을 어떻게 해야 하나요?
+- 음주운전 단속 관련 상담이 필요해요
+- 음주측정 거부 관련 상담이 필요해요

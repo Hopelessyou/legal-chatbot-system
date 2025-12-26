@@ -1,0 +1,68 @@
+doc_id: K2-REALESTATE_LEASE_DEPOSIT
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_REALESTATE
+scenario: REALESTATE_LEASE_DEPOSIT
+required_fields:
+- incident_date
+- documents
+- amount
+- property_type
+- counterparty
+- issue_description
+questions:
+- order: 1
+  field: incident_date
+  question: 계약 체결 또는 문제가 발생한 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: property_type
+  question: 대상 부동산은 무엇인가요? (전/월세/매매/상가 등)
+  answer_type: string
+  required: true
+- order: 3
+  field: counterparty
+  question: 상대방(임대인/임차인/매도인/매수인)은 누구인가요?
+  answer_type: string
+  required: true
+- order: 4
+  field: amount
+  question: 보증금/월세/매매대금 등 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 5
+  field: contract_end_date
+  question: 계약 종료(만료) 예정일 또는 종료일이 있나요?
+  answer_type: date
+  required: false
+- order: 6
+  field: occupancy_status
+  question: 현재 점유/거주 상태는 어떤가요?
+  answer_type: string
+  required: false
+- order: 7
+  field: issue_description
+  question: 현재 분쟁의 핵심은 무엇인가요?
+  answer_type: string
+  required: true
+- order: 8
+  field: documents
+  question: 계약서/등기부/영수증 등 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 9
+  field: notice
+  question: 상대방에게 통지(내용증명 등)를 보낸 적이 있나요?
+  answer_type: boolean
+  required: false
+- order: 10
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 11
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

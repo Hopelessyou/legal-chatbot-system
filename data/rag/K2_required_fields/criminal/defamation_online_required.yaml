@@ -1,0 +1,57 @@
+doc_id: K2-DEFAMATION_ONLINE
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_DEFAMATION
+scenario: DEFAMATION_ONLINE
+required_fields:
+- incident_date
+- content_summary
+- evidence
+- identifiable
+- medium
+questions:
+- order: 1
+  field: incident_date
+  question: 문제가 된 게시/발언 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: medium
+  question: 어떤 매체(커뮤니티/리뷰/카톡 등)였나요?
+  answer_type: string
+  required: true
+- order: 3
+  field: content_summary
+  question: 어떤 내용이었나요? (핵심 요약)
+  answer_type: string
+  required: true
+- order: 4
+  field: identifiable
+  question: 나(또는 회사)가 특정될 수 있나요?
+  answer_type: boolean
+  required: true
+- order: 5
+  field: false_claim
+  question: 허위사실이라고 보나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 증거(캡처/URL/대화 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: report_status
+  question: 이미 신고/고소 또는 삭제 요청을 했나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

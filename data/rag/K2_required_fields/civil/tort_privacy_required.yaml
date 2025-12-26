@@ -1,0 +1,56 @@
+doc_id: K2-TORT_PRIVACY
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_TORT
+scenario: TORT_PRIVACY
+required_fields:
+- incident_date
+- repeated
+- evidence
+- act_description
+questions:
+- order: 1
+  field: incident_date
+  question: 문제가 시작된 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: relationship
+  question: 상대방과의 관계는 무엇인가요?
+  answer_type: string
+  required: false
+- order: 3
+  field: act_description
+  question: 어떤 침해/접근/연락이 있었나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: repeated
+  question: 반복적인 연락/접근이 있었나요?
+  answer_type: boolean
+  required: true
+- order: 5
+  field: threat
+  question: 협박/위협이 동반되었나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 증거(통화기록/문자/캡처/영상 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: report_status
+  question: 신고/접근금지 등 조치를 진행했나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

@@ -1,0 +1,22 @@
+PostgreSQL 사용자 및 데이터베이스 수동 설정 명령어
+====================================================
+
+다음 명령어를 PowerShell에서 순서대로 실행하세요.
+
+1. PostgreSQL 서버 시작 (필요한 경우)
+   cd "C:\Program Files\PostgreSQL\18\bin"
+   .\pg_ctl.exe start -D "C:\Program Files\PostgreSQL\18\data"
+
+2. 사용자 생성 (postgres 사용자 비밀번호 입력 필요)
+   .\psql.exe -U postgres -d postgres -c "CREATE USER legal_chat_bot WITH PASSWORD '1qazxsw2';"
+
+3. 데이터베이스 생성
+   .\psql.exe -U postgres -d postgres -c "CREATE DATABASE legal_chat_info_db OWNER legal_chat_bot;"
+
+4. 권한 부여
+   .\psql.exe -U postgres -d legal_chat_info_db -c "GRANT ALL PRIVILEGES ON DATABASE legal_chat_info_db TO legal_chat_bot;"
+   .\psql.exe -U postgres -d legal_chat_info_db -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO legal_chat_bot;"
+   .\psql.exe -U postgres -d legal_chat_info_db -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO legal_chat_bot;"
+
+참고: 각 명령 실행 시 postgres 사용자의 비밀번호를 입력해야 합니다.
+

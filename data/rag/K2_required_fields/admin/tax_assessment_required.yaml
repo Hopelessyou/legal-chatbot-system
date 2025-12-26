@@ -1,0 +1,52 @@
+doc_id: K2-TAX_ASSESSMENT
+knowledge_type: K2
+level1: ADMIN
+level2: ADMIN_TAX
+scenario: TAX_ASSESSMENT
+required_fields:
+- documents
+- tax_type
+- amount
+- authority
+- disposition_date
+questions:
+- order: 1
+  field: disposition_date
+  question: 과세/부과 통지 날짜는 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: tax_type
+  question: 어떤 세목(소득/부가/지방세 등)인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: amount
+  question: 부과된 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 4
+  field: authority
+  question: 과세관청은 어디인가요?
+  answer_type: string
+  required: true
+- order: 5
+  field: documents
+  question: 고지서/결정통지 등 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 6
+  field: objection_history
+  question: 이의신청/심사청구를 한 적이 있나요?
+  answer_type: boolean
+  required: false
+- order: 7
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 8
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

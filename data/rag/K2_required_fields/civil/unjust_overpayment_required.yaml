@@ -1,0 +1,57 @@
+doc_id: K2-UNJUST_OVERPAYMENT
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_UNJUST
+scenario: UNJUST_OVERPAYMENT
+required_fields:
+- amount
+- evidence
+- counterparty
+- reason
+- payment_date
+questions:
+- order: 1
+  field: payment_date
+  question: 돈을 지급(송금)한 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: counterparty
+  question: 상대방(수령인)은 누구인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: amount
+  question: 지급한 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 4
+  field: reason
+  question: 왜 지급(송금)하게 되었나요? (착오/중복/오지급 등)
+  answer_type: string
+  required: true
+- order: 5
+  field: return_request
+  question: 반환 요청을 한 적이 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 송금내역/대화 등 증거가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: contact_status
+  question: 현재 상대방과 연락이 되나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

@@ -1,0 +1,117 @@
+doc_id: K1-CRIMINAL-CRIMINAL_ASSAULT
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_ASSAULT
+level2_name: 폭행·상해
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: ASSAULT_GROUP
+  scenario_name: 집단폭행/특수폭행
+  keywords:
+  - 폭행
+  - 상해
+  - 진단서
+  - 전치
+  - 합의
+  - CCTV
+  - 목격자
+  - 쌍방
+  - 정당방위
+  - 특수폭행
+  typical_expressions:
+  - 집단폭행/특수폭행 관련 상담이 필요해요
+  - 집단폭행/특수폭행 때문에 문제가 생겼어요
+  - 집단폭행/특수폭행 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ASSAULT_SIMPLE:폭행;ASSAULT_INJURY:상해(진단서);ASSAULT_GROUP:집단폭행/특수폭행;ASSAULT_MUTUAL:쌍방폭행(정당방위/상호폭행
+    쟁점)
+- scenario_code: ASSAULT_INJURY
+  scenario_name: 상해(진단서)
+  keywords:
+  - 폭행
+  - 상해
+  - 진단서
+  - 전치
+  - 합의
+  - CCTV
+  - 목격자
+  - 쌍방
+  - 정당방위
+  - 특수폭행
+  typical_expressions:
+  - 상해(진단서) 관련 상담이 필요해요
+  - 상해(진단서) 때문에 문제가 생겼어요
+  - 상해(진단서) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ASSAULT_SIMPLE:폭행;ASSAULT_INJURY:상해(진단서);ASSAULT_GROUP:집단폭행/특수폭행;ASSAULT_MUTUAL:쌍방폭행(정당방위/상호폭행
+    쟁점)
+- scenario_code: ASSAULT_MUTUAL
+  scenario_name: 쌍방폭행(정당방위/상호폭행 쟁점)
+  keywords:
+  - 폭행
+  - 상해
+  - 진단서
+  - 전치
+  - 합의
+  - CCTV
+  - 목격자
+  - 쌍방
+  - 정당방위
+  - 특수폭행
+  typical_expressions:
+  - 쌍방폭행(정당방위/상호폭행 쟁점) 관련 상담이 필요해요
+  - 쌍방폭행(정당방위/상호폭행 쟁점) 때문에 문제가 생겼어요
+  - 쌍방폭행(정당방위/상호폭행 쟁점) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ASSAULT_SIMPLE:폭행;ASSAULT_INJURY:상해(진단서);ASSAULT_GROUP:집단폭행/특수폭행;ASSAULT_MUTUAL:쌍방폭행(정당방위/상호폭행
+    쟁점)
+- scenario_code: ASSAULT_SIMPLE
+  scenario_name: 폭행
+  keywords:
+  - 폭행
+  - 상해
+  - 진단서
+  - 전치
+  - 합의
+  - CCTV
+  - 목격자
+  - 쌍방
+  - 정당방위
+  - 특수폭행
+  typical_expressions:
+  - 폭행 관련 상담이 필요해요
+  - 폭행 때문에 문제가 생겼어요
+  - 폭행 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ASSAULT_SIMPLE:폭행;ASSAULT_INJURY:상해(진단서);ASSAULT_GROUP:집단폭행/특수폭행;ASSAULT_MUTUAL:쌍방폭행(정당방위/상호폭행
+    쟁점)
+typical_keywords:
+- 폭행
+- 진단서
+- 정당방위
+- 상해
+- 합의
+- CCTV
+- 목격자
+- 특수폭행
+- 전치
+- 쌍방
+typical_expressions:
+- 폭행 때문에 문제가 생겼어요
+- 집단폭행/특수폭행 상황을 어떻게 해야 하나요?
+- 쌍방폭행(정당방위/상호폭행 쟁점) 때문에 문제가 생겼어요
+- 폭행 관련 상담이 필요해요
+- 쌍방폭행(정당방위/상호폭행 쟁점) 관련 상담이 필요해요
+- 쌍방폭행(정당방위/상호폭행 쟁점) 상황을 어떻게 해야 하나요?
+- 집단폭행/특수폭행 관련 상담이 필요해요
+- 상해(진단서) 상황을 어떻게 해야 하나요?
+- 상해(진단서) 관련 상담이 필요해요
+- 집단폭행/특수폭행 때문에 문제가 생겼어요
+- 상해(진단서) 때문에 문제가 생겼어요
+- 폭행 상황을 어떻게 해야 하나요?

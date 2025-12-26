@@ -1,0 +1,51 @@
+doc_id: FACT-STALKING_THREAT
+knowledge_type: FACT
+level1: CRIMINAL
+level2: CRIMINAL_STALKING
+scenario: STALKING_THREAT
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_REPEATED
+  name: 반복성
+  description: 반복적 접근/연락
+  critical: true
+  related_field: repeated
+- fact_code: FACT_THREAT
+  name: 협박
+  description: 협박/위협 동반
+  critical: false
+  related_field: threat
+- fact_code: FACT_LOCATION
+  name: 위치파악
+  description: 거주지/직장 등 위치를 알고 접근
+  critical: false
+  related_field: location_known
+- fact_code: FACT_SAFETY
+  name: 안전위험
+  description: 신체적 위험 느낌
+  critical: false
+  related_field: safety_risk
+- fact_code: FACT_REPORT
+  name: 신고
+  description: 신고/접근금지 진행
+  critical: false
+  related_field: report_status

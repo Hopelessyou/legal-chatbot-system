@@ -1,0 +1,85 @@
+doc_id: K1-FAMILY-FAMILY_ALIMONY
+knowledge_type: K1
+level1: FAMILY
+level2_code: FAMILY_ALIMONY
+level2_name: 양육비·부양료
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: ALIMONY_CALCULATION
+  scenario_name: 양육비 산정/기준 문의
+  keywords:
+  - 양육비
+  - 체납
+  - 미지급
+  - 이행명령
+  - 강제집행
+  - 변경
+  - 산정
+  - 소득
+  typical_expressions:
+  - 양육비 산정/기준 문의 관련 상담이 필요해요
+  - 양육비 산정/기준 문의 때문에 문제가 생겼어요
+  - 양육비 산정/기준 문의 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ALIMONY_ENFORCEMENT:양육비 미지급(이행/집행);ALIMONY_MODIFY:양육비 변경(증액/감액);ALIMONY_CALCULATION:양육비
+    산정/기준 문의
+- scenario_code: ALIMONY_ENFORCEMENT
+  scenario_name: 양육비 미지급(이행/집행)
+  keywords:
+  - 양육비
+  - 체납
+  - 미지급
+  - 이행명령
+  - 강제집행
+  - 변경
+  - 산정
+  - 소득
+  typical_expressions:
+  - 양육비 미지급(이행/집행) 관련 상담이 필요해요
+  - 양육비 미지급(이행/집행) 때문에 문제가 생겼어요
+  - 양육비 미지급(이행/집행) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ALIMONY_ENFORCEMENT:양육비 미지급(이행/집행);ALIMONY_MODIFY:양육비 변경(증액/감액);ALIMONY_CALCULATION:양육비
+    산정/기준 문의
+- scenario_code: ALIMONY_MODIFY
+  scenario_name: 양육비 변경(증액/감액)
+  keywords:
+  - 양육비
+  - 체납
+  - 미지급
+  - 이행명령
+  - 강제집행
+  - 변경
+  - 산정
+  - 소득
+  typical_expressions:
+  - 양육비 변경(증액/감액) 관련 상담이 필요해요
+  - 양육비 변경(증액/감액) 때문에 문제가 생겼어요
+  - 양육비 변경(증액/감액) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ALIMONY_ENFORCEMENT:양육비 미지급(이행/집행);ALIMONY_MODIFY:양육비 변경(증액/감액);ALIMONY_CALCULATION:양육비
+    산정/기준 문의
+typical_keywords:
+- 체납
+- 소득
+- 양육비
+- 강제집행
+- 변경
+- 산정
+- 이행명령
+- 미지급
+typical_expressions:
+- 양육비 산정/기준 문의 상황을 어떻게 해야 하나요?
+- 양육비 미지급(이행/집행) 때문에 문제가 생겼어요
+- 양육비 산정/기준 문의 때문에 문제가 생겼어요
+- 양육비 미지급(이행/집행) 상황을 어떻게 해야 하나요?
+- 양육비 변경(증액/감액) 때문에 문제가 생겼어요
+- 양육비 산정/기준 문의 관련 상담이 필요해요
+- 양육비 변경(증액/감액) 상황을 어떻게 해야 하나요?
+- 양육비 미지급(이행/집행) 관련 상담이 필요해요
+- 양육비 변경(증액/감액) 관련 상담이 필요해요

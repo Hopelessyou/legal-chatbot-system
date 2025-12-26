@@ -1,0 +1,45 @@
+# K4 문서: 요약 포맷 기준
+doc_id: K4-SUMMARY-FORMAT-001
+knowledge_type: K4
+node_scope:
+  - SUMMARY
+version: v1.0
+last_updated: 2025-01-01T00:00:00Z
+
+output_format:
+  title: 사건 요약
+  sections:
+    - name: 사건 유형
+      required: true
+      description: 사건의 법률 분류
+      format: "{main_case_type} / {sub_case_type}"
+    
+    - name: 핵심 사실관계
+      required: true
+      description: 사건의 핵심 사실 요약
+      format: "날짜, 당사자, 행위, 결과를 포함한 사실 중심 서술"
+    
+    - name: 금액 및 증거
+      required: true
+      description: 분쟁 금액 및 증거 보유 여부
+      format: "금액: {amount}원, 증거: {evidence_status}"
+    
+    - name: 특이사항
+      required: false
+      description: 추가로 주의할 사항
+      format: "리스크 플래그 및 주의사항"
+
+style_rules:
+  - 감정 표현을 배제하고 사실만 서술
+  - 추측이나 판단 표현 금지
+  - 날짜와 금액은 명시적으로 기재
+  - "~할 수 있다", "~일 가능성이 있다" 같은 불확실한 표현 금지
+  - 객관적 사실 중심으로 작성
+  - 법률 용어는 정확하게 사용
+
+example:
+  사건_유형: "민사 / 계약 분쟁"
+  핵심_사실관계: "2023년 10월 개인과 계약을 체결하였으나, 상대방이 계약 이행을 하지 않아 대금 미지급 문제가 발생한 사안입니다."
+  금액_및_증거: "금액: 5,000만원, 증거: 계약서 보유"
+  특이사항: "소멸시효 문제 검토 필요"
+

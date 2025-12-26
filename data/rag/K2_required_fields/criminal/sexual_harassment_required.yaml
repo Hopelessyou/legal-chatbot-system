@@ -1,0 +1,60 @@
+doc_id: K2-SEXUAL_HARASSMENT
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_SEX
+scenario: SEXUAL_HARASSMENT
+required_fields:
+- incident_date
+- evidence
+- act_description
+questions:
+- order: 1
+  field: incident_date
+  question: 사건 발생 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: location
+  question: 어디에서 발생했나요?
+  answer_type: string
+  required: false
+- order: 3
+  field: relationship
+  question: 가해자와의 관계는 무엇인가요? (지인/직장/모름 등)
+  answer_type: string
+  required: false
+- order: 4
+  field: act_description
+  question: 어떤 행위가 있었나요? (핵심 사실)
+  answer_type: string
+  required: true
+- order: 5
+  field: victim_age
+  question: 피해자 연령(성인/미성년)을 알려주세요.
+  answer_type: string
+  required: false
+- order: 6
+  field: evidence
+  question: 증거(메시지/영상/진단서 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: report_status
+  question: 이미 신고 또는 조사 진행 중인가요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: protection_needed
+  question: 현재 안전/보호 조치가 필요하다고 느끼나요?
+  answer_type: boolean
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

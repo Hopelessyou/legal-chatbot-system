@@ -1,0 +1,57 @@
+doc_id: K2-CUSTODY_CHANGE
+knowledge_type: K2
+level1: FAMILY
+level2: FAMILY_CUSTODY
+scenario: CUSTODY_CHANGE
+required_fields:
+- current_custody
+- desired_custody
+- evidence
+- issue_description
+- child_age
+questions:
+- order: 1
+  field: child_age
+  question: 자녀 나이(만 나이)와 현재 상황을 알려주세요.
+  answer_type: string
+  required: true
+- order: 2
+  field: current_custody
+  question: 현재 양육자는 누구인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: desired_custody
+  question: 원하시는 양육/친권 방향은 무엇인가요?
+  answer_type: string
+  required: true
+- order: 4
+  field: issue_description
+  question: 분쟁이 되는 핵심 사정을 설명해 주세요.
+  answer_type: string
+  required: true
+- order: 5
+  field: agreement
+  question: 합의 가능성이 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 자료(대화/학교/진료/양육비 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: court_process
+  question: 이미 소송/조정이 진행 중인가요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

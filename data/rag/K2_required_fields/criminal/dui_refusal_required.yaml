@@ -1,0 +1,61 @@
+doc_id: K2-DUI_REFUSAL
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_DUI
+scenario: DUI_REFUSAL
+required_fields:
+- incident_date
+- accident
+- breath_test
+- documents
+questions:
+- order: 1
+  field: incident_date
+  question: 단속/사고 발생 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: location
+  question: 어디에서 발생했나요?
+  answer_type: string
+  required: false
+- order: 3
+  field: accident
+  question: 교통사고가 있었나요?
+  answer_type: boolean
+  required: true
+- order: 4
+  field: injury
+  question: 인명 피해(부상/사망)가 있었나요?
+  answer_type: boolean
+  required: false
+- order: 5
+  field: breath_test
+  question: 측정(혈중알코올) 결과를 알고 있나요?
+  answer_type: string
+  required: true
+- order: 6
+  field: prior_record
+  question: 음주운전 전력이 있나요?
+  answer_type: boolean
+  required: false
+- order: 7
+  field: documents
+  question: 단속서류/블랙박스/보험서류 등 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: stage_detail
+  question: 현재 단계(조사/기소/재판 등)를 알고 있나요?
+  answer_type: string
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

@@ -1,0 +1,56 @@
+doc_id: K2-THEFT_BURGLARY
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_THEFT
+scenario: THEFT_BURGLARY
+required_fields:
+- incident_date
+- stolen_item
+- evidence
+- value
+questions:
+- order: 1
+  field: incident_date
+  question: 사건 발생 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: location
+  question: 어디에서 발생했나요?
+  answer_type: string
+  required: false
+- order: 3
+  field: stolen_item
+  question: 도난/강취당한 물건은 무엇인가요?
+  answer_type: string
+  required: true
+- order: 4
+  field: value
+  question: 대략적인 가치(금액)는 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 5
+  field: suspect_known
+  question: 가해자를 특정할 수 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 증거(영상/영수증/목격자 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: report_status
+  question: 이미 신고했나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

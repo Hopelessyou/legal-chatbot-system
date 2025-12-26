@@ -1,0 +1,171 @@
+doc_id: K1-CIVIL-CIVIL_LABOR
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_LABOR
+level2_name: 노동(근로)
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: LABOR_CONTRACT_DISPUTE
+  scenario_name: 근로계약/연봉 분쟁
+  keywords:
+  - 임금체불
+  - 퇴직금
+  - 부당해고
+  - 해고
+  - 연봉
+  - 근로계약서
+  - 급여명세
+  - 출퇴근
+  - 노동청
+  - 진정
+  - 직장내 괴롭힘
+  - 폭언
+  - 부당
+  - 휴업
+  typical_expressions:
+  - 근로계약/연봉 분쟁 관련 상담이 필요해요
+  - 근로계약/연봉 분쟁 때문에 문제가 생겼어요
+  - 근로계약/연봉 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LABOR_WAGE_ARREARS:임금체불;LABOR_SEVERANCE_PAY:퇴직금 미지급;LABOR_UNFAIR_DISMISSAL:부당해고;LABOR_WORKPLACE_HARASSMENT:직장
+    내 괴롭힘;LABOR_CONTRACT_DISPUTE:근로계약/연봉 분쟁
+- scenario_code: LABOR_SEVERANCE_PAY
+  scenario_name: 퇴직금 미지급
+  keywords:
+  - 임금체불
+  - 퇴직금
+  - 부당해고
+  - 해고
+  - 연봉
+  - 근로계약서
+  - 급여명세
+  - 출퇴근
+  - 노동청
+  - 진정
+  - 직장내 괴롭힘
+  - 폭언
+  - 부당
+  - 휴업
+  typical_expressions:
+  - 퇴직금 미지급 관련 상담이 필요해요
+  - 퇴직금 미지급 때문에 문제가 생겼어요
+  - 퇴직금 미지급 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LABOR_WAGE_ARREARS:임금체불;LABOR_SEVERANCE_PAY:퇴직금 미지급;LABOR_UNFAIR_DISMISSAL:부당해고;LABOR_WORKPLACE_HARASSMENT:직장
+    내 괴롭힘;LABOR_CONTRACT_DISPUTE:근로계약/연봉 분쟁
+- scenario_code: LABOR_UNFAIR_DISMISSAL
+  scenario_name: 부당해고
+  keywords:
+  - 임금체불
+  - 퇴직금
+  - 부당해고
+  - 해고
+  - 연봉
+  - 근로계약서
+  - 급여명세
+  - 출퇴근
+  - 노동청
+  - 진정
+  - 직장내 괴롭힘
+  - 폭언
+  - 부당
+  - 휴업
+  typical_expressions:
+  - 부당해고 관련 상담이 필요해요
+  - 부당해고 때문에 문제가 생겼어요
+  - 부당해고 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LABOR_WAGE_ARREARS:임금체불;LABOR_SEVERANCE_PAY:퇴직금 미지급;LABOR_UNFAIR_DISMISSAL:부당해고;LABOR_WORKPLACE_HARASSMENT:직장
+    내 괴롭힘;LABOR_CONTRACT_DISPUTE:근로계약/연봉 분쟁
+- scenario_code: LABOR_WAGE_ARREARS
+  scenario_name: 임금체불
+  keywords:
+  - 임금체불
+  - 퇴직금
+  - 부당해고
+  - 해고
+  - 연봉
+  - 근로계약서
+  - 급여명세
+  - 출퇴근
+  - 노동청
+  - 진정
+  - 직장내 괴롭힘
+  - 폭언
+  - 부당
+  - 휴업
+  - 월급
+  - 급여
+  - 미지급
+  typical_expressions:
+  - 월급이 밀렸어요
+  - 임금체불로 신고하고 싶어요
+  - 급여를 안 줘요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LABOR_WAGE_ARREARS:임금체불;LABOR_SEVERANCE_PAY:퇴직금 미지급;LABOR_UNFAIR_DISMISSAL:부당해고;LABOR_WORKPLACE_HARASSMENT:직장
+    내 괴롭힘;LABOR_CONTRACT_DISPUTE:근로계약/연봉 분쟁
+- scenario_code: LABOR_WORKPLACE_HARASSMENT
+  scenario_name: 직장 내 괴롭힘
+  keywords:
+  - 임금체불
+  - 퇴직금
+  - 부당해고
+  - 해고
+  - 연봉
+  - 근로계약서
+  - 급여명세
+  - 출퇴근
+  - 노동청
+  - 진정
+  - 직장내 괴롭힘
+  - 폭언
+  - 부당
+  - 휴업
+  typical_expressions:
+  - 직장 내 괴롭힘 관련 상담이 필요해요
+  - 직장 내 괴롭힘 때문에 문제가 생겼어요
+  - 직장 내 괴롭힘 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LABOR_WAGE_ARREARS:임금체불;LABOR_SEVERANCE_PAY:퇴직금 미지급;LABOR_UNFAIR_DISMISSAL:부당해고;LABOR_WORKPLACE_HARASSMENT:직장
+    내 괴롭힘;LABOR_CONTRACT_DISPUTE:근로계약/연봉 분쟁
+typical_keywords:
+- 퇴직금
+- 진정
+- 근로계약서
+- 연봉
+- 부당
+- 부당해고
+- 월급
+- 급여
+- 임금체불
+- 휴업
+- 해고
+- 직장내 괴롭힘
+- 출퇴근
+- 급여명세
+- 미지급
+- 노동청
+- 폭언
+typical_expressions:
+- 퇴직금 미지급 때문에 문제가 생겼어요
+- 월급이 밀렸어요
+- 직장 내 괴롭힘 때문에 문제가 생겼어요
+- 근로계약/연봉 분쟁 때문에 문제가 생겼어요
+- 근로계약/연봉 분쟁 관련 상담이 필요해요
+- 부당해고 상황을 어떻게 해야 하나요?
+- 직장 내 괴롭힘 관련 상담이 필요해요
+- 임금체불로 신고하고 싶어요
+- 근로계약/연봉 분쟁 상황을 어떻게 해야 하나요?
+- 퇴직금 미지급 관련 상담이 필요해요
+- 직장 내 괴롭힘 상황을 어떻게 해야 하나요?
+- 부당해고 관련 상담이 필요해요
+- 급여를 안 줘요
+- 퇴직금 미지급 상황을 어떻게 해야 하나요?
+- 부당해고 때문에 문제가 생겼어요

@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객 문의사항 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f7;
+            padding: 20px;
+            color: #1d1d1f;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1d1d1f;
+        }
+
+        .header p {
+            color: #86868b;
+            font-size: 14px;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            color: #86868b;
+            font-weight: 500;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #0071e3;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #0071e3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0077ed;
+        }
+
+        .btn-secondary {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8ed;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 12px;
+            color: #86868b;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        .sessions-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f5f5f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f5f5f7;
+        }
+
+        th {
+            padding: 12px 20px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #86868b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-top: 1px solid #f5f5f7;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-active {
+            background: #d1f2eb;
+            color: #00695c;
+        }
+
+        .badge-completed {
+            background: #e3f2fd;
+            color: #01579b;
+        }
+
+        .badge-aborted {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .badge-yes {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-no {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f5f5f7;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: #f5f5f7;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 18px;
+        }
+
+        .modal-close:hover {
+            background: #e8e8ed;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1d1d1f;
+        }
+
+        .detail-item {
+            display: flex;
+            padding: 12px;
+            background: #f5f5f7;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .detail-item-label {
+            font-weight: 500;
+            color: #86868b;
+            min-width: 120px;
+        }
+
+        .detail-item-value {
+            color: #1d1d1f;
+            flex: 1;
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file-item {
+            padding: 12px;
+            background: #f5f5f7;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-download-btn {
+            padding: 6px 12px;
+            background: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .file-download-btn:hover {
+            background: #0077ed;
+            transform: translateY(-1px);
+        }
+
+        .file-download-btn:active {
+            transform: translateY(0);
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .file-meta {
+            font-size: 12px;
+            color: #86868b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #86868b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #86868b;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .sortable-header {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 20px;
+        }
+
+        .sortable-header:hover {
+            background: #e8e8ed;
+        }
+
+        .sort-icon {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #86868b;
+        }
+
+        .sort-icon.active {
+            color: #0071e3;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            min-width: 200px;
+        }
+
+        .search-input:focus {
+            border-color: #0071e3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>고객 문의사항 관리</h1>
+            <p>상담 세션 목록 및 상세 정보를 확인할 수 있습니다.</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>검색:</label>
+                <input type="text" class="search-input" id="searchInput" placeholder="세션 ID 검색..." onkeyup="handleSearch(event)">
+            </div>
+            <div class="filter-group">
+                <label>상태:</label>
+                <select id="statusFilter" onchange="applyFilters()">
+                    <option value="">전체</option>
+                    <option value="ACTIVE">진행중</option>
+                    <option value="COMPLETED">완료</option>
+                    <option value="ABORTED">중단</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>사건 유형:</label>
+                <select id="caseTypeFilter" onchange="applyFilters()">
+                    <option value="">전체</option>
+                    <option value="CIVIL">민사</option>
+                    <option value="CRIMINAL">형사</option>
+                    <option value="FAMILY">가족</option>
+                    <option value="ADMIN">행정</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>요약:</label>
+                <select id="summaryFilter" onchange="applyFilters()">
+                    <option value="">전체</option>
+                    <option value="yes">완료</option>
+                    <option value="no">미완료</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>개수:</label>
+                <select id="limitFilter" onchange="loadSessions()">
+                    <option value="20">20개</option>
+                    <option value="50" selected>50개</option>
+                    <option value="100">100개</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary" onclick="resetFilters()">초기화</button>
+            <button class="btn btn-primary" onclick="loadSessions()">새로고침</button>
+        </div>
+
+        <div class="stats" id="statsContainer">
+            <div class="stat-card">
+                <h3>전체 세션</h3>
+                <div class="value" id="totalSessions">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>진행중</h3>
+                <div class="value" id="activeSessions">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>완료</h3>
+                <div class="value" id="completedSessions">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>요약 완료</h3>
+                <div class="value" id="summarySessions">-</div>
+            </div>
+        </div>
+
+        <div class="sessions-table">
+            <div class="table-header">
+                <h2>세션 목록</h2>
+            </div>
+            <div id="sessionsContainer">
+                <div class="loading">로딩 중...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세 정보 모달 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">세션 상세 정보</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div id="detailContent">
+                <div class="loading">로딩 중...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+        let allSessions = [];
+        let filteredSessions = [];
+        let sortColumn = 'created_at';
+        let sortDirection = 'desc';
+
+        // 초기 로드
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSessions();
+        });
+
+        // 세션 목록 로드
+        async function loadSessions() {
+            const status = document.getElementById('statusFilter').value;
+            const limit = parseInt(document.getElementById('limitFilter').value);
+            const container = document.getElementById('sessionsContainer');
+            
+            container.innerHTML = '<div class="loading">로딩 중...</div>';
+
+            try {
+                let url = `${API_BASE_URL}/chat/list?limit=${limit}`;
+                if (status) {
+                    url += `&status=${status}`;
+                }
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    allSessions = data.data.sessions;
+                    applyFilters();
+                    updateStats(data.data);
+                } else {
+                    throw new Error(data.error?.message || '세션 목록 조회 실패');
+                }
+            } catch (error) {
+                console.error('세션 목록 로드 오류:', error);
+                container.innerHTML = `<div class="empty-state">오류가 발생했습니다: ${error.message}</div>`;
+            }
+        }
+
+        // 필터 적용
+        function applyFilters() {
+            const status = document.getElementById('statusFilter').value;
+            const caseType = document.getElementById('caseTypeFilter').value;
+            const summary = document.getElementById('summaryFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredSessions = allSessions.filter(session => {
+                // 상태 필터
+                if (status && session.status !== status) return false;
+                
+                // 사건 유형 필터
+                if (caseType && (!session.case_type || !session.case_type.includes(caseType))) return false;
+                
+                // 요약 필터
+                if (summary === 'yes' && !session.has_summary) return false;
+                if (summary === 'no' && session.has_summary) return false;
+                
+                // 검색 필터
+                if (search && !session.session_id.toLowerCase().includes(search)) return false;
+                
+                return true;
+            });
+
+            // 정렬 적용
+            sortSessions();
+            displaySessions(filteredSessions);
+        }
+
+        // 검색 처리
+        function handleSearch(event) {
+            if (event.key === 'Enter' || event.type === 'keyup') {
+                applyFilters();
+            }
+        }
+
+        // 필터 초기화
+        function resetFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('caseTypeFilter').value = '';
+            document.getElementById('summaryFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            applyFilters();
+        }
+
+        // 정렬
+        function sortSessions() {
+            filteredSessions.sort((a, b) => {
+                let aVal, bVal;
+                
+                switch (sortColumn) {
+                    case 'session_id':
+                        aVal = a.session_id;
+                        bVal = b.session_id;
+                        break;
+                    case 'status':
+                        aVal = a.status;
+                        bVal = b.status;
+                        break;
+                    case 'completion_rate':
+                        aVal = a.completion_rate || 0;
+                        bVal = b.completion_rate || 0;
+                        break;
+                    case 'case_type':
+                        aVal = a.case_type || '';
+                        bVal = b.case_type || '';
+                        break;
+                    case 'created_at':
+                        aVal = new Date(a.created_at).getTime();
+                        bVal = new Date(b.created_at).getTime();
+                        break;
+                    default:
+                        aVal = new Date(a.created_at).getTime();
+                        bVal = new Date(b.created_at).getTime();
+                }
+                
+                if (typeof aVal === 'string') {
+                    return sortDirection === 'asc' 
+                        ? aVal.localeCompare(bVal)
+                        : bVal.localeCompare(aVal);
+                } else {
+                    return sortDirection === 'asc' 
+                        ? aVal - bVal
+                        : bVal - aVal;
+                }
+            });
+        }
+
+        // 정렬 헤더 클릭
+        function sortBy(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+            sortSessions();
+            displaySessions(filteredSessions);
+        }
+
+        // 정렬 아이콘 표시
+        function getSortIcon(column) {
+            if (sortColumn !== column) {
+                return '<span class="sort-icon">⇅</span>';
+            }
+            return sortDirection === 'asc' 
+                ? '<span class="sort-icon active">↑</span>'
+                : '<span class="sort-icon active">↓</span>';
+        }
+
+        // 세션 목록 표시
+        function displaySessions(sessions) {
+            const container = document.getElementById('sessionsContainer');
+            
+            if (sessions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p>조건에 맞는 세션이 없습니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sortable-header" onclick="sortBy('session_id')">
+                                세션 ID
+                                ${getSortIcon('session_id')}
+                            </th>
+                            <th class="sortable-header" onclick="sortBy('status')">
+                                상태
+                                ${getSortIcon('status')}
+                            </th>
+                            <th class="sortable-header" onclick="sortBy('completion_rate')">
+                                완성도
+                                ${getSortIcon('completion_rate')}
+                            </th>
+                            <th class="sortable-header" onclick="sortBy('case_type')">
+                                사건 유형
+                                ${getSortIcon('case_type')}
+                            </th>
+                            <th>요약</th>
+                            <th>첨부 파일</th>
+                            <th class="sortable-header" onclick="sortBy('created_at')">
+                                생성일
+                                ${getSortIcon('created_at')}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            sessions.forEach(session => {
+                const statusBadge = getStatusBadge(session.status);
+                const summaryBadge = session.has_summary 
+                    ? '<span class="badge badge-yes">완료</span>' 
+                    : '<span class="badge badge-no">미완료</span>';
+                const fileBadge = session.has_files 
+                    ? `<span class="badge badge-yes">${session.file_count || 0}개</span>` 
+                    : '<span class="badge badge-no">없음</span>';
+                const date = new Date(session.created_at).toLocaleString('ko-KR');
+                
+                html += `
+                    <tr onclick="showDetail('${session.session_id}')">
+                        <td><code style="font-size: 12px;">${session.session_id}</code></td>
+                        <td>${statusBadge}</td>
+                        <td>${session.completion_rate}%</td>
+                        <td>${session.case_type || '-'}</td>
+                        <td>${summaryBadge}</td>
+                        <td>${fileBadge}</td>
+                        <td>${date}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // 상태 배지
+        function getStatusBadge(status) {
+            const badges = {
+                'ACTIVE': '<span class="badge badge-active">진행중</span>',
+                'COMPLETED': '<span class="badge badge-completed">완료</span>',
+                'ABORTED': '<span class="badge badge-aborted">중단</span>'
+            };
+            return badges[status] || status;
+        }
+
+        // 통계 업데이트
+        function updateStats(data) {
+            // 전체 통계는 별도 API 호출 필요하지만, 간단하게 표시
+            document.getElementById('totalSessions').textContent = data.total_count || '-';
+        }
+
+        // 상세 정보 표시
+        async function showDetail(sessionId) {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('detailContent');
+            
+            modal.classList.add('active');
+            content.innerHTML = '<div class="loading">로딩 중...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/chat/detail?session_id=${sessionId}`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    displayDetail(data.data);
+                } else {
+                    throw new Error(data.error?.message || data.error?.detail || '상세 정보 조회 실패');
+                }
+            } catch (error) {
+                console.error('상세 정보 로드 오류:', error);
+                let errorMessage = error.message || '알 수 없는 오류가 발생했습니다.';
+                
+                // 네트워크 오류 처리
+                if (error instanceof TypeError && error.message.includes('fetch')) {
+                    errorMessage = '서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.';
+                }
+                
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p style="font-weight: 600; margin-bottom: 8px;">오류가 발생했습니다</p>
+                        <p style="font-size: 14px; color: #86868b;">${errorMessage}</p>
+                        <button class="btn btn-secondary" onclick="showDetail('${sessionId}')" style="margin-top: 16px;">다시 시도</button>
+                    </div>
+                `;
+            }
+        }
+
+        // 상세 정보 표시
+        function displayDetail(data) {
+            const content = document.getElementById('detailContent');
+            const session = data.session;
+            const case_info = data.case;
+            const files = data.files || [];
+
+            let html = '';
+
+            // 세션 정보
+            html += `
+                <div class="detail-section">
+                    <h3>세션 정보</h3>
+                    <div class="detail-item">
+                        <div class="detail-item-label">세션 ID</div>
+                        <div class="detail-item-value"><code>${session.session_id}</code></div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-item-label">상태</div>
+                        <div class="detail-item-value">${getStatusBadge(session.status)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-item-label">완성도</div>
+                        <div class="detail-item-value">${session.completion_rate}%</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-item-label">현재 상태</div>
+                        <div class="detail-item-value">${session.current_state}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-item-label">시작 시간</div>
+                        <div class="detail-item-value">${new Date(session.started_at).toLocaleString('ko-KR')}</div>
+                    </div>
+                    ${session.ended_at ? `
+                    <div class="detail-item">
+                        <div class="detail-item-label">종료 시간</div>
+                        <div class="detail-item-value">${new Date(session.ended_at).toLocaleString('ko-KR')}</div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // 사건 정보
+            if (case_info) {
+                html += `
+                    <div class="detail-section">
+                        <h3>사건 정보</h3>
+                        <div class="detail-item">
+                            <div class="detail-item-label">사건 유형</div>
+                            <div class="detail-item-value">${case_info.main_case_type || '-'} ${case_info.sub_case_type ? `> ${case_info.sub_case_type}` : ''}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-item-label">사건 단계</div>
+                            <div class="detail-item-value">${case_info.case_stage || '-'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-item-label">긴급도</div>
+                            <div class="detail-item-value">${case_info.urgency_level || '-'}</div>
+                        </div>
+                        ${case_info.estimated_value ? `
+                        <div class="detail-item">
+                            <div class="detail-item-label">예상 금액</div>
+                            <div class="detail-item-value">${case_info.estimated_value.toLocaleString()}원</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+
+                // 당사자 정보
+                if (case_info.parties && case_info.parties.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <h3>당사자 정보</h3>
+                    `;
+                    case_info.parties.forEach(party => {
+                        html += `
+                            <div class="detail-item">
+                                <div class="detail-item-label">${party.party_type}</div>
+                                <div class="detail-item-value">
+                                    ${party.name || '-'} 
+                                    ${party.age ? `(${party.age}세)` : ''} 
+                                    ${party.gender || ''}
+                                    ${party.relationship ? `- ${party.relationship}` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                // 사실관계
+                if (case_info.facts && case_info.facts.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <h3>사실관계</h3>
+                    `;
+                    case_info.facts.forEach(fact => {
+                        html += `
+                            <div class="detail-item">
+                                <div class="detail-item-label">${fact.fact_type}</div>
+                                <div class="detail-item-value">${fact.content || '-'}</div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                // 증거
+                if (case_info.evidences && case_info.evidences.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <h3>증거</h3>
+                    `;
+                    case_info.evidences.forEach(evidence => {
+                        html += `
+                            <div class="detail-item">
+                                <div class="detail-item-label">${evidence.evidence_type || '기타'}</div>
+                                <div class="detail-item-value">
+                                    ${evidence.description || '-'}
+                                    <span class="badge ${evidence.available ? 'badge-yes' : 'badge-no'}" style="margin-left: 8px;">
+                                        ${evidence.available ? '보유' : '미보유'}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                }
+
+                // 요약
+                if (case_info.summary) {
+                    let summaryContent = '';
+                    
+                    // structured_json이 있으면 구조화된 형태로 표시
+                    if (case_info.summary.structured_json) {
+                        try {
+                            const structured = typeof case_info.summary.structured_json === 'string' 
+                                ? JSON.parse(case_info.summary.structured_json) 
+                                : case_info.summary.structured_json;
+                            
+                            summaryContent = `
+                                <div style="background: #f5f5f7; border-radius: 12px; padding: 24px; line-height: 1.8;">
+                                    ${structured.사건_유형 ? `
+                                        <div style="margin-bottom: 20px;">
+                                            <div style="font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">사건 유형</div>
+                                            <div style="font-size: 16px; font-weight: 500; color: #1d1d1f;">${structured.사건_유형}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${structured.핵심_사실관계 ? `
+                                        <div style="margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                                            <div style="font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">핵심 사실관계</div>
+                                            <div style="font-size: 15px; color: #1d1d1f; white-space: pre-wrap;">${structured.핵심_사실관계}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${structured.금액_및_증거 ? `
+                                        <div style="margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                                            <div style="font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">금액 및 증거</div>
+                                            <div style="font-size: 15px; color: #1d1d1f; white-space: pre-wrap;">${structured.금액_및_증거}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${structured.특이사항 ? `
+                                        <div style="margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                                            <div style="font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">특이사항</div>
+                                            <div style="font-size: 15px; color: #1d1d1f; white-space: pre-wrap;">${structured.특이사항}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${Object.keys(structured).filter(key => !['사건_유형', '핵심_사실관계', '금액_및_증거', '특이사항'].includes(key)).map(key => {
+                                        return `
+                                            <div style="margin-bottom: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                                                <div style="font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">${key}</div>
+                                                <div style="font-size: 15px; color: #1d1d1f; white-space: pre-wrap;">${typeof structured[key] === 'object' ? JSON.stringify(structured[key], null, 2) : structured[key]}</div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            `;
+                        } catch (e) {
+                            console.error('구조화된 JSON 파싱 실패:', e);
+                            // 파싱 실패 시 일반 텍스트로 표시
+                            summaryContent = `
+                                <div style="background: #f5f5f7; border-radius: 12px; padding: 24px; line-height: 1.8;">
+                                    <div style="font-size: 15px; color: #1d1d1f; white-space: pre-wrap;">${case_info.summary.summary_text || '-'}</div>
+                                </div>
+                            `;
+                        }
+                    } else {
+                        // summary_text만 있는 경우
+                        summaryContent = `
+                            <div style="background: #f5f5f7; border-radius: 12px; padding: 24px; line-height: 1.8;">
+                                <div style="font-size: 15px; color: #1d1d1f; white-space: pre-wrap;">${case_info.summary.summary_text || '-'}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
+                        <div class="detail-section">
+                            <h3>요약</h3>
+                            ${summaryContent}
+                        </div>
+                    `;
+                }
+            }
+
+            // 파일 목록
+            if (files.length > 0) {
+                html += `
+                    <div class="detail-section">
+                        <h3>첨부 파일 (${files.length}개)</h3>
+                        <div class="file-list">
+                `;
+                files.forEach(file => {
+                    const fileSize = formatFileSize(file.file_size);
+                    const uploadDate = new Date(file.uploaded_at).toLocaleString('ko-KR');
+                    // 파일명 이스케이프 처리
+                    const escapedFileName = file.file_name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    html += `
+                        <div class="file-item">
+                            <div class="file-info">
+                                <div class="file-name">${file.file_name}</div>
+                                <div class="file-meta">${fileSize} • ${file.file_type || '-'} • ${uploadDate}</div>
+                                ${file.description ? `<div class="file-meta" style="margin-top: 4px;">${file.description}</div>` : ''}
+                            </div>
+                            <button class="file-download-btn" onclick="downloadFile(${file.id}, '${escapedFileName}')">다운로드</button>
+                        </div>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = html;
+        }
+
+        // 파일 크기 포맷
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // 파일 다운로드
+        function downloadFile(fileId, fileName) {
+            try {
+                const url = `${API_BASE_URL}/chat/file/${fileId}/download`;
+                
+                // fetch로 다운로드하여 blob으로 처리
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        // Blob URL 생성
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        
+                        // 다운로드 링크 생성
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = fileName;
+                        link.style.display = 'none';
+                        document.body.appendChild(link);
+                        link.click();
+                        
+                        // 정리
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(blobUrl);
+                    })
+                    .catch(error => {
+                        console.error('파일 다운로드 오류:', error);
+                        alert(`파일 다운로드 실패: ${error.message}`);
+                    });
+            } catch (error) {
+                console.error('파일 다운로드 오류:', error);
+                alert(`파일 다운로드 실패: ${error.message}`);
+            }
+        }
+
+        // 모달 닫기
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            modal.classList.remove('active');
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

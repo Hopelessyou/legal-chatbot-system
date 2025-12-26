@@ -1,0 +1,78 @@
+doc_id: K1-ADMIN-ADMIN_PENALTY
+knowledge_type: K1
+level1: ADMIN
+level2_code: ADMIN_PENALTY
+level2_name: 과태료·행정제재
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: ADMIN_CLOSURE
+  scenario_name: 영업정지/영업폐쇄
+  keywords:
+  - 과태료
+  - 과징금
+  - 벌점
+  - 제재
+  - 영업정지
+  - 통지
+  - 이의
+  typical_expressions:
+  - 영업정지/영업폐쇄 관련 상담이 필요해요
+  - 영업정지/영업폐쇄 때문에 문제가 생겼어요
+  - 영업정지/영업폐쇄 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ADMIN_FINE:과태료/과징금;ADMIN_POINTS:벌점/정지 처분;ADMIN_CLOSURE:영업정지/영업폐쇄
+- scenario_code: ADMIN_FINE
+  scenario_name: 과태료/과징금
+  keywords:
+  - 과태료
+  - 과징금
+  - 벌점
+  - 제재
+  - 영업정지
+  - 통지
+  - 이의
+  typical_expressions:
+  - 과태료/과징금 관련 상담이 필요해요
+  - 과태료/과징금 때문에 문제가 생겼어요
+  - 과태료/과징금 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ADMIN_FINE:과태료/과징금;ADMIN_POINTS:벌점/정지 처분;ADMIN_CLOSURE:영업정지/영업폐쇄
+- scenario_code: ADMIN_POINTS
+  scenario_name: 벌점/정지 처분
+  keywords:
+  - 과태료
+  - 과징금
+  - 벌점
+  - 제재
+  - 영업정지
+  - 통지
+  - 이의
+  typical_expressions:
+  - 벌점/정지 처분 관련 상담이 필요해요
+  - 벌점/정지 처분 때문에 문제가 생겼어요
+  - 벌점/정지 처분 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - ADMIN_FINE:과태료/과징금;ADMIN_POINTS:벌점/정지 처분;ADMIN_CLOSURE:영업정지/영업폐쇄
+typical_keywords:
+- 통지
+- 과징금
+- 벌점
+- 과태료
+- 영업정지
+- 이의
+- 제재
+typical_expressions:
+- 과태료/과징금 상황을 어떻게 해야 하나요?
+- 벌점/정지 처분 상황을 어떻게 해야 하나요?
+- 영업정지/영업폐쇄 상황을 어떻게 해야 하나요?
+- 영업정지/영업폐쇄 때문에 문제가 생겼어요
+- 과태료/과징금 관련 상담이 필요해요
+- 영업정지/영업폐쇄 관련 상담이 필요해요
+- 벌점/정지 처분 관련 상담이 필요해요
+- 벌점/정지 처분 때문에 문제가 생겼어요
+- 과태료/과징금 때문에 문제가 생겼어요

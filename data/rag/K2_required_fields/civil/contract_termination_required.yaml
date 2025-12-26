@@ -1,0 +1,74 @@
+doc_id: K2-CONTRACT_TERMINATION
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_CONTRACT
+scenario: CONTRACT_TERMINATION
+required_fields:
+- incident_date
+- issue_description
+- counterparty_type
+- amount
+- evidence
+- counterparty
+- contract_type
+questions:
+- order: 1
+  field: incident_date
+  question: 계약 체결 또는 문제가 발생한 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: contract_type
+  question: 어떤 계약(매매/용역/도급/구독 등)인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: counterparty_type
+  question: 상대방은 개인인가요, 법인인가요?
+  answer_type: string
+  required: true
+- order: 4
+  field: counterparty
+  question: 상대방(성명/상호)을 알려주세요.
+  answer_type: string
+  required: true
+- order: 5
+  field: amount
+  question: 문제가 된 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 6
+  field: due_date
+  question: 지급/이행 기한(약속한 날짜)이 있었나요? 있다면 언제인가요?
+  answer_type: date
+  required: false
+- order: 7
+  field: issue_description
+  question: 무슨 문제가 발생했는지 핵심만 설명해 주세요.
+  answer_type: string
+  required: true
+- order: 8
+  field: evidence
+  question: 계약서/대화/송금내역 등 증거를 보유하고 있나요?
+  answer_type: boolean
+  required: true
+- order: 9
+  field: notice
+  question: 상대방에게 이행 요청/독촉(내용증명 포함)을 한 적이 있나요?
+  answer_type: boolean
+  required: false
+- order: 10
+  field: fraud_suspected
+  question: 처음부터 속이려 했다는 정황(기망 의심)이 있나요?
+  answer_type: boolean
+  required: false
+- order: 11
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 12
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

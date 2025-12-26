@@ -1,0 +1,90 @@
+doc_id: K1-CRIMINAL-CRIMINAL_THEFT
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_THEFT
+level2_name: 절도·강도
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: ROBBERY
+  scenario_name: 강도/특수강도
+  keywords:
+  - 절도
+  - 도난
+  - 침입
+  - 강도
+  - 협박
+  - 빼앗
+  - 훔침
+  - CCTV
+  - 신고
+  - 분실
+  typical_expressions:
+  - 강도/특수강도 관련 상담이 필요해요
+  - 강도/특수강도 때문에 문제가 생겼어요
+  - 강도/특수강도 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - THEFT_SIMPLE:절도;THEFT_BURGLARY:주거침입/침입절도;ROBBERY:강도/특수강도
+- scenario_code: THEFT_BURGLARY
+  scenario_name: 주거침입/침입절도
+  keywords:
+  - 절도
+  - 도난
+  - 침입
+  - 강도
+  - 협박
+  - 빼앗
+  - 훔침
+  - CCTV
+  - 신고
+  - 분실
+  typical_expressions:
+  - 주거침입/침입절도 관련 상담이 필요해요
+  - 주거침입/침입절도 때문에 문제가 생겼어요
+  - 주거침입/침입절도 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - THEFT_SIMPLE:절도;THEFT_BURGLARY:주거침입/침입절도;ROBBERY:강도/특수강도
+- scenario_code: THEFT_SIMPLE
+  scenario_name: 절도
+  keywords:
+  - 절도
+  - 도난
+  - 침입
+  - 강도
+  - 협박
+  - 빼앗
+  - 훔침
+  - CCTV
+  - 신고
+  - 분실
+  typical_expressions:
+  - 절도 관련 상담이 필요해요
+  - 절도 때문에 문제가 생겼어요
+  - 절도 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - THEFT_SIMPLE:절도;THEFT_BURGLARY:주거침입/침입절도;ROBBERY:강도/특수강도
+typical_keywords:
+- 협박
+- 절도
+- 도난
+- 훔침
+- 분실
+- 강도
+- CCTV
+- 빼앗
+- 침입
+- 신고
+typical_expressions:
+- 강도/특수강도 때문에 문제가 생겼어요
+- 절도 때문에 문제가 생겼어요
+- 절도 상황을 어떻게 해야 하나요?
+- 강도/특수강도 상황을 어떻게 해야 하나요?
+- 주거침입/침입절도 상황을 어떻게 해야 하나요?
+- 절도 관련 상담이 필요해요
+- 주거침입/침입절도 관련 상담이 필요해요
+- 강도/특수강도 관련 상담이 필요해요
+- 주거침입/침입절도 때문에 문제가 생겼어요

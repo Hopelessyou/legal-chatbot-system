@@ -1,0 +1,61 @@
+doc_id: FACT-LOAN_INTEREST_DISPUTE
+knowledge_type: FACT
+level1: CIVIL
+level2: CIVIL_LOAN
+scenario: LOAN_INTEREST_DISPUTE
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_LOAN_EXIST
+  name: 대여 사실
+  description: 금전 대여 사실이 확인됨
+  critical: true
+  related_field: loan_date
+- fact_code: FACT_NO_REPAY
+  name: 미변제
+  description: 변제되지 않음
+  critical: true
+  related_field: amount
+- fact_code: FACT_PARTIAL_REPAY
+  name: 일부 변제
+  description: 일부 변제 이력이 있음
+  critical: false
+  related_field: partial_repayment
+- fact_code: FACT_GUARANTOR
+  name: 보증인
+  description: 보증인 존재
+  critical: false
+  related_field: guarantor
+- fact_code: FACT_NO_DOCUMENT
+  name: 문서부족
+  description: 차용증 등 문서 증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_FRAUD_SUSPECTED
+  name: 사기 의심
+  description: 처음부터 갚을 의사가 없어 보이는 정황
+  critical: false
+  related_field: fraud_suspected

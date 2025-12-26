@@ -1,0 +1,63 @@
+doc_id: K2-REALESTATE_JEONSE_FRAUD_SUSPECT
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_REALESTATE
+scenario: REALESTATE_JEONSE_FRAUD_SUSPECT
+required_fields:
+- incident_date
+- registry_checked
+- landlord_info
+- documents
+- amount
+- issue_description
+questions:
+- order: 1
+  field: incident_date
+  question: 계약 체결 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: amount
+  question: 보증금은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 3
+  field: landlord_info
+  question: 임대인 정보(명의자/연락처 등)를 알고 있나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: registry_checked
+  question: 등기부등본을 확인한 적이 있나요?
+  answer_type: boolean
+  required: true
+- order: 5
+  field: senior_liens
+  question: 근저당/가압류 등 선순위 권리가 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: issue_description
+  question: 전세사기 의심 사유(전입/확정일자/보증금 반환 문제 등)를 설명해 주세요.
+  answer_type: string
+  required: true
+- order: 7
+  field: documents
+  question: 계약서/등기부/대화/송금내역 등 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: contact_status
+  question: 현재 임대인과 연락이 되나요?
+  answer_type: boolean
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

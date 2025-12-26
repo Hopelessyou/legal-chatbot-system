@@ -1,0 +1,46 @@
+doc_id: FACT-ALIMONY_ENFORCEMENT
+knowledge_type: FACT
+level1: FAMILY
+level2: FAMILY_ALIMONY
+scenario: ALIMONY_ENFORCEMENT
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: arrears_amount
+- fact_code: FACT_ORDER
+  name: 판결/합의
+  description: 양육비 관련 판결/합의 존재
+  critical: true
+  related_field: order_or_agreement
+- fact_code: FACT_ARREARS
+  name: 체납
+  description: 미지급/체납 존재
+  critical: false
+  related_field: arrears_amount
+- fact_code: FACT_ENFORCEMENT
+  name: 집행시도
+  description: 이행명령/집행 시도
+  critical: false
+  related_field: enforcement_attempt

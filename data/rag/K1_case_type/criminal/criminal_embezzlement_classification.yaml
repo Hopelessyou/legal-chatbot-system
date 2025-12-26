@@ -1,0 +1,94 @@
+doc_id: K1-CRIMINAL-CRIMINAL_EMBEZZLEMENT
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_EMBEZZLEMENT
+level2_name: 횡령·배임
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: BREACH_OF_TRUST
+  scenario_name: 배임
+  keywords:
+  - 횡령
+  - 배임
+  - 공금
+  - 회사돈
+  - 정산
+  - 회계
+  - 증빙
+  - 동업
+  - 투자금
+  - 재고
+  - 유용
+  typical_expressions:
+  - 배임 관련 상담이 필요해요
+  - 배임 때문에 문제가 생겼어요
+  - 배임 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - EMBEZZLEMENT_COMPANY:업무상 횡령(회사/직원);EMBEZZLEMENT_PARTNERSHIP:동업/공동사업 횡령;BREACH_OF_TRUST:배임
+- scenario_code: EMBEZZLEMENT_COMPANY
+  scenario_name: 업무상 횡령(회사/직원)
+  keywords:
+  - 횡령
+  - 배임
+  - 공금
+  - 회사돈
+  - 정산
+  - 회계
+  - 증빙
+  - 동업
+  - 투자금
+  - 재고
+  - 유용
+  typical_expressions:
+  - 업무상 횡령(회사/직원) 관련 상담이 필요해요
+  - 업무상 횡령(회사/직원) 때문에 문제가 생겼어요
+  - 업무상 횡령(회사/직원) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - EMBEZZLEMENT_COMPANY:업무상 횡령(회사/직원);EMBEZZLEMENT_PARTNERSHIP:동업/공동사업 횡령;BREACH_OF_TRUST:배임
+- scenario_code: EMBEZZLEMENT_PARTNERSHIP
+  scenario_name: 동업/공동사업 횡령
+  keywords:
+  - 횡령
+  - 배임
+  - 공금
+  - 회사돈
+  - 정산
+  - 회계
+  - 증빙
+  - 동업
+  - 투자금
+  - 재고
+  - 유용
+  typical_expressions:
+  - 동업/공동사업 횡령 관련 상담이 필요해요
+  - 동업/공동사업 횡령 때문에 문제가 생겼어요
+  - 동업/공동사업 횡령 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - EMBEZZLEMENT_COMPANY:업무상 횡령(회사/직원);EMBEZZLEMENT_PARTNERSHIP:동업/공동사업 횡령;BREACH_OF_TRUST:배임
+typical_keywords:
+- 배임
+- 회계
+- 투자금
+- 유용
+- 회사돈
+- 증빙
+- 횡령
+- 공금
+- 동업
+- 정산
+- 재고
+typical_expressions:
+- 배임 관련 상담이 필요해요
+- 업무상 횡령(회사/직원) 때문에 문제가 생겼어요
+- 업무상 횡령(회사/직원) 관련 상담이 필요해요
+- 배임 상황을 어떻게 해야 하나요?
+- 업무상 횡령(회사/직원) 상황을 어떻게 해야 하나요?
+- 배임 때문에 문제가 생겼어요
+- 동업/공동사업 횡령 상황을 어떻게 해야 하나요?
+- 동업/공동사업 횡령 관련 상담이 필요해요
+- 동업/공동사업 횡령 때문에 문제가 생겼어요

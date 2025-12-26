@@ -1,0 +1,336 @@
+doc_id: K1-CIVIL-CIVIL_CONTRACT
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_CONTRACT
+level2_name: 계약
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: CONTRACT_BREACH
+  scenario_name: 계약 위반
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  typical_expressions:
+  - 계약 위반 관련 상담이 필요해요
+  - 계약 위반 때문에 문제가 생겼어요
+  - 계약 위반 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_CONSTRUCTION_DEFECT
+  scenario_name: 공사/도급 하자
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  - 누수
+  - 공사
+  - 보수
+  - 하자보수
+  typical_expressions:
+  - 공사/도급 하자 관련 상담이 필요해요
+  - 공사/도급 하자 때문에 문제가 생겼어요
+  - 공사/도급 하자 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_DEPOSIT_DISPUTE
+  scenario_name: 계약금/예약금 분쟁
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  typical_expressions:
+  - 계약금/예약금 분쟁 관련 상담이 필요해요
+  - 계약금/예약금 분쟁 때문에 문제가 생겼어요
+  - 계약금/예약금 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_NONPAYMENT
+  scenario_name: 대금 미지급
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  - 미지급
+  - 미납
+  - 정산
+  typical_expressions:
+  - 계약했는데 대금을 못 받았어요
+  - 잔금을 안 줘요
+  - 대금이 미지급 상태예요
+  - 정산을 안 해줘요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_PENALTY
+  scenario_name: 위약금 분쟁
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  - 손해배상액
+  - 벌칙
+  - 계약금 몰수
+  typical_expressions:
+  - 위약금 분쟁 관련 상담이 필요해요
+  - 위약금 분쟁 때문에 문제가 생겼어요
+  - 위약금 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_REFUND
+  scenario_name: 환불/취소 분쟁
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  - 철회
+  - 청약철회
+  - 반품
+  typical_expressions:
+  - 환불을 안 해줘요
+  - 취소했는데 돈을 돌려주지 않아요
+  - 환불이 계속 미뤄져요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_SERVICE_DEFECT
+  scenario_name: 용역/서비스 하자
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  typical_expressions:
+  - 용역/서비스 하자 관련 상담이 필요해요
+  - 용역/서비스 하자 때문에 문제가 생겼어요
+  - 용역/서비스 하자 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+- scenario_code: CONTRACT_TERMINATION
+  scenario_name: 계약 해지/해제 분쟁
+  keywords:
+  - 계약
+  - 약정
+  - 대금
+  - 잔금
+  - 이행
+  - 불이행
+  - 위반
+  - 해지
+  - 해제
+  - 취소
+  - 환불
+  - 위약금
+  - 예약금
+  - 계약금
+  - 용역
+  - 도급
+  - 하자
+  - 지연
+  - 지급
+  - 파기
+  - 일방
+  - 통보
+  typical_expressions:
+  - 계약 해지/해제 분쟁 관련 상담이 필요해요
+  - 계약 해지/해제 분쟁 때문에 문제가 생겼어요
+  - 계약 해지/해제 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CONTRACT_NONPAYMENT:대금 미지급;CONTRACT_BREACH:계약 위반;CONTRACT_TERMINATION:계약 해지/해제
+    분쟁;CONTRACT_REFUND:환불/취소 분쟁;CONTRACT_PENALTY:위약금 분쟁;CONTRACT_SERVICE_DEFECT:용역/서비스
+    하자;CONTRACT_CONSTRUCTION_DEFECT:공사/도급 하자;CONTRACT_DEPOSIT_DISPUTE:계약금/예약금 분쟁
+typical_keywords:
+- 지연
+- 해제
+- 누수
+- 위반
+- 보수
+- 하자보수
+- 철회
+- 불이행
+- 미지급
+- 환불
+- 취소
+- 예약금
+- 청약철회
+- 대금
+- 해지
+- 도급
+- 용역
+- 잔금
+- 일방
+- 파기
+- 통보
+- 지급
+- 손해배상액
+- 약정
+- 위약금
+- 계약
+- 미납
+- 계약금
+- 반품
+- 이행
+- 공사
+- 하자
+- 계약금 몰수
+- 정산
+- 벌칙
+typical_expressions:
+- 계약금/예약금 분쟁 때문에 문제가 생겼어요
+- 위약금 분쟁 상황을 어떻게 해야 하나요?
+- 공사/도급 하자 상황을 어떻게 해야 하나요?
+- 계약했는데 대금을 못 받았어요
+- 대금이 미지급 상태예요
+- 공사/도급 하자 관련 상담이 필요해요
+- 계약 해지/해제 분쟁 관련 상담이 필요해요
+- 정산을 안 해줘요
+- 위약금 분쟁 때문에 문제가 생겼어요
+- 공사/도급 하자 때문에 문제가 생겼어요
+- 위약금 분쟁 관련 상담이 필요해요
+- 환불이 계속 미뤄져요
+- 계약금/예약금 분쟁 상황을 어떻게 해야 하나요?
+- 잔금을 안 줘요
+- 계약 위반 상황을 어떻게 해야 하나요?
+- 용역/서비스 하자 관련 상담이 필요해요
+- 계약 해지/해제 분쟁 때문에 문제가 생겼어요
+- 계약 위반 관련 상담이 필요해요
+- 계약금/예약금 분쟁 관련 상담이 필요해요
+- 취소했는데 돈을 돌려주지 않아요
+- 계약 위반 때문에 문제가 생겼어요
+- 환불을 안 해줘요
+- 용역/서비스 하자 상황을 어떻게 해야 하나요?
+- 용역/서비스 하자 때문에 문제가 생겼어요
+- 계약 해지/해제 분쟁 상황을 어떻게 해야 하나요?

@@ -1,0 +1,272 @@
+doc_id: K1-CIVIL-CIVIL_REALESTATE
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_REALESTATE
+level2_name: 부동산
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: REALESTATE_BROKER_DISPUTE
+  scenario_name: 중개사/중개수수료 분쟁
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  typical_expressions:
+  - 중개사/중개수수료 분쟁 관련 상담이 필요해요
+  - 중개사/중개수수료 분쟁 때문에 문제가 생겼어요
+  - 중개사/중개수수료 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+- scenario_code: REALESTATE_DEFECT
+  scenario_name: 하자/누수 분쟁
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  typical_expressions:
+  - 하자/누수 분쟁 관련 상담이 필요해요
+  - 하자/누수 분쟁 때문에 문제가 생겼어요
+  - 하자/누수 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+- scenario_code: REALESTATE_EVICTION
+  scenario_name: 명도/퇴거(인도)
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  typical_expressions:
+  - 명도/퇴거(인도) 관련 상담이 필요해요
+  - 명도/퇴거(인도) 때문에 문제가 생겼어요
+  - 명도/퇴거(인도) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+- scenario_code: REALESTATE_JEONSE_FRAUD_SUSPECT
+  scenario_name: 전세사기 의심(민사·형사 경계)
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  - 전세사기
+  - 깡통전세
+  - 명의
+  - 잠수
+  typical_expressions:
+  - 전세사기 의심(민사·형사 경계) 관련 상담이 필요해요
+  - 전세사기 의심(민사·형사 경계) 때문에 문제가 생겼어요
+  - 전세사기 의심(민사·형사 경계) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+- scenario_code: REALESTATE_LEASE_DEPOSIT
+  scenario_name: 전세/월세 보증금 반환
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  - 반환
+  - 만료
+  typical_expressions:
+  - 보증금을 안 돌려줘요
+  - 전세 만료인데 보증금 반환이 안 돼요
+  - 임대인이 보증금을 못 준대요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+- scenario_code: REALESTATE_RENT_ARREARS
+  scenario_name: 월세 체납/관리비 분쟁
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  typical_expressions:
+  - 월세 체납/관리비 분쟁 관련 상담이 필요해요
+  - 월세 체납/관리비 분쟁 때문에 문제가 생겼어요
+  - 월세 체납/관리비 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+- scenario_code: REALESTATE_SALE_DISPUTE
+  scenario_name: 부동산 매매 분쟁
+  keywords:
+  - 부동산
+  - 전세
+  - 월세
+  - 임대차
+  - 보증금
+  - 관리비
+  - 명도
+  - 퇴거
+  - 점유
+  - 등기부
+  - 근저당
+  - 가압류
+  - 중개
+  - 중개수수료
+  - 하자
+  - 누수
+  - 매매
+  - 잔금
+  typical_expressions:
+  - 부동산 매매 분쟁 관련 상담이 필요해요
+  - 부동산 매매 분쟁 때문에 문제가 생겼어요
+  - 부동산 매매 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - REALESTATE_LEASE_DEPOSIT:전세/월세 보증금 반환;REALESTATE_RENT_ARREARS:월세 체납/관리비 분쟁;REALESTATE_EVICTION:명도/퇴거(인도);REALESTATE_DEFECT:하자/누수
+    분쟁;REALESTATE_SALE_DISPUTE:부동산 매매 분쟁;REALESTATE_JEONSE_FRAUD_SUSPECT:전세사기 의심(민사·형사
+    경계);REALESTATE_BROKER_DISPUTE:중개사/중개수수료 분쟁
+typical_keywords:
+- 중개수수료
+- 만료
+- 관리비
+- 누수
+- 점유
+- 임대차
+- 전세사기
+- 부동산
+- 깡통전세
+- 매매
+- 명의
+- 등기부
+- 월세
+- 전세
+- 잔금
+- 보증금
+- 잠수
+- 근저당
+- 명도
+- 가압류
+- 반환
+- 퇴거
+- 중개
+- 하자
+typical_expressions:
+- 전세사기 의심(민사·형사 경계) 상황을 어떻게 해야 하나요?
+- 월세 체납/관리비 분쟁 관련 상담이 필요해요
+- 명도/퇴거(인도) 상황을 어떻게 해야 하나요?
+- 하자/누수 분쟁 관련 상담이 필요해요
+- 부동산 매매 분쟁 상황을 어떻게 해야 하나요?
+- 명도/퇴거(인도) 때문에 문제가 생겼어요
+- 부동산 매매 분쟁 때문에 문제가 생겼어요
+- 중개사/중개수수료 분쟁 관련 상담이 필요해요
+- 월세 체납/관리비 분쟁 때문에 문제가 생겼어요
+- 전세 만료인데 보증금 반환이 안 돼요
+- 전세사기 의심(민사·형사 경계) 때문에 문제가 생겼어요
+- 월세 체납/관리비 분쟁 상황을 어떻게 해야 하나요?
+- 임대인이 보증금을 못 준대요
+- 하자/누수 분쟁 상황을 어떻게 해야 하나요?
+- 전세사기 의심(민사·형사 경계) 관련 상담이 필요해요
+- 중개사/중개수수료 분쟁 때문에 문제가 생겼어요
+- 중개사/중개수수료 분쟁 상황을 어떻게 해야 하나요?
+- 보증금을 안 돌려줘요
+- 하자/누수 분쟁 때문에 문제가 생겼어요
+- 부동산 매매 분쟁 관련 상담이 필요해요
+- 명도/퇴거(인도) 관련 상담이 필요해요

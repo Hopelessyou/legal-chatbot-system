@@ -1,0 +1,117 @@
+doc_id: K1-FAMILY-FAMILY_INHERITANCE
+knowledge_type: K1
+level1: FAMILY
+level2_code: FAMILY_INHERITANCE
+level2_name: 상속
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: INHERITANCE_DEBT
+  scenario_name: 상속채무/한정승인·상속포기
+  keywords:
+  - 상속
+  - 유류분
+  - 유언
+  - 상속분
+  - 상속재산
+  - 상속채무
+  - 한정승인
+  - 상속포기
+  - 등기
+  - 예금
+  - 빚
+  - 채무
+  typical_expressions:
+  - 상속채무/한정승인·상속포기 관련 상담이 필요해요
+  - 상속채무/한정승인·상속포기 때문에 문제가 생겼어요
+  - 상속채무/한정승인·상속포기 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - INHERITANCE_SHARE:상속분 분쟁;INHERITANCE_RESERVED:유류분;INHERITANCE_WILL:유언/유언무효;INHERITANCE_DEBT:상속채무/한정승인·상속포기
+- scenario_code: INHERITANCE_RESERVED
+  scenario_name: 유류분
+  keywords:
+  - 상속
+  - 유류분
+  - 유언
+  - 상속분
+  - 상속재산
+  - 상속채무
+  - 한정승인
+  - 상속포기
+  - 등기
+  - 예금
+  typical_expressions:
+  - 유류분 관련 상담이 필요해요
+  - 유류분 때문에 문제가 생겼어요
+  - 유류분 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - INHERITANCE_SHARE:상속분 분쟁;INHERITANCE_RESERVED:유류분;INHERITANCE_WILL:유언/유언무효;INHERITANCE_DEBT:상속채무/한정승인·상속포기
+- scenario_code: INHERITANCE_SHARE
+  scenario_name: 상속분 분쟁
+  keywords:
+  - 상속
+  - 유류분
+  - 유언
+  - 상속분
+  - 상속재산
+  - 상속채무
+  - 한정승인
+  - 상속포기
+  - 등기
+  - 예금
+  typical_expressions:
+  - 상속분 분쟁 관련 상담이 필요해요
+  - 상속분 분쟁 때문에 문제가 생겼어요
+  - 상속분 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - INHERITANCE_SHARE:상속분 분쟁;INHERITANCE_RESERVED:유류분;INHERITANCE_WILL:유언/유언무효;INHERITANCE_DEBT:상속채무/한정승인·상속포기
+- scenario_code: INHERITANCE_WILL
+  scenario_name: 유언/유언무효
+  keywords:
+  - 상속
+  - 유류분
+  - 유언
+  - 상속분
+  - 상속재산
+  - 상속채무
+  - 한정승인
+  - 상속포기
+  - 등기
+  - 예금
+  typical_expressions:
+  - 유언/유언무효 관련 상담이 필요해요
+  - 유언/유언무효 때문에 문제가 생겼어요
+  - 유언/유언무효 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - INHERITANCE_SHARE:상속분 분쟁;INHERITANCE_RESERVED:유류분;INHERITANCE_WILL:유언/유언무효;INHERITANCE_DEBT:상속채무/한정승인·상속포기
+typical_keywords:
+- 등기
+- 빚
+- 채무
+- 상속채무
+- 상속재산
+- 상속포기
+- 상속
+- 유류분
+- 유언
+- 예금
+- 한정승인
+- 상속분
+typical_expressions:
+- 유언/유언무효 관련 상담이 필요해요
+- 유언/유언무효 상황을 어떻게 해야 하나요?
+- 유류분 때문에 문제가 생겼어요
+- 상속채무/한정승인·상속포기 관련 상담이 필요해요
+- 상속채무/한정승인·상속포기 때문에 문제가 생겼어요
+- 상속분 분쟁 상황을 어떻게 해야 하나요?
+- 유언/유언무효 때문에 문제가 생겼어요
+- 상속채무/한정승인·상속포기 상황을 어떻게 해야 하나요?
+- 상속분 분쟁 관련 상담이 필요해요
+- 상속분 분쟁 때문에 문제가 생겼어요
+- 유류분 관련 상담이 필요해요
+- 유류분 상황을 어떻게 해야 하나요?

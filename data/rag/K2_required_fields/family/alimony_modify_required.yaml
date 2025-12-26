@@ -1,0 +1,49 @@
+doc_id: K2-ALIMONY_MODIFY
+knowledge_type: K2
+level1: FAMILY
+level2: FAMILY_ALIMONY
+scenario: ALIMONY_MODIFY
+required_fields:
+- order_or_agreement
+- evidence
+questions:
+- order: 1
+  field: order_or_agreement
+  question: 양육비에 대한 판결/조정/합의가 있나요?
+  answer_type: boolean
+  required: true
+- order: 2
+  field: arrears_amount
+  question: 미지급(체납) 금액이 있다면 얼마인가요?
+  answer_type: integer
+  required: false
+- order: 3
+  field: payer_income_known
+  question: 상대방 소득/재산 정보를 어느 정도 알고 있나요?
+  answer_type: string
+  required: false
+- order: 4
+  field: enforcement_attempt
+  question: 이미 이행명령/강제집행을 시도했나요?
+  answer_type: boolean
+  required: false
+- order: 5
+  field: evidence
+  question: 자료(판결문/통장/대화 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 6
+  field: desired_change
+  question: 원하는 조치(집행/변경/합의 등)가 있나요?
+  answer_type: string
+  required: false
+- order: 7
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 8
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

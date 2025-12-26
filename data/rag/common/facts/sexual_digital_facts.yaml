@@ -1,0 +1,56 @@
+doc_id: FACT-SEXUAL_DIGITAL
+knowledge_type: FACT
+level1: CRIMINAL
+level2: CRIMINAL_SEX
+scenario: SEXUAL_DIGITAL
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_SEXUAL_ACT
+  name: 행위
+  description: 성범죄 관련 행위 존재
+  critical: true
+  related_field: act_description
+- fact_code: FACT_RELATIONSHIP
+  name: 관계
+  description: 가해자와 관계 정보
+  critical: false
+  related_field: relationship
+- fact_code: FACT_PROTECTION
+  name: 보호필요
+  description: 피해자 보호 필요
+  critical: false
+  related_field: protection_needed
+- fact_code: FACT_REPORT
+  name: 신고
+  description: 신고/조사 진행
+  critical: false
+  related_field: report_status
+- fact_code: FACT_ILLEGAL_RECORDING
+  name: 불법촬영
+  description: 불법 촬영 여부
+  critical: true
+  related_field: recording
+- fact_code: FACT_DISTRIBUTION
+  name: 유포/협박
+  description: 유포 또는 유포 협박
+  critical: true
+  related_field: distribution

@@ -1,0 +1,86 @@
+doc_id: K1-FAMILY-FAMILY_CUSTODY
+knowledge_type: K1
+level1: FAMILY
+level2_code: FAMILY_CUSTODY
+level2_name: 양육권·친권
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: CUSTODY_CHANGE
+  scenario_name: 양육권 변경
+  keywords:
+  - 양육권
+  - 친권
+  - 면접교섭
+  - 자녀
+  - 양육자
+  - 전학
+  - 이사
+  - 양육환경
+  - 조정
+  typical_expressions:
+  - 양육권 변경 관련 상담이 필요해요
+  - 양육권 변경 때문에 문제가 생겼어요
+  - 양육권 변경 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CUSTODY_CHANGE:양육권 변경;VISITATION:면접교섭;CUSTODY_RELOCATION:이사/전학 등 양육환경 변경 분쟁
+- scenario_code: CUSTODY_RELOCATION
+  scenario_name: 이사/전학 등 양육환경 변경 분쟁
+  keywords:
+  - 양육권
+  - 친권
+  - 면접교섭
+  - 자녀
+  - 양육자
+  - 전학
+  - 이사
+  - 양육환경
+  - 조정
+  typical_expressions:
+  - 이사/전학 등 양육환경 변경 분쟁 관련 상담이 필요해요
+  - 이사/전학 등 양육환경 변경 분쟁 때문에 문제가 생겼어요
+  - 이사/전학 등 양육환경 변경 분쟁 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CUSTODY_CHANGE:양육권 변경;VISITATION:면접교섭;CUSTODY_RELOCATION:이사/전학 등 양육환경 변경 분쟁
+- scenario_code: VISITATION
+  scenario_name: 면접교섭
+  keywords:
+  - 양육권
+  - 친권
+  - 면접교섭
+  - 자녀
+  - 양육자
+  - 전학
+  - 이사
+  - 양육환경
+  - 조정
+  typical_expressions:
+  - 면접교섭 관련 상담이 필요해요
+  - 면접교섭 때문에 문제가 생겼어요
+  - 면접교섭 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - CUSTODY_CHANGE:양육권 변경;VISITATION:면접교섭;CUSTODY_RELOCATION:이사/전학 등 양육환경 변경 분쟁
+typical_keywords:
+- 면접교섭
+- 전학
+- 양육환경
+- 친권
+- 자녀
+- 이사
+- 양육권
+- 양육자
+- 조정
+typical_expressions:
+- 면접교섭 관련 상담이 필요해요
+- 면접교섭 때문에 문제가 생겼어요
+- 양육권 변경 상황을 어떻게 해야 하나요?
+- 양육권 변경 관련 상담이 필요해요
+- 양육권 변경 때문에 문제가 생겼어요
+- 이사/전학 등 양육환경 변경 분쟁 상황을 어떻게 해야 하나요?
+- 면접교섭 상황을 어떻게 해야 하나요?
+- 이사/전학 등 양육환경 변경 분쟁 관련 상담이 필요해요
+- 이사/전학 등 양육환경 변경 분쟁 때문에 문제가 생겼어요

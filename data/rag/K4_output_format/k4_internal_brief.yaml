@@ -1,0 +1,22 @@
+doc_id: K4_INTERNAL_BRIEF
+knowledge_type: K4
+target: INTERNAL
+sections:
+- order: 1
+  key: brief
+  title: 3줄 브리핑
+  content_rule: 핵심 요약 3줄
+  source: summary
+  style: 업무 공유용
+- order: 2
+  key: facts_codes
+  title: FACT 코드
+  content_rule: FACT_CODE 나열
+  source: facts
+  style: 리스트
+- order: 3
+  key: risk_codes
+  title: 리스크 코드
+  content_rule: RISK_RULE_CODE/RISK_TAG 나열
+  source: risk_rules
+  style: 리스트

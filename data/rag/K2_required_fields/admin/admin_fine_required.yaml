@@ -1,0 +1,51 @@
+doc_id: K2-ADMIN_FINE
+knowledge_type: K2
+level1: ADMIN
+level2: ADMIN_PENALTY
+scenario: ADMIN_FINE
+required_fields:
+- documents
+- penalty_type
+- disposition_date
+- authority
+questions:
+- order: 1
+  field: disposition_date
+  question: 통지받은 날짜는 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: authority
+  question: 처분기관은 어디인가요?
+  answer_type: string
+  required: true
+- order: 3
+  field: penalty_type
+  question: 어떤 제재(과태료/과징금/벌점 등)인가요?
+  answer_type: string
+  required: true
+- order: 4
+  field: amount
+  question: 금액이 있다면 얼마인가요?
+  answer_type: integer
+  required: false
+- order: 5
+  field: documents
+  question: 통지서/고지서를 보유하고 있나요?
+  answer_type: boolean
+  required: true
+- order: 6
+  field: reason
+  question: 사유(위반 내용)는 무엇인가요?
+  answer_type: string
+  required: false
+- order: 7
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 8
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

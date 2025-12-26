@@ -1,0 +1,46 @@
+doc_id: FACT-UNJUST_PAYMENT
+knowledge_type: FACT
+level1: CIVIL
+level2: CIVIL_UNJUST
+scenario: UNJUST_PAYMENT
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_PAYMENT
+  name: 지급 사실
+  description: 지급/송금 사실이 확인됨
+  critical: true
+  related_field: payment_date
+- fact_code: FACT_RETURN_REQUEST
+  name: 반환 요청
+  description: 반환 요청 이력
+  critical: false
+  related_field: return_request
+- fact_code: FACT_WRONG_PAYMENT
+  name: 오지급/착오
+  description: 착오/중복/오지급 사유
+  critical: true
+  related_field: reason

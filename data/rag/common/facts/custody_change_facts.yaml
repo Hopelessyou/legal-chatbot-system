@@ -1,0 +1,41 @@
+doc_id: FACT-CUSTODY_CHANGE
+knowledge_type: FACT
+level1: FAMILY
+level2: FAMILY_CUSTODY
+scenario: CUSTODY_CHANGE
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_CHILD
+  name: 자녀
+  description: 자녀 존재
+  critical: true
+  related_field: child_age
+- fact_code: FACT_CUSTODY_DISPUTE
+  name: 양육분쟁
+  description: 양육권/친권 분쟁
+  critical: true
+  related_field: issue_description
+- fact_code: FACT_COURT
+  name: 절차
+  description: 소송/조정 진행
+  critical: false
+  related_field: court_process

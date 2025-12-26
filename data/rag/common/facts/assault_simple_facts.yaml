@@ -1,0 +1,41 @@
+doc_id: FACT-ASSAULT_SIMPLE
+knowledge_type: FACT
+level1: CRIMINAL
+level2: CRIMINAL_ASSAULT
+scenario: ASSAULT_SIMPLE
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_ASSAULT
+  name: 폭행
+  description: 폭행 행위
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_INJURY
+  name: 상해
+  description: 상해(진단서) 존재
+  critical: false
+  related_field: injury
+- fact_code: FACT_MUTUAL
+  name: 쌍방
+  description: 쌍방 다툼 가능
+  critical: false
+  related_field: mutual_fight

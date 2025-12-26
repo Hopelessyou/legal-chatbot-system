@@ -1,0 +1,51 @@
+doc_id: FACT-LABOR_SEVERANCE_PAY
+knowledge_type: FACT
+level1: CIVIL
+level2: CIVIL_LABOR
+scenario: LABOR_SEVERANCE_PAY
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_EMPLOYMENT
+  name: 근로관계
+  description: 근로관계 존재
+  critical: true
+  related_field: employment_start
+- fact_code: FACT_LABOR_ISSUE
+  name: 노무이슈
+  description: 임금/해고/괴롭힘 등 노무 이슈 존재
+  critical: true
+  related_field: issue_description
+- fact_code: FACT_MOEL_REPORT
+  name: 노동청 신고
+  description: 노동청 진정/신고 이력
+  critical: false
+  related_field: report_status
+- fact_code: FACT_HARASSMENT_RISK
+  name: 보복/위협
+  description: 폭언/협박/보복 우려 등 긴급 사안
+  critical: false
+  related_field: harassment_threat

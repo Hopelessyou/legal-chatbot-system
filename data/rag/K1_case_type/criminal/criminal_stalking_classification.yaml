@@ -1,0 +1,69 @@
+doc_id: K1-CRIMINAL-CRIMINAL_STALKING
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_STALKING
+level2_name: 스토킹/협박(형사)
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: STALKING_REPEATED_CONTACT
+  scenario_name: 스토킹(반복 연락/접근)
+  keywords:
+  - 스토킹
+  - 협박
+  - 접근
+  - 반복
+  - 연락
+  - 찾아옴
+  - 보복
+  - 신체위협
+  - 접근금지
+  - 신고
+  typical_expressions:
+  - 스토킹(반복 연락/접근) 관련 상담이 필요해요
+  - 스토킹(반복 연락/접근) 때문에 문제가 생겼어요
+  - 스토킹(반복 연락/접근) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - STALKING_REPEATED_CONTACT:스토킹(반복 연락/접근);STALKING_THREAT:스토킹+협박/보복 위협
+- scenario_code: STALKING_THREAT
+  scenario_name: 스토킹+협박/보복 위협
+  keywords:
+  - 스토킹
+  - 협박
+  - 접근
+  - 반복
+  - 연락
+  - 찾아옴
+  - 보복
+  - 신체위협
+  - 접근금지
+  - 신고
+  - 위협
+  typical_expressions:
+  - 스토킹에 협박까지 있어요
+  - 보복하겠다고 위협해요
+  - 계속 찾아오고 협박해요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - STALKING_REPEATED_CONTACT:스토킹(반복 연락/접근);STALKING_THREAT:스토킹+협박/보복 위협
+typical_keywords:
+- 반복
+- 협박
+- 찾아옴
+- 신체위협
+- 연락
+- 신고
+- 스토킹
+- 접근금지
+- 접근
+- 보복
+- 위협
+typical_expressions:
+- 스토킹(반복 연락/접근) 관련 상담이 필요해요
+- 보복하겠다고 위협해요
+- 스토킹에 협박까지 있어요
+- 계속 찾아오고 협박해요
+- 스토킹(반복 연락/접근) 상황을 어떻게 해야 하나요?
+- 스토킹(반복 연락/접근) 때문에 문제가 생겼어요

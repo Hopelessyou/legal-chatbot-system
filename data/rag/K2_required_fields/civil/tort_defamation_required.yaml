@@ -1,0 +1,63 @@
+doc_id: K2-TORT_DEFAMATION
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_TORT
+scenario: TORT_DEFAMATION
+required_fields:
+- incident_date
+- content_summary
+- evidence
+- medium
+- identifiable
+- damage_description
+questions:
+- order: 1
+  field: incident_date
+  question: 문제가 된 게시/발언이 있었던 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: medium
+  question: 어떤 곳에 게시/전파되었나요? (커뮤니티/카톡/블로그/리뷰 등)
+  answer_type: string
+  required: true
+- order: 3
+  field: content_summary
+  question: 어떤 내용이었나요? (핵심 요약)
+  answer_type: string
+  required: true
+- order: 4
+  field: identifiable
+  question: 나(또는 회사)가 특정될 수 있나요?
+  answer_type: boolean
+  required: true
+- order: 5
+  field: false_claim
+  question: 허위사실이라고 보나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: damage_description
+  question: 어떤 피해가 발생했나요? (평판/직장/거래 등)
+  answer_type: string
+  required: true
+- order: 7
+  field: evidence
+  question: 증거(캡처/URL/대화 등)를 보유하고 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: report_status
+  question: 고소/신고 또는 삭제 요청을 해본 적이 있나요?
+  answer_type: boolean
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

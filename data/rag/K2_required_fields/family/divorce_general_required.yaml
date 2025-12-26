@@ -1,0 +1,56 @@
+doc_id: K2-DIVORCE_GENERAL
+knowledge_type: K2
+level1: FAMILY
+level2: FAMILY_DIVORCE
+scenario: DIVORCE_GENERAL
+required_fields:
+- marriage_date
+- fault_reason
+- children
+- evidence
+questions:
+- order: 1
+  field: marriage_date
+  question: 혼인한 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: separation_date
+  question: 별거/갈등이 심해진 시점은 언제인가요?
+  answer_type: date
+  required: false
+- order: 3
+  field: fault_reason
+  question: 이혼 사유(외도/폭력/경제/성격 등)는 무엇인가요?
+  answer_type: string
+  required: true
+- order: 4
+  field: children
+  question: 미성년 자녀가 있나요?
+  answer_type: boolean
+  required: true
+- order: 5
+  field: property
+  question: 재산 분할 대상 재산이 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: violence
+  question: 가정폭력/접근금지 등 긴급 사안이 있나요?
+  answer_type: boolean
+  required: false
+- order: 7
+  field: evidence
+  question: 사유를 뒷받침할 자료(대화/사진/진단서 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

@@ -1,0 +1,46 @@
+doc_id: K4_LAWYER_SUMMARY
+knowledge_type: K4
+target: LAWYER
+sections:
+- order: 1
+  key: case_type
+  title: 사건 유형
+  content_rule: LEVEL1 + LEVEL2 + LEVEL3 요약
+  source: case_master
+  style: 법률 용어, 간결
+- order: 2
+  key: timeline
+  title: 타임라인
+  content_rule: 주요 날짜(기준일/기한) 정리
+  source: facts
+  style: 날짜/사실 중심
+- order: 3
+  key: parties
+  title: 당사자
+  content_rule: 의뢰인/상대방/기관 등 요약
+  source: facts
+  style: 개인정보 최소
+- order: 4
+  key: core_facts
+  title: 핵심 사실관계
+  content_rule: CRITICAL FACT 중심 5줄 요약
+  source: facts
+  style: 추측 금지
+- order: 5
+  key: amount_evidence
+  title: 금액·증거
+  content_rule: 금액/자료 보유 여부
+  source: facts
+  style: 수치 명확
+- order: 6
+  key: risk_flags
+  title: 리스크 태그
+  content_rule: K3 규칙 결과 요약
+  source: risk_rules
+  style: 태그 나열
+- order: 7
+  key: next_action
+  title: 다음 조치
+  content_rule: ACTION_HINT 요약
+  source: risk_rules
+  style: 자문 아님 안내 포함

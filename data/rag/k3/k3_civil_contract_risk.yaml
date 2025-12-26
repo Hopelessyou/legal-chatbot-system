@@ -1,0 +1,36 @@
+# K3 문서: 민사-계약 리스크 체크 기준
+doc_id: K3-CIVIL-CONTRACT-RISK-001
+knowledge_type: K3
+main_case_type: 민사
+sub_case_type: 계약
+node_scope:
+  - COMPLETED
+version: v1.0
+last_updated: 2025-01-01T00:00:00Z
+
+risk_checks:
+  - condition: incident_date > 10년 경과
+    flag: 소멸시효_의심
+    message: "사건 발생 시점으로 보아 시효 문제 검토 필요"
+    severity: high
+  
+  - condition: evidence == false
+    flag: 증거_부족
+    message: "증거 확보 여부에 따라 진행 가능성 낮아질 수 있음"
+    severity: medium
+  
+  - condition: amount < 1000000
+    flag: 소액_분쟁
+    message: "소액 분쟁으로 법률 비용 대비 효용성 검토 필요"
+    severity: low
+  
+  - condition: counterparty_type == "법인" AND evidence == false
+    flag: 법인_대응_어려움
+    message: "법인 상대방의 경우 증거 없이는 대응이 어려울 수 있음"
+    severity: medium
+
+non_advisory_notice:
+  - 본 시스템은 법률 자문을 제공하지 않습니다
+  - 정확한 판단은 변호사 상담이 필요합니다
+  - 위 리스크 체크는 참고용이며, 실제 법률 판단과 다를 수 있습니다
+

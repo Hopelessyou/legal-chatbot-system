@@ -1,0 +1,37 @@
+doc_id: K3-UNJUST_PAYMENT
+knowledge_type: K3
+level1: CIVIL
+level2: CIVIL_UNJUST
+scenario: UNJUST_PAYMENT
+rules:
+- rule_code: RISK_UNJUST_PAYMENT_CORE
+  trigger_facts:
+  - FACT_DATE_KNOWN
+  - FACT_PARTY_IDENTIFIED
+  - FACT_AMOUNT_KNOWN
+  - FACT_PAYMENT
+  - FACT_WRONG_PAYMENT
+  - FACT_EVIDENCE_AVAILABLE
+  risk_level: HIGH
+  risk_tag: 착오송금/오지급 반환_핵심충족
+  description: 핵심 사실이 충분히 확인된 상태
+  action_hint: 상담 연결 및 사건 검토 진행
+- rule_code: RISK_UNJUST_PAYMENT_EVIDENCE_LACK
+  trigger_facts:
+  - FACT_DATE_KNOWN
+  - FACT_PARTY_IDENTIFIED
+  - FACT_AMOUNT_KNOWN
+  - FACT_PAYMENT
+  - FACT_WRONG_PAYMENT
+  - FACT_EVIDENCE_NONE
+  risk_level: MEDIUM
+  risk_tag: 증거부족
+  description: 핵심 사실은 있으나 증거가 부족한 상태
+  action_hint: 추가 자료 확보 안내 후 상담 진행
+- rule_code: RISK_UNJUST_PAYMENT_INFO_GAP
+  trigger_facts:
+  - FACT_AMOUNT_KNOWN
+  risk_level: LOW
+  risk_tag: 정보추가필요
+  description: 핵심 사실은 언급되었으나 정보가 부족함
+  action_hint: 필수 항목 보완 질문 필요

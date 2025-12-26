@@ -1,0 +1,148 @@
+doc_id: K1-FAMILY-FAMILY_DIVORCE
+knowledge_type: K1
+level1: FAMILY
+level2_code: FAMILY_DIVORCE
+level2_name: 이혼
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: DIVORCE_ALIMONY
+  scenario_name: 위자료/부양료
+  keywords:
+  - 이혼
+  - 별거
+  - 외도
+  - 불륜
+  - 가정폭력
+  - 재산분할
+  - 양육권
+  - 친권
+  - 양육비
+  - 위자료
+  - 접근금지
+  - 혼인파탄
+  typical_expressions:
+  - 위자료/부양료 관련 상담이 필요해요
+  - 위자료/부양료 때문에 문제가 생겼어요
+  - 위자료/부양료 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DIVORCE_GENERAL:이혼 일반;DIVORCE_PROPERTY:재산분할;DIVORCE_CUSTODY:양육권/친권;DIVORCE_ALIMONY:위자료/부양료;DIVORCE_VIOLENCE:가정폭력/접근금지
+- scenario_code: DIVORCE_CUSTODY
+  scenario_name: 양육권/친권
+  keywords:
+  - 이혼
+  - 별거
+  - 외도
+  - 불륜
+  - 가정폭력
+  - 재산분할
+  - 양육권
+  - 친권
+  - 양육비
+  - 위자료
+  - 접근금지
+  - 혼인파탄
+  typical_expressions:
+  - 양육권/친권 관련 상담이 필요해요
+  - 양육권/친권 때문에 문제가 생겼어요
+  - 양육권/친권 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DIVORCE_GENERAL:이혼 일반;DIVORCE_PROPERTY:재산분할;DIVORCE_CUSTODY:양육권/친권;DIVORCE_ALIMONY:위자료/부양료;DIVORCE_VIOLENCE:가정폭력/접근금지
+- scenario_code: DIVORCE_GENERAL
+  scenario_name: 이혼 일반
+  keywords:
+  - 이혼
+  - 별거
+  - 외도
+  - 불륜
+  - 가정폭력
+  - 재산분할
+  - 양육권
+  - 친권
+  - 양육비
+  - 위자료
+  - 접근금지
+  - 혼인파탄
+  typical_expressions:
+  - 이혼 일반 관련 상담이 필요해요
+  - 이혼 일반 때문에 문제가 생겼어요
+  - 이혼 일반 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DIVORCE_GENERAL:이혼 일반;DIVORCE_PROPERTY:재산분할;DIVORCE_CUSTODY:양육권/친권;DIVORCE_ALIMONY:위자료/부양료;DIVORCE_VIOLENCE:가정폭력/접근금지
+- scenario_code: DIVORCE_PROPERTY
+  scenario_name: 재산분할
+  keywords:
+  - 이혼
+  - 별거
+  - 외도
+  - 불륜
+  - 가정폭력
+  - 재산분할
+  - 양육권
+  - 친권
+  - 양육비
+  - 위자료
+  - 접근금지
+  - 혼인파탄
+  typical_expressions:
+  - 재산분할 관련 상담이 필요해요
+  - 재산분할 때문에 문제가 생겼어요
+  - 재산분할 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DIVORCE_GENERAL:이혼 일반;DIVORCE_PROPERTY:재산분할;DIVORCE_CUSTODY:양육권/친권;DIVORCE_ALIMONY:위자료/부양료;DIVORCE_VIOLENCE:가정폭력/접근금지
+- scenario_code: DIVORCE_VIOLENCE
+  scenario_name: 가정폭력/접근금지
+  keywords:
+  - 이혼
+  - 별거
+  - 외도
+  - 불륜
+  - 가정폭력
+  - 재산분할
+  - 양육권
+  - 친권
+  - 양육비
+  - 위자료
+  - 접근금지
+  - 혼인파탄
+  typical_expressions:
+  - 가정폭력이 있어요
+  - 접근금지가 필요해요
+  - 폭력 때문에 이혼을 고민해요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DIVORCE_GENERAL:이혼 일반;DIVORCE_PROPERTY:재산분할;DIVORCE_CUSTODY:양육권/친권;DIVORCE_ALIMONY:위자료/부양료;DIVORCE_VIOLENCE:가정폭력/접근금지
+typical_keywords:
+- 별거
+- 불륜
+- 이혼
+- 외도
+- 양육비
+- 혼인파탄
+- 친권
+- 재산분할
+- 양육권
+- 접근금지
+- 가정폭력
+- 위자료
+typical_expressions:
+- 폭력 때문에 이혼을 고민해요
+- 양육권/친권 상황을 어떻게 해야 하나요?
+- 재산분할 때문에 문제가 생겼어요
+- 가정폭력이 있어요
+- 재산분할 상황을 어떻게 해야 하나요?
+- 양육권/친권 관련 상담이 필요해요
+- 양육권/친권 때문에 문제가 생겼어요
+- 접근금지가 필요해요
+- 이혼 일반 관련 상담이 필요해요
+- 재산분할 관련 상담이 필요해요
+- 위자료/부양료 관련 상담이 필요해요
+- 위자료/부양료 상황을 어떻게 해야 하나요?
+- 위자료/부양료 때문에 문제가 생겼어요
+- 이혼 일반 때문에 문제가 생겼어요
+- 이혼 일반 상황을 어떻게 해야 하나요?

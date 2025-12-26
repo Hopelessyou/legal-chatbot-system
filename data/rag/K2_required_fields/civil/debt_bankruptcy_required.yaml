@@ -1,0 +1,54 @@
+doc_id: K2-DEBT_BANKRUPTCY
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_BANKRUPTCY
+scenario: DEBT_BANKRUPTCY
+required_fields:
+- debt_amount
+- issue_description
+questions:
+- order: 1
+  field: debt_amount
+  question: 대략적인 총 채무액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 2
+  field: income
+  question: 월 소득이 있나요? 있다면 대략 얼마인가요?
+  answer_type: integer
+  required: false
+- order: 3
+  field: assets
+  question: 보유 자산(부동산/차량/예금 등)이 있나요?
+  answer_type: boolean
+  required: false
+- order: 4
+  field: creditors_count
+  question: 채권자(빚을 진 곳) 수는 대략 몇 곳인가요?
+  answer_type: integer
+  required: false
+- order: 5
+  field: delinquency
+  question: 연체/압류/추심이 진행 중인가요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: issue_description
+  question: 현재 상황(채무 발생 경위/원하는 절차 등)을 간단히 적어주세요.
+  answer_type: string
+  required: true
+- order: 7
+  field: documents
+  question: 채무/소득 관련 서류(대출내역/급여명세 등)가 있나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 9
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

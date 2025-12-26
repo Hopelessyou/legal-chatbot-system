@@ -1,0 +1,27 @@
+PostgreSQL 데이터베이스 설정 - 간단한 방법
+==========================================
+
+PowerShell에서 다음 명령을 순서대로 실행하세요:
+
+1. PostgreSQL bin 디렉토리로 이동
+   cd "C:\Program Files\PostgreSQL\18\bin"
+
+2. postgres 비밀번호를 환경 변수로 설정 (YOUR_PASSWORD를 실제 비밀번호로 변경)
+   $env:PGPASSWORD = 'YOUR_PASSWORD'
+
+3. 사용자 생성
+   .\psql.exe -U postgres -d postgres -c "CREATE USER legal_chat_bot WITH PASSWORD '1qazxsw2';"
+
+4. 데이터베이스 생성
+   .\psql.exe -U postgres -d postgres -c "CREATE DATABASE legal_chat_info_db OWNER legal_chat_bot;"
+
+5. 권한 부여
+   .\psql.exe -U postgres -d legal_chat_info_db -c "GRANT ALL PRIVILEGES ON DATABASE legal_chat_info_db TO legal_chat_bot;"
+   .\psql.exe -U postgres -d legal_chat_info_db -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO legal_chat_bot;"
+   .\psql.exe -U postgres -d legal_chat_info_db -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO legal_chat_bot;"
+
+6. 환경 변수 정리
+   $env:PGPASSWORD = $null
+
+주의: YOUR_PASSWORD를 postgres 사용자의 실제 비밀번호로 변경하세요!
+

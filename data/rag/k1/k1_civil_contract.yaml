@@ -1,0 +1,39 @@
+# K1 문서: 민사 - 계약 분쟁
+doc_id: K1-CIVIL-CONTRACT-001
+knowledge_type: K1
+main_case_type: 민사
+sub_case_type: 계약
+node_scope:
+  - CASE_CLASSIFICATION
+version: v1.0
+last_updated: 2025-01-01T00:00:00Z
+
+definition:
+  - 계약 체결 또는 이행 과정에서 발생한 분쟁
+  - 계약 조건의 해석 및 이행과 관련된 법적 문제
+  - 계약 위반, 해지, 해제 등 계약 관련 분쟁
+
+typical_keywords:
+  - 계약
+  - 약정
+  - 계약서
+  - 대금
+  - 이행
+  - 해지
+  - 해제
+  - 위약금
+  - 손해배상
+  - 계약 불이행
+  - 계약 위반
+  - 계약 체결
+  - 계약 갱신
+
+exclusion_rules:
+  - 사기 의도가 명확한 경우 형사 검토 필요
+  - 계약서가 없는 경우 증거 부족으로 진행 어려움
+
+related_case_types:
+  - 대여금
+  - 손해배상
+  - 채권채무
+

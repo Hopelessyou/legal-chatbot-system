@@ -1,0 +1,72 @@
+doc_id: K2-TORT_INJURY
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_TORT
+scenario: TORT_INJURY
+required_fields:
+- incident_date
+- evidence
+- counterparty
+- act_description
+- damage_description
+questions:
+- order: 1
+  field: incident_date
+  question: 사건이 발생한 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: location
+  question: 어디에서 발생했나요?
+  answer_type: string
+  required: false
+- order: 3
+  field: counterparty
+  question: 상대방(가해자/상대방)을 특정할 수 있나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: act_description
+  question: 어떤 행위가 있었나요? (핵심 사실)
+  answer_type: string
+  required: true
+- order: 5
+  field: damage_description
+  question: 어떤 피해가 발생했나요? (신체/재산/정신적 피해 등)
+  answer_type: string
+  required: true
+- order: 6
+  field: amount
+  question: 금전 피해가 있다면 금액은 얼마인가요?
+  answer_type: integer
+  required: false
+- order: 7
+  field: medical
+  question: 진단서/치료 기록이 있나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: evidence
+  question: 증거(사진/진단서/메시지/영상 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 9
+  field: witness
+  question: 목격자/참고인이 있나요?
+  answer_type: boolean
+  required: false
+- order: 10
+  field: report_status
+  question: 이미 신고/조사 진행 중인가요?
+  answer_type: boolean
+  required: false
+- order: 11
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 12
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

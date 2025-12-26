@@ -1,0 +1,61 @@
+doc_id: K1-ADMIN-ADMIN_LICENSE
+knowledge_type: K1
+level1: ADMIN
+level2_code: ADMIN_LICENSE
+level2_name: 인허가·면허
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: LICENSE_DENIAL
+  scenario_name: 인허가 거부/불허
+  keywords:
+  - 면허
+  - 자격
+  - 인허가
+  - 정지
+  - 취소
+  - 거부
+  - 등록
+  - 처분
+  typical_expressions:
+  - 인허가 거부/불허 관련 상담이 필요해요
+  - 인허가 거부/불허 때문에 문제가 생겼어요
+  - 인허가 거부/불허 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LICENSE_SUSPENSION:면허정지/취소;LICENSE_DENIAL:인허가 거부/불허
+- scenario_code: LICENSE_SUSPENSION
+  scenario_name: 면허정지/취소
+  keywords:
+  - 면허
+  - 자격
+  - 인허가
+  - 정지
+  - 취소
+  - 거부
+  - 등록
+  - 처분
+  typical_expressions:
+  - 면허정지/취소 관련 상담이 필요해요
+  - 면허정지/취소 때문에 문제가 생겼어요
+  - 면허정지/취소 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - LICENSE_SUSPENSION:면허정지/취소;LICENSE_DENIAL:인허가 거부/불허
+typical_keywords:
+- 자격
+- 거부
+- 취소
+- 인허가
+- 면허
+- 처분
+- 정지
+- 등록
+typical_expressions:
+- 면허정지/취소 상황을 어떻게 해야 하나요?
+- 인허가 거부/불허 관련 상담이 필요해요
+- 면허정지/취소 때문에 문제가 생겼어요
+- 인허가 거부/불허 때문에 문제가 생겼어요
+- 인허가 거부/불허 상황을 어떻게 해야 하나요?
+- 면허정지/취소 관련 상담이 필요해요

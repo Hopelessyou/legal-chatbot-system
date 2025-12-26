@@ -1,0 +1,61 @@
+doc_id: K2-ASSAULT_SIMPLE
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_ASSAULT
+scenario: ASSAULT_SIMPLE
+required_fields:
+- incident_date
+- suspect_info
+- evidence
+- injury
+questions:
+- order: 1
+  field: incident_date
+  question: 사건 발생 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: location
+  question: 어디에서 발생했나요?
+  answer_type: string
+  required: false
+- order: 3
+  field: suspect_info
+  question: 상대방(가해자)을 특정할 수 있나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: injury
+  question: 부상(진단서)이 있나요?
+  answer_type: boolean
+  required: true
+- order: 5
+  field: medical_record
+  question: 병원 진료/진단서가 있나요?
+  answer_type: boolean
+  required: false
+- order: 6
+  field: evidence
+  question: 증거(영상/녹취/목격자 등)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: mutual_fight
+  question: 쌍방 다툼(서로 폭행)이었나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: report_status
+  question: 신고/조사 진행 여부는 어떤가요?
+  answer_type: string
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

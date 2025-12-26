@@ -1,0 +1,40 @@
+doc_id: K3-DUI_ACCIDENT
+knowledge_type: K3
+level1: CRIMINAL
+level2: CRIMINAL_DUI
+scenario: DUI_ACCIDENT
+rules:
+- rule_code: RISK_DUI_ACCIDENT_CORE
+  trigger_facts:
+  - FACT_DATE_KNOWN
+  - FACT_PARTY_IDENTIFIED
+  - FACT_DUI
+  - FACT_EVIDENCE_AVAILABLE
+  risk_level: HIGH
+  risk_tag: 음주운전 교통사고_핵심충족
+  description: 핵심 사실이 충분히 확인된 상태
+  action_hint: 상담 연결 및 사건 검토 진행
+- rule_code: RISK_DUI_ACCIDENT_EVIDENCE_LACK
+  trigger_facts:
+  - FACT_DATE_KNOWN
+  - FACT_PARTY_IDENTIFIED
+  - FACT_DUI
+  - FACT_EVIDENCE_NONE
+  risk_level: MEDIUM
+  risk_tag: 증거부족
+  description: 핵심 사실은 있으나 증거가 부족한 상태
+  action_hint: 추가 자료 확보 안내 후 상담 진행
+- rule_code: RISK_DUI_ACCIDENT_INFO_GAP
+  trigger_facts:
+  - FACT_DUI
+  risk_level: LOW
+  risk_tag: 정보추가필요
+  description: 핵심 사실은 언급되었으나 정보가 부족함
+  action_hint: 필수 항목 보완 질문 필요
+- rule_code: RISK_DUI_ACCIDENT_INJURY
+  trigger_facts:
+  - FACT_INJURY
+  risk_level: HIGH
+  risk_tag: 인명피해
+  description: 인명 피해가 동반된 가능성
+  action_hint: 사건 단계 확인 후 상담 연결

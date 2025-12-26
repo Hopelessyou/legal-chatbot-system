@@ -1,0 +1,50 @@
+# K2 문서: 민사-계약 필수 정보 및 질문 템플릿
+doc_id: K2-CIVIL-CONTRACT-REQ-001
+knowledge_type: K2
+main_case_type: 민사
+sub_case_type: 계약
+node_scope:
+  - FACT_COLLECTION
+  - VALIDATION
+  - RE_QUESTION
+version: v1.0
+last_updated: 2025-01-01T00:00:00Z
+
+required_fields:
+  - field: incident_date
+    label: 사건 발생일
+    required: true
+    description: 계약 체결일 또는 문제 발생일
+    data_type: date
+  
+  - field: counterparty
+    label: 계약 상대방
+    required: true
+    description: 계약을 체결한 상대방 정보
+    data_type: string
+  
+  - field: amount
+    label: 금액
+    required: true
+    description: 계약 금액 또는 분쟁 금액
+    data_type: integer
+  
+  - field: evidence
+    label: 증거 보유 여부
+    required: true
+    description: 계약서 등 관련 증거 보유 여부
+    data_type: boolean
+  
+  - field: contract_type
+    label: 계약 유형
+    required: false
+    description: 계약의 종류 (매매, 임대차, 용역 등)
+    data_type: string
+
+question_templates:
+  incident_date: "계약 또는 문제가 발생한 시점을 알려주세요. (예: 2023년 10월, 작년 10월)"
+  counterparty: "계약 상대방은 누구인가요? (개인 또는 법인 여부 포함)"
+  amount: "문제가 된 금액은 얼마인가요?"
+  evidence: "계약서나 관련 증거를 가지고 계신가요?"
+  contract_type: "어떤 종류의 계약이었나요? (매매, 임대차, 용역 등)"
+

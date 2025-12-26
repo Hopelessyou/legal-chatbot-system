@@ -1,0 +1,128 @@
+doc_id: K1-CRIMINAL-CRIMINAL_SEX
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_SEX
+level2_name: 성범죄
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: SEXUAL_ASSAULT
+  scenario_name: 강제추행
+  keywords:
+  - 성범죄
+  - 강제추행
+  - 강간
+  - 성폭행
+  - 불법촬영
+  - 유포
+  - 협박
+  - 리벤지
+  - 성희롱
+  - 2차피해
+  - 삭제
+  - 신고
+  - 고소
+  typical_expressions:
+  - 강제추행 관련 상담이 필요해요
+  - 강제추행 때문에 문제가 생겼어요
+  - 강제추행 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - SEXUAL_ASSAULT:강제추행;SEXUAL_RAPE:강간/성폭행;SEXUAL_DIGITAL:디지털 성범죄(불법촬영/유포);SEXUAL_HARASSMENT:성희롱(형사/징계)
+- scenario_code: SEXUAL_DIGITAL
+  scenario_name: 디지털 성범죄(불법촬영/유포)
+  keywords:
+  - 성범죄
+  - 강제추행
+  - 강간
+  - 성폭행
+  - 불법촬영
+  - 유포
+  - 협박
+  - 리벤지
+  - 성희롱
+  - 2차피해
+  - 삭제
+  - 신고
+  - 고소
+  typical_expressions:
+  - 불법촬영을 당했어요
+  - 유포하겠다고 협박해요
+  - 리벤지포르노로 협박받고 있어요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - SEXUAL_ASSAULT:강제추행;SEXUAL_RAPE:강간/성폭행;SEXUAL_DIGITAL:디지털 성범죄(불법촬영/유포);SEXUAL_HARASSMENT:성희롱(형사/징계)
+- scenario_code: SEXUAL_HARASSMENT
+  scenario_name: 성희롱(형사/징계)
+  keywords:
+  - 성범죄
+  - 강제추행
+  - 강간
+  - 성폭행
+  - 불법촬영
+  - 유포
+  - 협박
+  - 리벤지
+  - 성희롱
+  - 2차피해
+  - 삭제
+  - 신고
+  - 고소
+  typical_expressions:
+  - 성희롱(형사/징계) 관련 상담이 필요해요
+  - 성희롱(형사/징계) 때문에 문제가 생겼어요
+  - 성희롱(형사/징계) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - SEXUAL_ASSAULT:강제추행;SEXUAL_RAPE:강간/성폭행;SEXUAL_DIGITAL:디지털 성범죄(불법촬영/유포);SEXUAL_HARASSMENT:성희롱(형사/징계)
+- scenario_code: SEXUAL_RAPE
+  scenario_name: 강간/성폭행
+  keywords:
+  - 성범죄
+  - 강제추행
+  - 강간
+  - 성폭행
+  - 불법촬영
+  - 유포
+  - 협박
+  - 리벤지
+  - 성희롱
+  - 2차피해
+  - 삭제
+  - 신고
+  - 고소
+  typical_expressions:
+  - 강간/성폭행 관련 상담이 필요해요
+  - 강간/성폭행 때문에 문제가 생겼어요
+  - 강간/성폭행 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - SEXUAL_ASSAULT:강제추행;SEXUAL_RAPE:강간/성폭행;SEXUAL_DIGITAL:디지털 성범죄(불법촬영/유포);SEXUAL_HARASSMENT:성희롱(형사/징계)
+typical_keywords:
+- 협박
+- 성희롱
+- 삭제
+- 성폭행
+- 강간
+- 고소
+- 리벤지
+- 성범죄
+- 유포
+- 불법촬영
+- 신고
+- 강제추행
+- 2차피해
+typical_expressions:
+- 성희롱(형사/징계) 상황을 어떻게 해야 하나요?
+- 강제추행 때문에 문제가 생겼어요
+- 강간/성폭행 관련 상담이 필요해요
+- 강제추행 상황을 어떻게 해야 하나요?
+- 강제추행 관련 상담이 필요해요
+- 리벤지포르노로 협박받고 있어요
+- 성희롱(형사/징계) 관련 상담이 필요해요
+- 성희롱(형사/징계) 때문에 문제가 생겼어요
+- 강간/성폭행 때문에 문제가 생겼어요
+- 강간/성폭행 상황을 어떻게 해야 하나요?
+- 유포하겠다고 협박해요
+- 불법촬영을 당했어요

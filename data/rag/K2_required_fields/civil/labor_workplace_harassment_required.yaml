@@ -1,0 +1,61 @@
+doc_id: K2-LABOR_WORKPLACE_HARASSMENT
+knowledge_type: K2
+level1: CIVIL
+level2: CIVIL_LABOR
+scenario: LABOR_WORKPLACE_HARASSMENT
+required_fields:
+- issue_description
+- employment_start
+- workplace
+- evidence
+questions:
+- order: 1
+  field: workplace
+  question: 회사/사업장 정보(업종/규모 등)를 알려주세요.
+  answer_type: string
+  required: true
+- order: 2
+  field: employment_start
+  question: 근무 시작 시점은 언제인가요?
+  answer_type: date
+  required: true
+- order: 3
+  field: employment_end
+  question: 퇴사(해고)한 경우 종료 시점은 언제인가요?
+  answer_type: date
+  required: false
+- order: 4
+  field: issue_description
+  question: 문제가 무엇인가요? (임금/퇴직금/해고/괴롭힘 등)
+  answer_type: string
+  required: true
+- order: 5
+  field: amount
+  question: 금액(체불액 등)이 있다면 얼마인가요?
+  answer_type: integer
+  required: false
+- order: 6
+  field: evidence
+  question: 근로계약서/급여명세/대화/출퇴근 기록 등 자료가 있나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: report_status
+  question: 노동청(고용노동부) 진정/신고를 해본 적이 있나요?
+  answer_type: boolean
+  required: false
+- order: 8
+  field: harassment_threat
+  question: 폭언/협박/보복 우려 등 긴급 사안이 있나요?
+  answer_type: boolean
+  required: false
+- order: 9
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 10
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

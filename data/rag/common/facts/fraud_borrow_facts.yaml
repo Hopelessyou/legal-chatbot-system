@@ -1,0 +1,56 @@
+doc_id: FACT-FRAUD_BORROW
+knowledge_type: FACT
+level1: CRIMINAL
+level2: CRIMINAL_FRAUD
+scenario: FRAUD_BORROW
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_DECEPTION
+  name: 기망
+  description: 기망 행위 존재
+  critical: true
+  related_field: deception
+- fact_code: FACT_MONEY_TRANSFER
+  name: 금전 이전
+  description: 금전이 이전됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_CONTACT_CUT
+  name: 연락두절
+  description: 연락이 끊기거나 회피
+  critical: false
+  related_field: contact_status
+- fact_code: FACT_MULTIPLE_VICTIMS
+  name: 다수피해
+  description: 다수 피해자 가능
+  critical: false
+  related_field: multiple_victims
+- fact_code: FACT_REPORT
+  name: 신고
+  description: 신고/고소 진행
+  critical: false
+  related_field: report_status

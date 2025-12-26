@@ -1,0 +1,51 @@
+doc_id: FACT-REALESTATE_EVICTION
+knowledge_type: FACT
+level1: CIVIL
+level2: CIVIL_REALESTATE
+scenario: REALESTATE_EVICTION
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_REALESTATE_CONTRACT
+  name: 부동산 계약
+  description: 임대차/매매 등 계약 존재
+  critical: true
+  related_field: property_type
+- fact_code: FACT_DOCUMENTS
+  name: 서류 보유
+  description: 계약서/등기부 등 서류 보유
+  critical: true
+  related_field: documents
+- fact_code: FACT_OCCUPANCY
+  name: 점유 상태
+  description: 점유/거주 상태가 있음
+  critical: false
+  related_field: occupancy_status
+- fact_code: FACT_NOTICE_SENT
+  name: 통지
+  description: 통지(내용증명 등) 이력
+  critical: false
+  related_field: notice

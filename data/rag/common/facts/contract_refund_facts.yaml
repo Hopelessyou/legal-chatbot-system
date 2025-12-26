@@ -1,0 +1,56 @@
+doc_id: FACT-CONTRACT_REFUND
+knowledge_type: FACT
+level1: CIVIL
+level2: CIVIL_CONTRACT
+scenario: CONTRACT_REFUND
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_CONTRACT_EXIST
+  name: 계약 존재
+  description: 계약 체결 사실이 확인됨
+  critical: true
+  related_field: contract_type
+- fact_code: FACT_NONPERFORMANCE
+  name: 불이행/위반
+  description: 계약상 의무 불이행 또는 위반이 확인됨
+  critical: true
+  related_field: issue_description
+- fact_code: FACT_NOTICE_SENT
+  name: 독촉/통지
+  description: 독촉 또는 통지(내용증명 등) 이력이 있음
+  critical: false
+  related_field: notice
+- fact_code: FACT_FRAUD_SUSPECTED
+  name: 사기 의심
+  description: 처음부터 속이려 했다는 정황이 있음
+  critical: false
+  related_field: fraud_suspected
+- fact_code: FACT_REFUND_REFUSED
+  name: 환불거절
+  description: 환불이 거절되거나 지연됨
+  critical: true
+  related_field: issue_description

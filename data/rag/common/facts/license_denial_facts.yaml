@@ -1,0 +1,36 @@
+doc_id: FACT-LICENSE_DENIAL
+knowledge_type: FACT
+level1: ADMIN
+level2: ADMIN_LICENSE
+scenario: LICENSE_DENIAL
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_LICENSE_DISPOSITION
+  name: 면허/인허가
+  description: 면허/인허가 처분(정지/취소/거부)
+  critical: true
+  related_field: content
+- fact_code: FACT_NOTICE
+  name: 통지
+  description: 처분서류 보유
+  critical: true
+  related_field: documents

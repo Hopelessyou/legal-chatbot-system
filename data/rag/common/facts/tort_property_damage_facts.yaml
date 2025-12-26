@@ -1,0 +1,51 @@
+doc_id: FACT-TORT_PROPERTY_DAMAGE
+knowledge_type: FACT
+level1: CIVIL
+level2: CIVIL_TORT
+scenario: TORT_PROPERTY_DAMAGE
+facts:
+- fact_code: FACT_DATE_KNOWN
+  name: 기준일 확인
+  description: 사건/처분/관계의 기준일(날짜)이 확인됨
+  critical: true
+  related_field: incident_date
+- fact_code: FACT_PARTY_IDENTIFIED
+  name: 당사자 특정
+  description: 상대방/피의자/기관 등 주요 당사자가 특정됨
+  critical: true
+  related_field: counterparty
+- fact_code: FACT_EVIDENCE_AVAILABLE
+  name: 증거 있음
+  description: 관련 자료/증거를 보유함
+  critical: true
+  related_field: evidence
+- fact_code: FACT_EVIDENCE_NONE
+  name: 증거 없음
+  description: 관련 자료/증거가 부족함
+  critical: false
+  related_field: evidence
+- fact_code: FACT_AMOUNT_KNOWN
+  name: 금액 확인
+  description: 금액/가치/체납액/채무액 등이 확인됨
+  critical: true
+  related_field: amount
+- fact_code: FACT_TORT_ACT
+  name: 위법행위
+  description: 상대방의 위법행위가 확인됨
+  critical: true
+  related_field: act_description
+- fact_code: FACT_DAMAGE
+  name: 손해 발생
+  description: 손해(신체/재산/정신적)가 발생함
+  critical: true
+  related_field: damage_description
+- fact_code: FACT_MEDICAL
+  name: 진단/치료
+  description: 진단서 또는 치료 기록이 존재함
+  critical: false
+  related_field: medical
+- fact_code: FACT_WITNESS
+  name: 목격자
+  description: 목격자/참고인이 있음
+  critical: false
+  related_field: witness

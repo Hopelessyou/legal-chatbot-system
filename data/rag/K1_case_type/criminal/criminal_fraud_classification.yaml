@@ -1,0 +1,273 @@
+doc_id: K1-CRIMINAL-CRIMINAL_FRAUD
+knowledge_type: K1
+level1: CRIMINAL
+level2_code: CRIMINAL_FRAUD
+level2_name: 사기
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: FRAUD_BORROW
+  scenario_name: 차용 사기
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  typical_expressions:
+  - 차용 사기 관련 상담이 필요해요
+  - 차용 사기 때문에 문제가 생겼어요
+  - 차용 사기 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+- scenario_code: FRAUD_INVESTMENT
+  scenario_name: 투자/리딩방 사기
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  - 원금
+  - 수익
+  typical_expressions:
+  - 투자한다고 돈을 보냈는데 사기였어요
+  - 원금 보장이라더니 연락이 끊겼어요
+  - 리딩방에서 당했어요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+- scenario_code: FRAUD_JOB
+  scenario_name: 취업/교육 사기
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  typical_expressions:
+  - 취업/교육 사기 관련 상담이 필요해요
+  - 취업/교육 사기 때문에 문제가 생겼어요
+  - 취업/교육 사기 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+- scenario_code: FRAUD_ONLINE
+  scenario_name: 온라인/중고거래 사기
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  - 사기계좌
+  - 거래
+  typical_expressions:
+  - 중고거래 입금했는데 미배송이에요
+  - 입금 후 연락이 끊겼어요
+  - 사기 계좌 같아요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+- scenario_code: FRAUD_PHISHING
+  scenario_name: 보이스피싱/피싱 사기
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  - 대출사기
+  - 기관사칭
+  typical_expressions:
+  - 기관 사칭 전화에 속아 송금했어요
+  - 보이스피싱으로 돈을 잃었어요
+  - 대출 문자 링크 눌렀다가 피해 봤어요
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+- scenario_code: FRAUD_REAL_ESTATE
+  scenario_name: 부동산/전세 사기(형사)
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  typical_expressions:
+  - 부동산/전세 사기(형사) 관련 상담이 필요해요
+  - 부동산/전세 사기(형사) 때문에 문제가 생겼어요
+  - 부동산/전세 사기(형사) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+- scenario_code: FRAUD_ROMANCE
+  scenario_name: 연애/로맨스 사기
+  keywords:
+  - 사기
+  - 기망
+  - 속임
+  - 입금
+  - 계좌
+  - 연락두절
+  - 미배송
+  - 중고거래
+  - 당근
+  - 번개장터
+  - 중고나라
+  - 투자
+  - 리딩방
+  - 코인
+  - 주식
+  - 대출
+  - 보이스피싱
+  - 피싱
+  - 대포통장
+  typical_expressions:
+  - 연애/로맨스 사기 관련 상담이 필요해요
+  - 연애/로맨스 사기 때문에 문제가 생겼어요
+  - 연애/로맨스 사기 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - FRAUD_ONLINE:온라인/중고거래 사기;FRAUD_INVESTMENT:투자/리딩방 사기;FRAUD_REAL_ESTATE:부동산/전세 사기(형사);FRAUD_BORROW:차용
+    사기;FRAUD_JOB:취업/교육 사기;FRAUD_ROMANCE:연애/로맨스 사기;FRAUD_PHISHING:보이스피싱/피싱 사기
+typical_keywords:
+- 속임
+- 계좌
+- 연락두절
+- 사기계좌
+- 원금
+- 기관사칭
+- 당근
+- 주식
+- 미배송
+- 코인
+- 보이스피싱
+- 수익
+- 중고거래
+- 피싱
+- 기망
+- 중고나라
+- 투자
+- 입금
+- 번개장터
+- 거래
+- 대포통장
+- 대출사기
+- 대출
+- 사기
+- 리딩방
+typical_expressions:
+- 중고거래 입금했는데 미배송이에요
+- 투자한다고 돈을 보냈는데 사기였어요
+- 연애/로맨스 사기 관련 상담이 필요해요
+- 차용 사기 때문에 문제가 생겼어요
+- 연애/로맨스 사기 상황을 어떻게 해야 하나요?
+- 연애/로맨스 사기 때문에 문제가 생겼어요
+- 차용 사기 상황을 어떻게 해야 하나요?
+- 취업/교육 사기 관련 상담이 필요해요
+- 원금 보장이라더니 연락이 끊겼어요
+- 부동산/전세 사기(형사) 관련 상담이 필요해요
+- 취업/교육 사기 때문에 문제가 생겼어요
+- 차용 사기 관련 상담이 필요해요
+- 입금 후 연락이 끊겼어요
+- 취업/교육 사기 상황을 어떻게 해야 하나요?
+- 부동산/전세 사기(형사) 때문에 문제가 생겼어요
+- 리딩방에서 당했어요
+- 기관 사칭 전화에 속아 송금했어요
+- 대출 문자 링크 눌렀다가 피해 봤어요
+- 사기 계좌 같아요
+- 부동산/전세 사기(형사) 상황을 어떻게 해야 하나요?
+- 보이스피싱으로 돈을 잃었어요

@@ -1,0 +1,44 @@
+doc_id: K3-LOAN_PARTIAL_PAYMENT
+knowledge_type: K3
+level1: CIVIL
+level2: CIVIL_LOAN
+scenario: LOAN_PARTIAL_PAYMENT
+rules:
+- rule_code: RISK_LOAN_PARTIAL_PAYMENT_CORE
+  trigger_facts:
+  - FACT_DATE_KNOWN
+  - FACT_PARTY_IDENTIFIED
+  - FACT_AMOUNT_KNOWN
+  - FACT_LOAN_EXIST
+  - FACT_NO_REPAY
+  - FACT_EVIDENCE_AVAILABLE
+  risk_level: HIGH
+  risk_tag: 일부 변제_핵심충족
+  description: 핵심 사실이 충분히 확인된 상태
+  action_hint: 상담 연결 및 사건 검토 진행
+- rule_code: RISK_LOAN_PARTIAL_PAYMENT_EVIDENCE_LACK
+  trigger_facts:
+  - FACT_DATE_KNOWN
+  - FACT_PARTY_IDENTIFIED
+  - FACT_AMOUNT_KNOWN
+  - FACT_LOAN_EXIST
+  - FACT_NO_REPAY
+  - FACT_EVIDENCE_NONE
+  risk_level: MEDIUM
+  risk_tag: 증거부족
+  description: 핵심 사실은 있으나 증거가 부족한 상태
+  action_hint: 추가 자료 확보 안내 후 상담 진행
+- rule_code: RISK_LOAN_PARTIAL_PAYMENT_INFO_GAP
+  trigger_facts:
+  - FACT_AMOUNT_KNOWN
+  risk_level: LOW
+  risk_tag: 정보추가필요
+  description: 핵심 사실은 언급되었으나 정보가 부족함
+  action_hint: 필수 항목 보완 질문 필요
+- rule_code: RISK_LOAN_PARTIAL_PAYMENT_FRAUD_SUSPECTED
+  trigger_facts:
+  - FACT_FRAUD_SUSPECTED
+  risk_level: MEDIUM
+  risk_tag: 사기의심
+  description: 기망 의심 정황이 있어 형사 검토 필요 가능
+  action_hint: 형사(사기) 가능성 확인을 위한 추가 질문/상담 연결

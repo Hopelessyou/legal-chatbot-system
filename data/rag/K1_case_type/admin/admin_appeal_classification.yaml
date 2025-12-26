@@ -1,0 +1,121 @@
+doc_id: K1-ADMIN-ADMIN_APPEAL
+knowledge_type: K1
+level1: ADMIN
+level2_code: ADMIN_APPEAL
+level2_name: 행정심판
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: APPEAL_FINE
+  scenario_name: 과태료/과징금 이의
+  keywords:
+  - 행정심판
+  - 행정처분
+  - 정지
+  - 취소
+  - 통지서
+  - 처분서
+  - 감경
+  - 이의
+  - 불복
+  - 벌점
+  typical_expressions:
+  - 과태료/과징금 이의 관련 상담이 필요해요
+  - 과태료/과징금 이의 때문에 문제가 생겼어요
+  - 과태료/과징금 이의 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - APPEAL_GENERAL:행정심판 일반;APPEAL_LICENSE:인허가/자격 관련 심판;APPEAL_POINTS:벌점/행정제재(운전/영업);APPEAL_FINE:과태료/과징금
+    이의
+- scenario_code: APPEAL_GENERAL
+  scenario_name: 행정심판 일반
+  keywords:
+  - 행정심판
+  - 행정처분
+  - 정지
+  - 취소
+  - 통지서
+  - 처분서
+  - 감경
+  - 이의
+  - 불복
+  - 벌점
+  typical_expressions:
+  - 행정심판 일반 관련 상담이 필요해요
+  - 행정심판 일반 때문에 문제가 생겼어요
+  - 행정심판 일반 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - APPEAL_GENERAL:행정심판 일반;APPEAL_LICENSE:인허가/자격 관련 심판;APPEAL_POINTS:벌점/행정제재(운전/영업);APPEAL_FINE:과태료/과징금
+    이의
+- scenario_code: APPEAL_LICENSE
+  scenario_name: 인허가/자격 관련 심판
+  keywords:
+  - 행정심판
+  - 행정처분
+  - 정지
+  - 취소
+  - 통지서
+  - 처분서
+  - 감경
+  - 이의
+  - 불복
+  - 벌점
+  - 면허
+  - 자격
+  typical_expressions:
+  - 인허가/자격 관련 심판 관련 상담이 필요해요
+  - 인허가/자격 관련 심판 때문에 문제가 생겼어요
+  - 인허가/자격 관련 심판 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - APPEAL_GENERAL:행정심판 일반;APPEAL_LICENSE:인허가/자격 관련 심판;APPEAL_POINTS:벌점/행정제재(운전/영업);APPEAL_FINE:과태료/과징금
+    이의
+- scenario_code: APPEAL_POINTS
+  scenario_name: 벌점/행정제재(운전/영업)
+  keywords:
+  - 행정심판
+  - 행정처분
+  - 정지
+  - 취소
+  - 통지서
+  - 처분서
+  - 감경
+  - 이의
+  - 불복
+  - 벌점
+  typical_expressions:
+  - 벌점/행정제재(운전/영업) 관련 상담이 필요해요
+  - 벌점/행정제재(운전/영업) 때문에 문제가 생겼어요
+  - 벌점/행정제재(운전/영업) 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - APPEAL_GENERAL:행정심판 일반;APPEAL_LICENSE:인허가/자격 관련 심판;APPEAL_POINTS:벌점/행정제재(운전/영업);APPEAL_FINE:과태료/과징금
+    이의
+typical_keywords:
+- 처분서
+- 자격
+- 취소
+- 통지서
+- 불복
+- 행정처분
+- 감경
+- 면허
+- 정지
+- 행정심판
+- 벌점
+- 이의
+typical_expressions:
+- 과태료/과징금 이의 때문에 문제가 생겼어요
+- 행정심판 일반 때문에 문제가 생겼어요
+- 인허가/자격 관련 심판 상황을 어떻게 해야 하나요?
+- 과태료/과징금 이의 상황을 어떻게 해야 하나요?
+- 행정심판 일반 상황을 어떻게 해야 하나요?
+- 인허가/자격 관련 심판 때문에 문제가 생겼어요
+- 벌점/행정제재(운전/영업) 때문에 문제가 생겼어요
+- 벌점/행정제재(운전/영업) 상황을 어떻게 해야 하나요?
+- 행정심판 일반 관련 상담이 필요해요
+- 인허가/자격 관련 심판 관련 상담이 필요해요
+- 벌점/행정제재(운전/영업) 관련 상담이 필요해요
+- 과태료/과징금 이의 관련 상담이 필요해요

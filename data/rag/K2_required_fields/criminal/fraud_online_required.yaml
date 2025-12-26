@@ -1,0 +1,70 @@
+doc_id: K2-FRAUD_ONLINE
+knowledge_type: K2
+level1: CRIMINAL
+level2: CRIMINAL_FRAUD
+scenario: FRAUD_ONLINE
+required_fields:
+- incident_date
+- item
+- contact_status
+- platform
+- amount
+- evidence
+- suspect_info
+- delivery
+questions:
+- order: 1
+  field: incident_date
+  question: 입금/거래가 이루어진 날짜는 언제인가요?
+  answer_type: date
+  required: true
+- order: 2
+  field: platform
+  question: 어떤 플랫폼(당근/번개/중고나라/카페/메신저 등)에서 거래했나요?
+  answer_type: string
+  required: true
+- order: 3
+  field: suspect_info
+  question: 판매자 정보(닉네임/계좌/연락처)를 알고 있나요?
+  answer_type: string
+  required: true
+- order: 4
+  field: item
+  question: 거래한 물품/서비스는 무엇인가요?
+  answer_type: string
+  required: true
+- order: 5
+  field: amount
+  question: 송금한 금액은 얼마인가요?
+  answer_type: integer
+  required: true
+- order: 6
+  field: delivery
+  question: 물품을 받았나요?
+  answer_type: boolean
+  required: true
+- order: 7
+  field: contact_status
+  question: 현재 판매자와 연락이 되나요?
+  answer_type: boolean
+  required: true
+- order: 8
+  field: evidence
+  question: 증거(거래 화면/대화/송금내역)가 있나요?
+  answer_type: boolean
+  required: true
+- order: 9
+  field: report_status
+  question: 이미 신고했나요?
+  answer_type: boolean
+  required: false
+- order: 10
+  field: case_stage
+  question: '현재 진행 단계는 어떤가요? (예: 상담 전/신고 전/조사 중/재판 중/기타)'
+  answer_type: choice
+  required: false
+- order: 11
+  field: desired_goal
+  question: '원하시는 방향은 무엇인가요? (예: 상담 연결/대응 방법/서류 작성/손해 회복/기타)'
+  answer_type: choice
+  required: false

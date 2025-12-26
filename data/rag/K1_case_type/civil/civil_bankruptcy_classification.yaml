@@ -1,0 +1,104 @@
+doc_id: K1-CIVIL-CIVIL_BANKRUPTCY
+knowledge_type: K1
+level1: CIVIL
+level2_code: CIVIL_BANKRUPTCY
+level2_name: 개인회생/파산
+node_scope:
+- CASE_CLASSIFICATION
+version: v1.0
+scenarios:
+- scenario_code: DEBT_BANKRUPTCY
+  scenario_name: 개인파산/면책
+  keywords:
+  - 개인회생
+  - 개인파산
+  - 면책
+  - 채무조정
+  - 워크아웃
+  - 추심
+  - 연체
+  - 압류
+  - 신용불량
+  - 빚
+  - 채무
+  - 소득
+  - 재산
+  typical_expressions:
+  - 개인파산/면책 관련 상담이 필요해요
+  - 개인파산/면책 때문에 문제가 생겼어요
+  - 개인파산/면책 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DEBT_REHABILITATION:개인회생;DEBT_BANKRUPTCY:개인파산/면책;DEBT_NEGOTIATION:채무조정/워크아웃
+- scenario_code: DEBT_NEGOTIATION
+  scenario_name: 채무조정/워크아웃
+  keywords:
+  - 개인회생
+  - 개인파산
+  - 면책
+  - 채무조정
+  - 워크아웃
+  - 추심
+  - 연체
+  - 압류
+  - 신용불량
+  - 빚
+  - 채무
+  - 소득
+  - 재산
+  typical_expressions:
+  - 채무조정/워크아웃 관련 상담이 필요해요
+  - 채무조정/워크아웃 때문에 문제가 생겼어요
+  - 채무조정/워크아웃 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DEBT_REHABILITATION:개인회생;DEBT_BANKRUPTCY:개인파산/면책;DEBT_NEGOTIATION:채무조정/워크아웃
+- scenario_code: DEBT_REHABILITATION
+  scenario_name: 개인회생
+  keywords:
+  - 개인회생
+  - 개인파산
+  - 면책
+  - 채무조정
+  - 워크아웃
+  - 추심
+  - 연체
+  - 압류
+  - 신용불량
+  - 빚
+  - 채무
+  - 소득
+  - 재산
+  - 변제
+  typical_expressions:
+  - 개인회생 관련 상담이 필요해요
+  - 개인회생 때문에 문제가 생겼어요
+  - 개인회생 상황을 어떻게 해야 하나요?
+  disambiguation_question: 아래 중 어떤 상황에 가장 가까우신가요? (선택)
+  disambiguation_options:
+  - DEBT_REHABILITATION:개인회생;DEBT_BANKRUPTCY:개인파산/면책;DEBT_NEGOTIATION:채무조정/워크아웃
+typical_keywords:
+- 추심
+- 면책
+- 소득
+- 빚
+- 채무
+- 재산
+- 채무조정
+- 워크아웃
+- 변제
+- 압류
+- 연체
+- 신용불량
+- 개인회생
+- 개인파산
+typical_expressions:
+- 채무조정/워크아웃 때문에 문제가 생겼어요
+- 채무조정/워크아웃 상황을 어떻게 해야 하나요?
+- 개인파산/면책 때문에 문제가 생겼어요
+- 개인파산/면책 관련 상담이 필요해요
+- 개인회생 상황을 어떻게 해야 하나요?
+- 개인회생 때문에 문제가 생겼어요
+- 개인파산/면책 상황을 어떻게 해야 하나요?
+- 개인회생 관련 상담이 필요해요
+- 채무조정/워크아웃 관련 상담이 필요해요

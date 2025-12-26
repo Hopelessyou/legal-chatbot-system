@@ -1,0 +1,52 @@
+doc_id: K0-INTAKE-001
+knowledge_type: K0
+node_scope:
+- INIT
+- INTAKE
+version: v1.0
+messages:
+- step_code: DISCLAIMER
+  order: 1
+  message_text: '안내: 본 서비스는 법률 자문이 아니라 상담 문의 내용을 정리·수집하기 위한 챗봇입니다. 정확한 판단은 변호사 상담이
+    필요합니다.'
+  answer_type: none
+  next_action: CONTINUE
+- step_code: PRIVACY_NOTICE
+  order: 2
+  message_text: 개인정보(주민등록번호, 계좌번호, 상세 주소 등)는 입력하지 마세요. 필요한 경우 상담 과정에서 별도로 안내드립니다.
+  answer_type: none
+  next_action: CONTINUE
+- step_code: EMERGENCY_CHECK
+  order: 3
+  message_text: 긴급한 위험(폭력/신체 위협/자해 위험/응급 상황)이 있나요? (예/아니오)
+  answer_type: boolean
+  next_action: ROUTE_EMERGENCY
+- step_code: EMERGENCY_MESSAGE
+  order: 4
+  message_text: 긴급 상황이라면 즉시 112/119 또는 가까운 기관에 연락해 주세요. 본 서비스는 긴급 대응을 제공하지 않습니다.
+  answer_type: none
+  next_action: STOP
+- step_code: START_EXAMPLE
+  order: 5
+  message_text: '입력 예시: ''2024년 10월에 중고거래로 30만원을 입금했는데 물건을 못 받았고 연락이 끊겼어요. 대화/송금내역은
+    있어요.'''
+  answer_type: none
+  next_action: CONTINUE
+- step_code: START_PROMPT
+  order: 6
+  message_text: 어떤 일로 상담이 필요하신가요? 상황을 편하게 3~5줄로 적어주세요. (언제/누가/무슨 일/금액/증거 여부 포함하면 더
+    좋아요)
+  answer_type: string
+  next_action: CLASSIFY_TEXT
+- step_code: CATEGORY_MENU
+  order: 7
+  message_text: '어느 유형에 가까우신가요? (선택)
+
+    1) 돈/계약/부동산  2) 사기/형사  3) 이혼/가족  4) 행정처분'
+  answer_type: choice
+  next_action: CLASSIFY_MENU
+- step_code: CATEGORY_MENU_MAP
+  order: 8
+  message_text: '선택값 매핑: 1=CIVIL, 2=CRIMINAL, 3=FAMILY, 4=ADMIN'
+  answer_type: none
+  next_action: INTERNAL_ONLY
