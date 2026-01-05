@@ -4,8 +4,26 @@
 import re
 import uuid
 import hashlib
-from datetime import datetime
-from typing import Optional
+import json
+from datetime import datetime, timezone, timedelta
+from typing import Optional, Dict, Any
+
+# 한국 시간대 (KST, UTC+9)
+KST = timezone(timedelta(hours=9))
+
+
+def get_kst_now() -> datetime:
+    """
+    현재 한국 시간(KST) 반환
+    
+    SQLAlchemy 호환을 위해 timezone-aware datetime을 반환하지만
+    tzinfo를 제거한 naive datetime을 반환합니다.
+    
+    Returns:
+        한국 시간대의 현재 datetime 객체 (naive)
+    """
+    kst_timezone = timezone(timedelta(hours=9))
+    return datetime.now(kst_timezone).replace(tzinfo=None)
 
 
 def parse_date(date_string: str) -> Optional[datetime]:
@@ -121,4 +139,79 @@ def generate_user_hash(user_identifier: str) -> str:
         해시 문자열
     """
     return hashlib.sha256(user_identifier.encode()).hexdigest()
+
+
+def parse_json_from_text(text: str, default: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
+    """
+    텍스트에서 JSON 객체를 안전하게 파싱
+    
+    마크다운 코드 블록, 주석, 불필요한 텍스트를 제거하고 JSON을 추출합니다.
+    
+    Args:
+        text: JSON이 포함된 텍스트
+        default: 파싱 실패 시 반환할 기본값
+    
+    Returns:
+        파싱된 JSON 딕셔너리 또는 default
+    """
+    if not text:
+        return default
+    
+    try:
+        # 1. 마크다운 코드 블록 제거
+        # ```json ... ``` 또는 ``` ... ``` 패턴
+        code_block_pattern = r'```(?:json)?\s*(\{.*?\})\s*```'
+        match = re.search(code_block_pattern, text, re.DOTALL)
+        if match:
+            text = match.group(1)
+        
+        # 2. 첫 번째 { 부터 마지막 } 까지 추출 (중첩된 객체 지원)
+        # 단순 정규식 대신 괄호 매칭으로 정확하게 추출
+        start_idx = text.find('{')
+        if start_idx == -1:
+            return default
+        
+        # 중첩된 괄호를 고려하여 마지막 } 찾기
+        brace_count = 0
+        end_idx = start_idx
+        for i in range(start_idx, len(text)):
+            if text[i] == '{':
+                brace_count += 1
+            elif text[i] == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    end_idx = i + 1
+                    break
+        
+        if brace_count != 0:
+            # 괄호가 맞지 않으면 전체 텍스트에서 시도
+            json_match = re.search(r'\{.*\}', text, re.DOTALL)
+            if json_match:
+                text = json_match.group(0)
+            else:
+                return default
+        else:
+            text = text[start_idx:end_idx]
+        
+        # 3. JSON 파싱 시도
+        result = json.loads(text)
+        return result if isinstance(result, dict) else default
+        
+    except json.JSONDecodeError:
+        # JSON 파싱 실패 시 더 공격적인 정리 시도
+        try:
+            # 주석 제거 (// 또는 /* */)
+            text = re.sub(r'//.*?$', '', text, flags=re.MULTILINE)
+            text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+            
+            # 후행 쉼표 제거
+            text = re.sub(r',\s*}', '}', text)
+            text = re.sub(r',\s*]', ']', text)
+            
+            result = json.loads(text)
+            return result if isinstance(result, dict) else default
+        except (json.JSONDecodeError, ValueError, TypeError):
+            return default
+    except (ValueError, TypeError, AttributeError):
+        return default
 

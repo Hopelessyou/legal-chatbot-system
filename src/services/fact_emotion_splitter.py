@@ -24,7 +24,43 @@ class FactEmotionSplitter:
         Returns:
             사실과 감정이 분리된 딕셔너리
         """
-        prompt = f"""다음 텍스트를 사실(fact)과 감정(emotion)으로 분리하세요.
+        try:
+            # 프롬프트 파일에서 로드 시도
+            from src.services.prompt_loader import prompt_loader
+            prompt_template = prompt_loader.load_prompt("split", sub_dir="fact_emotion")
+            if prompt_template:
+                prompt = prompt_template.format(text=text)
+            else:
+                # 기본 프롬프트 사용
+                prompt = f"""다음 텍스트를 사실(fact)과 감정(emotion)으로 분리하세요.
+JSON 형식으로 반환하세요:
+{{
+    "facts": [
+        {{
+            "content": "객관적 사실 내용",
+            "type": "날짜/금액/행위/기타"
+        }}
+    ],
+    "emotions": [
+        {{
+            "type": "억울함/불안/화남/기타",
+            "intensity": 1-5,
+            "source_text": "원문에서 감정이 드러난 부분"
+        }}
+    ]
+}}
+
+주의사항:
+- 사실은 객관적이고 검증 가능한 정보만 포함
+- 감정은 주관적 표현과 느낌만 포함
+- 감정 표현이 없으면 emotions는 빈 배열
+
+텍스트: {text}
+
+JSON:"""
+        except Exception as prompt_error:
+            logger.debug(f"프롬프트 로드 실패, 기본 프롬프트 사용: {str(prompt_error)}")
+            prompt = f"""다음 텍스트를 사실(fact)과 감정(emotion)으로 분리하세요.
 JSON 형식으로 반환하세요:
 {{
     "facts": [
@@ -58,23 +94,16 @@ JSON:"""
                 max_tokens=500  # 더 짧은 응답으로 속도 향상
             )
             
-            import json
-            import re
-            
-            # 응답에서 JSON 추출 (마크다운 코드 블록 제거)
+            # 응답에서 JSON 추출 (견고한 파싱 사용)
+            from src.utils.helpers import parse_json_from_text
             content = response["content"].strip()
+            result = parse_json_from_text(content, default={
+                "facts": [],
+                "emotions": []
+            })
             
-            # ```json ... ``` 또는 ``` ... ``` 제거
-            json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', content, re.DOTALL)
-            if json_match:
-                content = json_match.group(1)
-            else:
-                # JSON 객체만 추출
-                json_match = re.search(r'\{.*\}', content, re.DOTALL)
-                if json_match:
-                    content = json_match.group(0)
-            
-            result = json.loads(content)
+            if result is None:
+                result = {"facts": [], "emotions": []}
             
             # 기본값 설정
             if "facts" not in result:

@@ -7,6 +7,14 @@ from src.services.keyword_extractor import keyword_extractor
 from src.services.gpt_client import gpt_client
 from src.rag.searcher import rag_searcher
 from src.utils.logger import get_logger, log_execution_time
+from src.utils.constants import (
+    CASE_TYPE_MAPPING,
+    DEFAULT_CASE_TYPE,
+    DEFAULT_SUB_CASE_TYPE,
+    CaseStage,
+    Limits
+)
+from config.fallback_keywords import get_fallback_case_type
 from src.db.connection import db_manager
 from src.db.models.case_master import CaseMaster
 from src.db.models.chat_session import ChatSession
@@ -29,7 +37,7 @@ def case_classification_node(state: StateContext) -> Dict[str, Any]:
         session_id = state["session_id"]
         user_input = state.get("last_user_input", "")
         
-        logger.info(f"CASE_CLASSIFICATION Node 실행: session_id={session_id}, user_input={user_input[:50] if user_input else 'None'}...")
+        logger.info(f"CASE_CLASSIFICATION Node 실행: session_id={session_id}, user_input={user_input[:Limits.LOG_PREVIEW_LENGTH] if user_input else 'None'}...")
         
         if not user_input:
             logger.warning("사용자 입력이 없습니다.")
@@ -64,7 +72,31 @@ def case_classification_node(state: StateContext) -> Dict[str, Any]:
         
         # GPT API로 최종 분류 (RAG 결과를 참고)
         if not main_case_type:
-            classification_prompt = f"""다음 텍스트를 분석하여 법률 사건 유형을 분류하세요.
+            try:
+                # 프롬프트 파일에서 로드 시도
+                from src.services.prompt_loader import prompt_loader
+                prompt_template = prompt_loader.load_prompt("case_classification", sub_dir="classification")
+                if prompt_template:
+                    classification_prompt = prompt_template.format(user_input=user_input)
+                else:
+                    # 기본 프롬프트 사용
+                    classification_prompt = f"""다음 텍스트를 분석하여 법률 사건 유형을 분류하세요.
+가능한 분류:
+- 민사: 계약, 불법행위, 대여금, 손해배상
+- 형사: 사기, 성범죄, 폭행
+- 가사: 이혼, 상속
+- 행정: 행정처분, 세무
+
+텍스트: {user_input}
+
+JSON 형식으로 반환:
+{{
+    "main_case_type": "민사/형사/가사/행정",
+    "sub_case_type": "세부 유형"
+}}"""
+            except Exception as prompt_error:
+                logger.debug(f"프롬프트 로드 실패, 기본 프롬프트 사용: {str(prompt_error)}")
+                classification_prompt = f"""다음 텍스트를 분석하여 법률 사건 유형을 분류하세요.
 가능한 분류:
 - 민사: 계약, 불법행위, 대여금, 손해배상
 - 형사: 사기, 성범죄, 폭행
@@ -83,7 +115,7 @@ JSON 형식으로 반환:
                 response = gpt_client.chat_completion(
                     messages=[{"role": "user", "content": classification_prompt}],
                     temperature=0.3,
-                    max_tokens=100
+                    max_tokens=Limits.MAX_TOKENS_CLASSIFICATION
                 )
                 
                 import json
@@ -108,24 +140,10 @@ JSON 형식으로 반환:
             except Exception as e:
                 logger.error(f"GPT 분류 실패: {str(e)}")
                 # 폴백: 키워드 기반 간단한 분류
-                if any(kw in user_input for kw in ["돈", "빌려", "대여금", "계약", "미지급"]):
-                    main_case_type = "CIVIL"
-                    sub_case_type = "CIVIL_CONTRACT"
-                elif any(kw in user_input for kw in ["사기", "절도", "폭행", "성범죄"]):
-                    main_case_type = "CRIMINAL"
-                    sub_case_type = "CRIMINAL_FRAUD"
-                else:
-                    main_case_type = "CIVIL"  # 기본값
-                    sub_case_type = "CIVIL_CONTRACT"
+                main_case_type, sub_case_type = get_fallback_case_type(user_input)
         
         # 4. case_type 변환 (한글 → 영문)
-        case_type_mapping = {
-            "민사": "CIVIL",
-            "형사": "CRIMINAL",
-            "가사": "FAMILY",
-            "행정": "ADMIN"
-        }
-        main_case_type_en = case_type_mapping.get(main_case_type, main_case_type) if main_case_type else None
+        main_case_type_en = CASE_TYPE_MAPPING.get(main_case_type, main_case_type) if main_case_type else None
         
         # 5. State 업데이트
         state["case_type"] = main_case_type_en
@@ -149,7 +167,7 @@ JSON 형식으로 반환:
                         session_id=session_id,
                         main_case_type=main_case_type_en,
                         sub_case_type=sub_case_type,
-                        case_stage="상담전"
+                        case_stage=CaseStage.BEFORE_CONSULTATION.value
                     )
                     db_session.add(case)
                 else:
@@ -184,6 +202,17 @@ JSON 형식으로 반환:
         }
     
     except Exception as e:
-        logger.error(f"CASE_CLASSIFICATION Node 실행 실패: {str(e)}")
-        raise
+        logger.error(f"CASE_CLASSIFICATION Node 실행 실패: {str(e)}", exc_info=True)
+        # 폴백 처리: 기본 사건 유형으로 설정하고 계속 진행
+        state["case_type"] = DEFAULT_CASE_TYPE
+        state["sub_case_type"] = DEFAULT_SUB_CASE_TYPE
+        state["bot_message"] = "사건과 관련된 구체적인 내용을 알려주세요."
+        state["expected_input"] = {
+            "type": "text",
+            "field": "fact_description"
+        }
+        return {
+            **state,
+            "next_state": "FACT_COLLECTION"
+        }
 

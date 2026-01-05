@@ -6,6 +6,8 @@ from src.langgraph.state import StateContext
 from src.services.summarizer import summarizer
 from src.rag.searcher import rag_searcher
 from src.utils.logger import get_logger, log_execution_time
+from src.utils.constants import CASE_TYPE_MAPPING
+from src.utils.rag_helpers import extract_k4_format_from_rag
 from src.db.connection import db_manager
 from src.db.models.case_summary import CaseSummary
 from src.db.models.case_master import CaseMaster
@@ -71,13 +73,7 @@ def summary_node(state: StateContext) -> Dict[str, Any]:
         sub_case_type = state.get("sub_case_type")
         
         # case_type 변환 (한글 → 영문)
-        case_type_mapping = {
-            "민사": "CIVIL",
-            "형사": "CRIMINAL",
-            "가사": "FAMILY",
-            "행정": "ADMIN"
-        }
-        main_case_type_en = case_type_mapping.get(case_type, case_type) if case_type else None
+        main_case_type_en = CASE_TYPE_MAPPING.get(case_type, case_type) if case_type else None
         
         format_template = None
         try:
@@ -89,39 +85,14 @@ def summary_node(state: StateContext) -> Dict[str, Any]:
                 top_k=1
             )
             
-            if rag_results:
-                # K4 문서 파싱
-                from src.rag.parser import RAGDocumentParser
-                import yaml
-                
-                # RAG 검색 결과에서 content 추출 (YAML 문자열 또는 딕셔너리)
-                result = rag_results[0]
-                content = result.get("content", "")
-                metadata = result.get("metadata", {})
-                
-                # content가 YAML 문자열이면 파싱
-                if isinstance(content, str):
-                    try:
-                        k4_data = yaml.safe_load(content)
-                    except:
-                        # YAML 파싱 실패 시 metadata에서 정보 추출
-                        k4_data = metadata
-                else:
-                    k4_data = content if content else metadata
-                
-                # K4 문서 파싱
-                try:
-                    k4_doc = RAGDocumentParser.parse_k4_document(k4_data)
-                    format_template = {
-                        "sections": k4_doc.sections,
-                        "target": k4_doc.target,
-                        "main_case_type": main_case_type_en,
-                        "sub_case_type": sub_case_type
-                    }
-                    logger.info(f"[{session_id}] K4 포맷 템플릿 로드 완료: {len(k4_doc.sections)}개 섹션")
-                except Exception as parse_error:
-                    logger.warning(f"[{session_id}] K4 문서 파싱 실패: {str(parse_error)}, 기본 포맷 사용")
-                    format_template = None
+            # RAG 결과에서 K4 포맷 추출
+            format_template = extract_k4_format_from_rag(rag_results)
+            if format_template:
+                format_template["main_case_type"] = main_case_type_en
+                format_template["sub_case_type"] = sub_case_type
+                logger.info(f"[{session_id}] RAG K4 포맷 템플릿 추출 성공: {len(format_template.get('sections', []))}개 섹션")
+            else:
+                logger.debug(f"[{session_id}] RAG K4 포맷 추출 실패, 기본 포맷 사용")
         except Exception as e:
             logger.warning(f"[{session_id}] RAG K4 검색 실패 (기본 포맷 사용): {str(e)}")
             rag_results = []
@@ -168,15 +139,20 @@ def summary_node(state: StateContext) -> Dict[str, Any]:
         
         logger.info(f"SUMMARY 완료: session_id={session_id}")
         
-        # 6. COMPLETED Node를 즉시 실행
-        from src.langgraph.nodes.completed_node import completed_node
-        logger.info(f"[{session_id}] SUMMARY 완료, COMPLETED Node 실행 시작")
-        completed_result = completed_node(state)
-        logger.info(f"[{session_id}] COMPLETED Node 실행 완료")
-        
-        return completed_result
+        # 6. 그래프 엣지를 통한 자동 전이 (COMPLETED 노드 직접 호출 제거)
+        # graph.py에서 이미 SUMMARY → COMPLETED 엣지가 정의되어 있으므로
+        # next_state만 반환하면 LangGraph가 자동으로 COMPLETED 노드로 전이함
+        return {
+            **state,
+            "next_state": "COMPLETED"
+        }
     
     except Exception as e:
-        logger.error(f"SUMMARY Node 실행 실패: {str(e)}")
-        raise
+        logger.error(f"SUMMARY Node 실행 실패: {str(e)}", exc_info=True)
+        # 폴백 처리: 기본 메시지 반환하고 COMPLETED로 이동
+        state["bot_message"] = "요약 생성 중 오류가 발생했습니다. 다시 시도해주세요."
+        return {
+            **state,
+            "next_state": "COMPLETED"
+        }
 

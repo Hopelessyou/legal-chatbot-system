@@ -1,0 +1,32 @@
+"""
+DB 관련 상수 정의
+"""
+
+
+class FieldLength:
+    """DB 필드 길이 상수"""
+    SESSION_ID = 50
+    FILE_NAME = 255
+    FILE_PATH = 500
+    PARTY_DESCRIPTION = 255
+    CASE_TYPE = 50
+    SUB_CASE_TYPE = 50
+    CASE_STAGE = 30
+    STATUS = 20
+    EVIDENCE_TYPE = 50
+    EVIDENCE_DESCRIPTION = 255
+    FACT_TYPE = 50
+    FACT_LOCATION = 255
+    EMOTION_TYPE = 50
+    MISSING_FIELD_KEY = 50
+    NODE_NAME = 50
+    MODEL_NAME = 50
+    CONDITION_KEY = 50
+    FILE_TYPE = 50
+    FILE_EXTENSION = 10
+    # 추가 상수
+    USER_HASH = 64
+    CURRENT_STATE = 30
+    RISK_LEVEL = 20
+    AI_VERSION = 20
+

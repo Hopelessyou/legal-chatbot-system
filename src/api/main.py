@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+import os
+from src.api.rate_limit_middleware import RateLimitMiddleware
 from config.settings import settings
 from src.utils.logger import setup_logging, get_logger
 from src.api.middleware import LoggingMiddleware
@@ -48,6 +50,9 @@ app.add_middleware(
 # 로깅 미들웨어
 app.add_middleware(LoggingMiddleware)
 
+# Rate Limiting 미들웨어
+app.add_middleware(RateLimitMiddleware)
+
 # 에러 핸들러 등록
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.add_exception_handler(SessionNotFoundError, session_not_found_handler)
@@ -63,19 +68,46 @@ async def startup_event():
     """애플리케이션 시작 시 실행"""
     logger.info("애플리케이션 시작")
     
-    # DB 연결 테스트
+    from config.settings import settings
     from src.db.connection import db_manager
-    if db_manager.health_check():
+    from src.rag.vector_db import vector_db_manager
+    from src.utils.env import validate_required_env_vars, REQUIRED_ENV_VARS
+    
+    # 필수 환경변수 검증
+    try:
+        validate_required_env_vars(REQUIRED_ENV_VARS)
+        logger.info("필수 환경변수 검증 완료")
+    except ValueError as e:
+        logger.error(f"필수 환경변수 검증 실패: {str(e)}")
+        raise RuntimeError(f"애플리케이션 시작 실패: {str(e)}")
+    
+    # 환경별 strict 모드 확인
+    is_production = settings.environment.lower() == "production"
+    strict_mode = os.getenv("STRICT_DB_CHECK", "false").lower() == "true" or is_production
+    
+    # DB 연결 테스트
+    db_connected = db_manager.health_check()
+    if db_connected:
         logger.info("데이터베이스 연결 확인 완료")
     else:
-        logger.warning("데이터베이스 연결 확인 실패")
+        error_msg = "데이터베이스 연결 확인 실패"
+        if strict_mode:
+            logger.error(f"{error_msg} - strict 모드로 인해 애플리케이션을 종료합니다.")
+            raise RuntimeError(f"{error_msg}. 애플리케이션을 시작할 수 없습니다.")
+        else:
+            logger.warning(f"{error_msg} - 개발 모드이므로 계속 진행합니다.")
     
     # 벡터 DB 연결 테스트
-    from src.rag.vector_db import vector_db_manager
-    if vector_db_manager.health_check():
+    vector_db_connected = vector_db_manager.health_check()
+    if vector_db_connected:
         logger.info("벡터 DB 연결 확인 완료")
     else:
-        logger.warning("벡터 DB 연결 확인 실패")
+        error_msg = "벡터 DB 연결 확인 실패"
+        if strict_mode:
+            logger.error(f"{error_msg} - strict 모드로 인해 애플리케이션을 종료합니다.")
+            raise RuntimeError(f"{error_msg}. 애플리케이션을 시작할 수 없습니다.")
+        else:
+            logger.warning(f"{error_msg} - 개발 모드이므로 계속 진행합니다.")
 
 
 @app.on_event("shutdown")
@@ -121,6 +153,14 @@ static_dir = Path(__file__).parent.parent.parent / "static"
 if static_dir.exists():
     app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
     logger.info(f"정적 파일 디렉토리 마운트: {static_dir}")
+
+
+@app.get("/favicon.ico")
+async def favicon():
+    """Favicon 요청 처리 (404 방지)"""
+    from fastapi.responses import Response
+    # 빈 응답 반환 (또는 실제 favicon 파일이 있다면 FileResponse 사용)
+    return Response(status_code=204)  # No Content
 
 # 라우터 등록
 from src.api.routers import chat, rag

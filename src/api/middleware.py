@@ -27,12 +27,24 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         )
         
         # 요청 바디 로깅 (개인정보 마스킹)
+        # 바디를 읽은 후 재사용할 수 있도록 request.state에 저장하고 복원
         if request.method in ["POST", "PUT", "PATCH"]:
             try:
                 body = await request.body()
                 body_str = body.decode("utf-8")
                 masked_body = mask_personal_info(body_str)
                 logger.debug(f"요청 바디: {masked_body}")
+                
+                # 바디를 request.state에 저장하여 재사용 가능하도록 함
+                request.state.body = body
+                request.state.body_str = body_str
+                
+                # Starlette Request의 _body를 복원하여 후속 핸들러에서 사용 가능하도록 함
+                async def receive():
+                    return {"type": "http.request", "body": body}
+                
+                # request._receive를 재정의하여 바디를 재사용할 수 있도록 함
+                request._receive = receive
             except Exception as e:
                 logger.warning(f"요청 바디 로깅 실패: {str(e)}")
         

@@ -4,8 +4,10 @@ COMPLETED Node 구현
 from typing import Dict, Any
 from src.langgraph.state import StateContext
 from src.utils.logger import get_logger, log_execution_time
+from src.utils.constants import SessionStatus
 from src.db.connection import db_manager
 from src.db.models.chat_session import ChatSession
+from src.utils.helpers import get_kst_now
 from datetime import datetime
 
 logger = get_logger(__name__)
@@ -34,9 +36,9 @@ def completed_node(state: StateContext) -> Dict[str, Any]:
             ).first()
             
             if chat_session:
-                chat_session.status = "COMPLETED"
+                chat_session.status = SessionStatus.COMPLETED.value
                 chat_session.current_state = "COMPLETED"
-                chat_session.ended_at = datetime.utcnow()
+                chat_session.ended_at = get_kst_now()
                 chat_session.completion_rate = state.get("completion_rate", 0)
                 db_session.commit()
         
@@ -61,6 +63,12 @@ def completed_node(state: StateContext) -> Dict[str, Any]:
         }
     
     except Exception as e:
-        logger.error(f"COMPLETED Node 실행 실패: {str(e)}")
-        raise
+        logger.error(f"COMPLETED Node 실행 실패: {str(e)}", exc_info=True)
+        # 폴백 처리: 최소한의 상태 업데이트
+        state["current_state"] = "COMPLETED"
+        state["bot_message"] = "상담이 완료되었습니다."
+        return {
+            **state,
+            "next_state": None
+        }
 

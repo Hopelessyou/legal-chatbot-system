@@ -1,0 +1,47 @@
+# 질문 텍스트 설정 파일
+# 필드별 질문 메시지를 정의합니다.
+
+questions:
+  # 기본 질문 (모든 사건 유형 공통)
+  default:
+    incident_date: "사건이 발생한 날짜를 알려주세요."
+    counterparty: "계약 상대방은 누구인가요?"
+    amount: "문제가 된 금액은 얼마인가요?"
+    evidence: "계약서나 관련 증거를 가지고 계신가요?"
+    evidence_type: "어떤 증거를 가지고 계신가요? (예: 계약서, 카톡 대화내역, 송금내역, 사진, 영상 등)"
+    additional_info: "추가로 알려주실 내용이 있으신가요?"
+  
+  # 사건 유형별 질문 (필요시 오버라이드)
+  case_types:
+    CIVIL:
+      incident_date: "계약이나 사건이 발생한 날짜를 알려주세요."
+      counterparty: "계약 상대방은 누구인가요?"
+      amount: "문제가 된 금액은 얼마인가요?"
+      evidence: "계약서나 관련 증거를 가지고 계신가요?"
+      evidence_type: "어떤 증거를 가지고 계신가요? (예: 계약서, 카톡 대화내역, 송금내역 등)"
+      additional_info: "추가로 알려주실 내용이 있으신가요?"
+    
+    CRIMINAL:
+      incident_date: "사건이 발생한 날짜를 알려주세요."
+      counterparty: "가해자나 관련 인물은 누구인가요?"
+      amount: "피해 금액은 얼마인가요?"
+      evidence: "관련 증거를 가지고 계신가요? (예: 진단서, 사진, CCTV 등)"
+      evidence_type: "어떤 증거를 가지고 계신가요? (예: 진단서, 사진, CCTV, 녹음 등)"
+      additional_info: "추가로 알려주실 내용이 있으신가요?"
+    
+    FAMILY:
+      incident_date: "관련 사건이 발생한 날짜를 알려주세요."
+      counterparty: "상대방은 누구인가요?"
+      amount: "관련 금액은 얼마인가요? (예: 위자료, 재산분할 금액 등)"
+      evidence: "관련 증거나 자료를 가지고 계신가요?"
+      evidence_type: "어떤 증거나 자료를 가지고 계신가요? (예: 통장 내역, 대화내역, 사진 등)"
+      additional_info: "추가로 알려주실 내용이 있으신가요?"
+    
+    ADMIN:
+      incident_date: "행정처분이 이루어진 날짜를 알려주세요."
+      counterparty: "관련 기관이나 상대방은 누구인가요?"
+      amount: "관련 금액은 얼마인가요? (예: 과태료, 과징금 등)"
+      evidence: "행정처분 관련 문서나 증거를 가지고 계신가요?"
+      evidence_type: "어떤 문서나 증거를 가지고 계신가요? (예: 행정처분서, 통지서 등)"
+      additional_info: "추가로 알려주실 내용이 있으신가요?"
+

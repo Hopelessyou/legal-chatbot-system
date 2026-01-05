@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 비서 상담 정리봇</title>
+    <link rel="icon" href="data:,">
     <style>
         * {
             margin: 0;
@@ -116,6 +117,120 @@
             width: 18px;
             height: 18px;
             fill: white;
+        }
+
+        /* 디버그 패널 */
+        .debug-panel {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            max-height: 50vh;
+            background: #1f2937;
+            color: #e5e7eb;
+            border-top-left-radius: 12px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .debug-panel.visible {
+            display: flex;
+        }
+
+        .debug-panel-header {
+            padding: 12px 16px;
+            background: #111827;
+            border-top-left-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            user-select: none;
+        }
+
+        .debug-panel-title {
+            font-weight: 600;
+            color: #f9fafb;
+            font-size: 13px;
+        }
+
+        .debug-panel-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .debug-panel-btn {
+            background: #374151;
+            border: none;
+            color: #e5e7eb;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .debug-panel-btn:hover {
+            background: #4b5563;
+        }
+
+        .debug-panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .debug-log-entry {
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #6b7280;
+            background: #111827;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        .debug-log-entry.log {
+            border-left-color: #3b82f6;
+        }
+
+        .debug-log-entry.info {
+            border-left-color: #10b981;
+        }
+
+        .debug-log-entry.warn {
+            border-left-color: #f59e0b;
+        }
+
+        .debug-log-entry.error {
+            border-left-color: #ef4444;
+        }
+
+        .debug-log-time {
+            color: #9ca3af;
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .debug-log-message {
+            color: #e5e7eb;
+        }
+
+        .debug-log-data {
+            margin-top: 4px;
+            padding: 6px;
+            background: #030712;
+            border-radius: 4px;
+            color: #9ca3af;
+            font-size: 11px;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
         .chat-messages {
@@ -778,6 +893,14 @@
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
                 </div>
+                <div class="header-icon-button" onclick="toggleDebugPanel()" title="디버그 로그">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                </div>
 
             </div>
         </div>
@@ -917,10 +1040,167 @@
     </div>
 
     <script>
+        // 디버그 로깅 시스템 (먼저 정의)
+        const DEBUG_ENABLED = true; // 항상 활성화
+        const MAX_DEBUG_LOGS = 100; // 최대 로그 개수
+
+        function debugLog(level, message, data = null) {
+            const timestamp = new Date().toLocaleTimeString('ko-KR');
+            const logEntry = {
+                level,
+                timestamp,
+                message,
+                data
+            };
+
+            // 콘솔 로그
+            const consoleMethod = {
+                'log': console.log,
+                'info': console.info,
+                'warn': console.warn,
+                'error': console.error
+            }[level] || console.log;
+
+            if (data) {
+                consoleMethod(`[${timestamp}] ${message}`, data);
+            } else {
+                consoleMethod(`[${timestamp}] ${message}`);
+            }
+
+            // HTML 디버그 패널에 추가
+            if (DEBUG_ENABLED) {
+                addDebugLogToPanel(logEntry);
+            }
+        }
+
+        function addDebugLogToPanel(logEntry) {
+            const panel = document.getElementById('debugPanel');
+            const content = document.getElementById('debugLogContent');
+            
+            if (!panel || !content) return;
+
+            // 최대 로그 개수 제한
+            const logs = content.children;
+            if (logs.length >= MAX_DEBUG_LOGS) {
+                content.removeChild(logs[0]);
+            }
+
+            const logDiv = document.createElement('div');
+            logDiv.className = `debug-log-entry ${logEntry.level}`;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'debug-log-time';
+            timeDiv.textContent = logEntry.timestamp;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'debug-log-message';
+            messageDiv.textContent = logEntry.message;
+            
+            logDiv.appendChild(timeDiv);
+            logDiv.appendChild(messageDiv);
+
+            if (logEntry.data) {
+                const dataDiv = document.createElement('div');
+                dataDiv.className = 'debug-log-data';
+                dataDiv.textContent = JSON.stringify(logEntry.data, null, 2);
+                logDiv.appendChild(dataDiv);
+            }
+
+            content.appendChild(logDiv);
+            
+            // 자동 스크롤
+            content.scrollTop = content.scrollHeight;
+        }
+
+        function toggleDebugPanel() {
+            const panel = document.getElementById('debugPanel');
+            if (panel) {
+                panel.classList.toggle('visible');
+            }
+        }
+
+        function clearDebugLogs() {
+            const content = document.getElementById('debugLogContent');
+            if (content) {
+                content.innerHTML = '';
+                debugLog('info', '디버그 로그가 지워졌습니다.');
+            }
+        }
+
+        // 로깅 헬퍼 함수들
+        function logInfo(message, data = null) {
+            debugLog('info', message, data);
+        }
+
+        function logWarn(message, data = null) {
+            debugLog('warn', message, data);
+        }
+
+        function logError(message, data = null) {
+            debugLog('error', message, data);
+        }
+
+        function logApiRequest(method, url, body = null) {
+            logInfo(`API 요청: ${method} ${url}`, { body });
+        }
+
+        function logApiResponse(method, url, response, data = null) {
+            logInfo(`API 응답: ${method} ${url}`, { 
+                status: response.status, 
+                statusText: response.statusText,
+                data 
+            });
+        }
+
+        function logStateTransition(fromState, toState, sessionId) {
+            logInfo(`State 전이: ${fromState} → ${toState}`, { sessionId });
+        }
+
+        // 파일 프로토콜 체크
+        if (window.location.protocol === 'file:') {
+            document.body.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f7f7f8; flex-direction: column; padding: 20px; text-align: center;">
+                    <h2 style="color: #dc2626; margin-bottom: 20px;">⚠️ 서버를 통해 접근해주세요</h2>
+                    <p style="color: #6b7280; margin-bottom: 30px; font-size: 16px;">
+                        이 파일은 직접 열 수 없습니다.<br>
+                        FastAPI 서버를 실행한 후 다음 URL로 접근해주세요:
+                    </p>
+                    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                        <code style="font-size: 18px; color: #667eea;">http://localhost:8000/static/chat_gpt.html</code>
+                    </div>
+                    <div style="background: #fef3c7; padding: 15px; border-radius: 12px; border-left: 4px solid #f59e0b; max-width: 600px;">
+                        <p style="margin: 0; color: #92400e;">
+                            <strong>서버 실행 방법:</strong><br>
+                            1. 터미널에서 프로젝트 디렉토리로 이동<br>
+                            2. <code>uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000</code> 실행<br>
+                            3. 위 URL로 접근
+                        </p>
+                    </div>
+                </div>
+            `;
+            throw new Error('File protocol not supported');
+        }
+        
         const API_BASE_URL = window.location.origin;
+        logInfo('API Base URL 설정', { baseUrl: API_BASE_URL });
+        
+        // API 키 설정 (localStorage에서 가져오거나 입력받기)
+        let API_KEY = localStorage.getItem('api_key');
+        if (!API_KEY) {
+            API_KEY = prompt('API 키를 입력하세요 (한 번만 입력하면 저장됩니다):');
+            if (API_KEY) {
+                localStorage.setItem('api_key', API_KEY);
+                logInfo('API 키 저장됨');
+            } else {
+                logWarn('API 키가 입력되지 않았습니다');
+            }
+        } else {
+            logInfo('저장된 API 키 사용');
+        }
         let sessionId = null;
         let isProcessing = false;
         let currentStep = 'greeting';
+        let lastBotMessage = ''; // 마지막 봇 메시지 저장 (중복 방지)
 
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
@@ -928,6 +1208,42 @@
         const statusIndicator = document.getElementById('statusIndicator');
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
+
+        // API 호출 헤더 생성
+        function getHeaders() {
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+            if (API_KEY) {
+                headers['Authorization'] = `Bearer ${API_KEY}`;
+            }
+            return headers;
+        }
+
+        // API 연결 테스트 함수
+        async function testApiConnection() {
+            try {
+                logInfo('API 연결 테스트 시작', { baseUrl: API_BASE_URL });
+                // 간단한 GET 요청으로 연결 테스트 (루트 경로 또는 health check)
+                const testResponse = await fetch(`${API_BASE_URL}/`, {
+                    method: 'GET',
+                    headers: getHeaders()
+                });
+                logInfo('API 연결 테스트 결과', { 
+                    status: testResponse.status, 
+                    ok: testResponse.ok 
+                });
+                // 200-299 또는 404(엔드포인트 없어도 서버는 동작 중)면 연결 성공
+                return testResponse.ok || testResponse.status === 404;
+            } catch (error) {
+                logError('API 연결 테스트 실패', { 
+                    error: error.message,
+                    baseUrl: API_BASE_URL,
+                    errorName: error.name
+                });
+                return false;
+            }
+        }
 
         // 시스템 안내 카드 접기/펼치기
         function toggleNotice() {
@@ -938,25 +1254,75 @@
         // 세션 시작
         async function startSession() {
             try {
+                logInfo('세션 시작 시도', { apiBaseUrl: API_BASE_URL });
                 statusIndicator.classList.remove('hidden');
                 updateStatus('세션 시작 중...', false);
                 
+                if (!API_KEY) {
+                    throw new Error('API 키가 설정되지 않았습니다. 페이지를 새로고침하여 API 키를 입력해주세요.');
+                }
+                
+                // API 연결 테스트 (선택적 - 실패해도 계속 진행)
+                try {
+                    const isConnected = await testApiConnection();
+                    if (!isConnected) {
+                        logWarn('API 연결 테스트 실패, 계속 진행', { apiBaseUrl: API_BASE_URL });
+                    }
+                } catch (testError) {
+                    logWarn('API 연결 테스트 중 오류, 계속 진행', { error: testError.message });
+                    // 연결 테스트 실패해도 실제 API 호출은 시도
+                }
+                
+                // 기존 세션 복원 비활성화 - 항상 새 세션으로 시작
+                // 저장된 세션 ID가 있으면 삭제하여 새 세션 시작
+                const savedSessionId = localStorage.getItem('current_session_id');
+                if (savedSessionId) {
+                    logInfo('저장된 세션 ID 삭제 (새 세션 시작)', { sessionId: savedSessionId });
+                    localStorage.removeItem('current_session_id');
+                }
+                
+                const startRequestBody = {
+                    channel: 'web',
+                    user_id: `user_${Date.now()}`,
+                    device: 'desktop'
+                };
+                logApiRequest('POST', `${API_BASE_URL}/chat/start`, startRequestBody);
+                
                 const response = await fetch(`${API_BASE_URL}/chat/start`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        channel: 'web',
-                        user_id: `user_${Date.now()}`,
-                        device: 'desktop'
-                    })
+                    headers: getHeaders(),
+                    body: JSON.stringify(startRequestBody)
                 });
 
+                logApiResponse('POST', `${API_BASE_URL}/chat/start`, response);
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // API 키 오류
+                        localStorage.removeItem('api_key');
+                        throw new Error('API 키가 유효하지 않습니다. 페이지를 새로고침하여 다시 입력해주세요.');
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    logError('세션 시작 API 오류', { 
+                        status: response.status, 
+                        statusText: response.statusText,
+                        error: errorData,
+                        apiBaseUrl: API_BASE_URL
+                    });
+                    throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
+                logInfo('세션 시작 응답', { 
+                    success: data.success,
+                    sessionId: data.data?.session_id,
+                    state: data.data?.current_state || data.data?.state
+                });
                 
                 if (data.success && data.data) {
                     sessionId = data.data.session_id;
+                    // 세션 ID 저장하지 않음 (새로고침 시 항상 새 세션 시작)
+                    lastBotMessage = ''; // 새 세션 시작 시 초기화
                     
                     // AI 첫 메시지 (간단한 인사)
                     setTimeout(() => {
@@ -979,8 +1345,26 @@
                     throw new Error(data.error?.message || '세션 시작 실패');
                 }
             } catch (error) {
-                console.error('세션 시작 오류:', error);
-                addErrorMessage(`세션 시작 실패: ${error.message}`);
+                logError('세션 시작 오류', { 
+                    error: error.message, 
+                    stack: error.stack,
+                    apiBaseUrl: API_BASE_URL,
+                    hasApiKey: !!API_KEY,
+                    errorType: error.constructor.name,
+                    errorName: error.name
+                });
+                
+                // 네트워크 오류인 경우 명확한 메시지 표시
+                let errorMessage = error.message;
+                if (error.message.includes('Failed to fetch') || 
+                    error.message.includes('NetworkError') || 
+                    error.message.includes('Network request failed') ||
+                    error.name === 'TypeError' ||
+                    error.message.includes('CORS')) {
+                    errorMessage = `API 서버에 연결할 수 없습니다.\n\n서버 주소: ${API_BASE_URL}\n\n서버가 실행 중인지 확인해주세요.\n\n터미널에서 다음 명령어로 서버를 실행하세요:\nuvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000`;
+                }
+                
+                addErrorMessage(`세션 시작 실패: ${errorMessage}`);
                 updateStatus('연결 실패', false);
             }
         }
@@ -1057,15 +1441,23 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/chat/message`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: getHeaders(),
                     body: JSON.stringify({
                         session_id: sessionId,
                         user_message: message
                     })
                 });
 
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // API 키 오류
+                        localStorage.removeItem('api_key');
+                        throw new Error('API 키가 유효하지 않습니다. 페이지를 새로고침하여 다시 입력해주세요.');
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
                 loadingMessage.remove();
@@ -1076,7 +1468,7 @@
                     throw new Error(data.error?.message || '메시지 전송 실패');
                 }
             } catch (error) {
-                console.error('메시지 전송 오류:', error);
+                logError('메시지 전송 오류', { error: error.message, stack: error.stack });
                 loadingMessage.remove();
                 addErrorMessage(`메시지 전송 실패: ${error.message}`);
             } finally {
@@ -1100,17 +1492,28 @@
             const loadingMessage = addMessage('bot', '처리 중...', true);
 
             try {
+                const requestBody = {
+                    session_id: sessionId,
+                    user_message: text
+                };
+                logApiRequest('POST', `${API_BASE_URL}/chat/message`, requestBody);
+                
                 const response = await fetch(`${API_BASE_URL}/chat/message`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        session_id: sessionId,
-                        user_message: text
-                    })
+                    headers: getHeaders(),
+                    body: JSON.stringify(requestBody)
                 });
 
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // API 키 오류
+                        localStorage.removeItem('api_key');
+                        throw new Error('API 키가 유효하지 않습니다. 페이지를 새로고침하여 다시 입력해주세요.');
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
                 loadingMessage.remove();
@@ -1121,7 +1524,7 @@
                     throw new Error(data.error?.message || '메시지 전송 실패');
                 }
             } catch (error) {
-                console.error('메시지 전송 오류:', error);
+                logError('메시지 전송 오류', { error: error.message, stack: error.stack });
                 loadingMessage.remove();
                 addErrorMessage(`메시지 전송 실패: ${error.message}`);
             } finally {
@@ -1135,10 +1538,49 @@
 
         // 봇 응답 처리
         function handleBotResponse(data) {
-            const botMessage = data.bot_message || '응답이 없습니다.';
+            // bot_message가 없거나 빈 문자열이면 스킵 (기본 메시지 표시하지 않음)
+            const botMessage = data.bot_message;
             
             // 상태에 따라 다른 처리
             const state = data.current_state || data.state;
+            const previousState = currentStep;
+            
+            logInfo('봇 응답 수신', { 
+                state, 
+                previousState,
+                botMessage: botMessage ? botMessage.substring(0, 100) : '(메시지 없음)',
+                sessionId,
+                completionRate: data.completion_rate,
+                expectedInput: data.expected_input,
+                hasBotMessage: !!botMessage
+            });
+            
+            // 빈 메시지나 안내 메시지가 반복되는 경우 스킵
+            if (!botMessage || botMessage.trim() === '') {
+                logWarn('빈 봇 메시지 수신, 스킵', { state, previousState });
+                // 상태 전이만 업데이트 (메시지 없이)
+                if (previousState !== state) {
+                    logStateTransition(previousState, state, sessionId);
+                    currentStep = state.toLowerCase();
+                }
+                return;
+            }
+            
+            // 중복 메시지 체크 제거 - 노드에서 처리하도록 변경
+            // HTML에서는 모든 메시지를 표시하고, 노드에서 사용자 입력 처리 여부를 확인하도록 함
+            
+            // State 전이 로깅
+            if (previousState !== state) {
+                logStateTransition(previousState, state, sessionId);
+            }
+            
+            // 마지막 메시지 업데이트 (로깅용으로만 사용)
+            lastBotMessage = botMessage.trim();
+            
+            // 세션 ID를 localStorage에 저장하지 않음 (새로고침 시 항상 새 세션 시작)
+            // if (sessionId) {
+            //     localStorage.setItem('current_session_id', sessionId);
+            // }
             
             if (state === 'CASE_CLASSIFICATION' || state === 'case_classification') {
                 // 유형 선택 버튼 표시
@@ -1149,10 +1591,204 @@
                     { text: '🏛 행정처분', value: 'administrative' }
                 ]);
                 currentStep = 'classification';
+            } else if (state === 'FACT_COLLECTION' || state === 'fact_collection') {
+                // 사실 수집 단계
+                addMessage('bot', botMessage);
+                currentStep = 'fact_collection';
+            } else if (state === 'RE_QUESTION' || state === 're_question') {
+                // 재질문 단계
+                addMessage('bot', botMessage);
+                currentStep = 're_question';
+            } else if (state === 'VALIDATION' || state === 'validation') {
+                // 검증 단계
+                addMessage('bot', botMessage);
+                currentStep = 'validation';
+            } else if (state === 'SUMMARY' || state === 'summary') {
+                // 요약 단계
+                addMessage('bot', botMessage);
+                currentStep = 'summary';
+            } else if (state === 'COMPLETED' || state === 'completed') {
+                // 완료 단계
+                addMessage('bot', botMessage);
+                currentStep = 'completed';
+                
+                // 최종 요약 정보 가져오기
+                loadFinalSummary(sessionId);
             } else {
                 // 일반 메시지 표시
                 addMessage('bot', botMessage);
             }
+        }
+
+        // 최종 요약 정보 로드
+        async function loadFinalSummary(sessionId) {
+            if (!sessionId) {
+                logWarn('세션 ID가 없어 요약 정보를 가져올 수 없습니다');
+                return;
+            }
+            
+            try {
+                logInfo('최종 요약 정보 로드 시작', { sessionId });
+                const response = await fetch(`${API_BASE_URL}/chat/result?session_id=${sessionId}`, {
+                    method: 'GET',
+                    headers: getHeaders()
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        logWarn('요약 정보가 아직 생성되지 않았습니다');
+                        return;
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}` } }));
+                    throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.data) {
+                    displayFinalSummary(data.data);
+                } else {
+                    logWarn('요약 정보 조회 실패', data);
+                }
+            } catch (error) {
+                logError('최종 요약 정보 로드 오류', { error: error.message, sessionId });
+                // 오류가 있어도 사용자에게는 표시하지 않음 (이미 완료 메시지가 표시됨)
+            }
+        }
+        
+        // 최종 요약 정보 표시
+        function displayFinalSummary(summaryData) {
+            const summaryText = summaryData.case_summary_text || summaryData.summary_text || '';
+            const structuredData = summaryData.structured_data || {};
+            
+            if (!summaryText && Object.keys(structuredData).length === 0) {
+                logWarn('표시할 요약 정보가 없습니다');
+                return;
+            }
+            
+            // 요약 카드 생성
+            const summaryCard = document.createElement('div');
+            summaryCard.className = 'message bot';
+            summaryCard.style.marginTop = '24px';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.style.background = '#f0f9ff';
+            contentDiv.style.border = '2px solid #0ea5e9';
+            contentDiv.style.borderRadius = '16px';
+            contentDiv.style.padding = '24px';
+            
+            let summaryHTML = `
+                <div style="margin-bottom: 16px;">
+                    <h3 style="font-size: 18px; font-weight: 600; color: #0c4a6e; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 24px;">📋</span>
+                        <span>상담 요약</span>
+                    </h3>
+                </div>
+            `;
+            
+            // 구조화된 데이터가 있으면 구조화된 형태로 표시
+            if (structuredData && Object.keys(structuredData).length > 0) {
+                summaryHTML += '<div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px;">';
+                
+                // 사건 유형
+                if (structuredData.사건_유형 || structuredData.case_type) {
+                    summaryHTML += `
+                        <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;">
+                            <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">사건 유형</div>
+                            <div style="font-size: 16px; font-weight: 500; color: #1f2937;">${escapeHtml(structuredData.사건_유형 || structuredData.case_type || '-')}</div>
+                        </div>
+                    `;
+                }
+                
+                // 핵심 사실관계
+                if (structuredData.핵심_사실관계 || structuredData.facts) {
+                    summaryHTML += `
+                        <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;">
+                            <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">핵심 사실관계</div>
+                            <div style="font-size: 15px; color: #1f2937; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(structuredData.핵심_사실관계 || structuredData.facts || '-')}</div>
+                        </div>
+                    `;
+                }
+                
+                // 금액 및 증거
+                if (structuredData.금액_및_증거 || structuredData.amount_evidence) {
+                    summaryHTML += `
+                        <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;">
+                            <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">금액 및 증거</div>
+                            <div style="font-size: 15px; color: #1f2937; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(structuredData.금액_및_증거 || structuredData.amount_evidence || '-')}</div>
+                        </div>
+                    `;
+                }
+                
+                // 특이사항
+                if (structuredData.특이사항 || structuredData.notes) {
+                    summaryHTML += `
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">특이사항</div>
+                            <div style="font-size: 15px; color: #1f2937; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(structuredData.특이사항 || structuredData.notes || '-')}</div>
+                        </div>
+                    `;
+                }
+                
+                // 기타 필드
+                Object.keys(structuredData).forEach(key => {
+                    if (!['사건_유형', '핵심_사실관계', '금액_및_증거', '특이사항', 'case_type', 'facts', 'amount_evidence', 'notes'].includes(key)) {
+                        const value = typeof structuredData[key] === 'object' 
+                            ? JSON.stringify(structuredData[key], null, 2) 
+                            : structuredData[key];
+                        summaryHTML += `
+                            <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb;">
+                                <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">${escapeHtml(key)}</div>
+                                <div style="font-size: 15px; color: #1f2937; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(String(value))}</div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                summaryHTML += '</div>';
+            }
+            
+            // 요약 텍스트가 있으면 표시
+            if (summaryText) {
+                summaryHTML += `
+                    <div style="background: white; border-radius: 12px; padding: 20px;">
+                        <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px;">전체 요약</div>
+                        <div style="font-size: 15px; color: #1f2937; white-space: pre-wrap; line-height: 1.8;">${escapeHtml(summaryText)}</div>
+                    </div>
+                `;
+            }
+            
+            // 완성도 표시
+            if (summaryData.completion_rate !== undefined) {
+                summaryHTML += `
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb; display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 13px; color: #6b7280;">완성도:</span>
+                        <div style="flex: 1; background: #e5e7eb; border-radius: 8px; height: 8px; overflow: hidden;">
+                            <div style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); height: 100%; width: ${summaryData.completion_rate}%; transition: width 0.3s;"></div>
+                        </div>
+                        <span style="font-size: 13px; font-weight: 600; color: #059669;">${summaryData.completion_rate}%</span>
+                    </div>
+                `;
+            }
+            
+            contentDiv.innerHTML = summaryHTML;
+            summaryCard.appendChild(contentDiv);
+            chatMessages.appendChild(summaryCard);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            logInfo('최종 요약 정보 표시 완료', { 
+                hasSummaryText: !!summaryText,
+                hasStructuredData: Object.keys(structuredData).length > 0,
+                completionRate: summaryData.completion_rate
+            });
+        }
+        
+        // HTML 이스케이프 함수
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // 메시지 추가
@@ -1244,7 +1880,7 @@
             };
 
             // 여기서 서버로 전송하거나 로컬에 저장
-            console.log('버그 신고:', bugData);
+            logInfo('버그 신고', bugData);
             
             // 실제로는 API 호출
             // fetch(`${API_BASE_URL}/bug/report`, { ... })
@@ -1287,15 +1923,23 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/chat/message`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: getHeaders(),
                     body: JSON.stringify({
                         session_id: sessionId,
                         user_message: content
                     })
                 });
 
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // API 키 오류
+                        localStorage.removeItem('api_key');
+                        throw new Error('API 키가 유효하지 않습니다. 페이지를 새로고침하여 다시 입력해주세요.');
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 loadingMessage.remove();
 
@@ -1305,7 +1949,7 @@
                     throw new Error(data.error?.message || '메시지 전송 실패');
                 }
             } catch (error) {
-                console.error('메시지 전송 오류:', error);
+                logError('메시지 전송 오류', { error: error.message, stack: error.stack });
                 loadingMessage.remove();
                 addErrorMessage(`메시지 전송 실패: ${error.message}`);
             } finally {
@@ -1430,11 +2074,26 @@
 
             try {
                 // 파일 업로드 API 호출
+                const headers = {};
+                if (API_KEY) {
+                    headers['Authorization'] = `Bearer ${API_KEY}`;
+                }
                 const response = await fetch(`${API_BASE_URL}/chat/upload`, {
                     method: 'POST',
+                    headers: headers,
                     body: formData
                 });
 
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // API 키 오류
+                        localStorage.removeItem('api_key');
+                        throw new Error('API 키가 유효하지 않습니다. 페이지를 새로고침하여 다시 입력해주세요.');
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
 
                 if (data.success && data.data) {
@@ -1449,7 +2108,7 @@
                     throw new Error(data.error?.message || '파일 업로드 실패');
                 }
             } catch (error) {
-                console.error('파일 업로드 오류:', error);
+                logError('파일 업로드 오류', { error: error.message, stack: error.stack });
                 alert(`파일 업로드 실패: ${error.message}`);
             } finally {
                 // UI 활성화
@@ -1495,5 +2154,134 @@
         // 초기화
         startSession();
     </script>
-</body>
-</html>
+
+    <!-- 디버그 패널 -->
+    <div class="debug-panel" id="debugPanel">
+        <div class="debug-panel-header">
+            <div class="debug-panel-title">🔍 디버그 로그</div>
+            <div class="debug-panel-controls">
+                <button class="debug-panel-btn" onclick="clearDebugLogs()">지우기</button>
+                <button class="debug-panel-btn" onclick="toggleDebugPanel()">닫기</button>
+            </div>
+        </div>
+        <div class="debug-panel-content" id="debugLogContent">
+            <!-- 로그 항목들이 여기에 추가됩니다 -->
+        </div>
+    </div>
+
+    <script>
+        // 디버그 로깅 시스템
+        const DEBUG_ENABLED = true; // 항상 활성화
+        const MAX_DEBUG_LOGS = 100; // 최대 로그 개수
+
+        function debugLog(level, message, data = null) {
+            const timestamp = new Date().toLocaleTimeString('ko-KR');
+            const logEntry = {
+                level,
+                timestamp,
+                message,
+                data
+            };
+
+            // 콘솔 로그
+            const consoleMethod = {
+                'log': console.log,
+                'info': console.info,
+                'warn': console.warn,
+                'error': console.error
+            }[level] || console.log;
+
+            if (data) {
+                consoleMethod(`[${timestamp}] ${message}`, data);
+            } else {
+                consoleMethod(`[${timestamp}] ${message}`);
+            }
+
+            // HTML 디버그 패널에 추가
+            if (DEBUG_ENABLED) {
+                addDebugLogToPanel(logEntry);
+            }
+        }
+
+        function addDebugLogToPanel(logEntry) {
+            const panel = document.getElementById('debugPanel');
+            const content = document.getElementById('debugLogContent');
+            
+            if (!panel || !content) return;
+
+            // 최대 로그 개수 제한
+            const logs = content.children;
+            if (logs.length >= MAX_DEBUG_LOGS) {
+                content.removeChild(logs[0]);
+            }
+
+            const logDiv = document.createElement('div');
+            logDiv.className = `debug-log-entry ${logEntry.level}`;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'debug-log-time';
+            timeDiv.textContent = logEntry.timestamp;
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'debug-log-message';
+            messageDiv.textContent = logEntry.message;
+            
+            logDiv.appendChild(timeDiv);
+            logDiv.appendChild(messageDiv);
+
+            if (logEntry.data) {
+                const dataDiv = document.createElement('div');
+                dataDiv.className = 'debug-log-data';
+                dataDiv.textContent = JSON.stringify(logEntry.data, null, 2);
+                logDiv.appendChild(dataDiv);
+            }
+
+            content.appendChild(logDiv);
+            
+            // 자동 스크롤
+            content.scrollTop = content.scrollHeight;
+        }
+
+        function toggleDebugPanel() {
+            const panel = document.getElementById('debugPanel');
+            if (panel) {
+                panel.classList.toggle('visible');
+            }
+        }
+
+        function clearDebugLogs() {
+            const content = document.getElementById('debugLogContent');
+            if (content) {
+                content.innerHTML = '';
+                debugLog('info', '디버그 로그가 지워졌습니다.');
+            }
+        }
+
+        // 로깅 헬퍼 함수들
+        function logInfo(message, data = null) {
+            debugLog('info', message, data);
+        }
+
+        function logWarn(message, data = null) {
+            debugLog('warn', message, data);
+        }
+
+        function logError(message, data = null) {
+            debugLog('error', message, data);
+        }
+
+        function logApiRequest(method, url, body = null) {
+            logInfo(`API 요청: ${method} ${url}`, { body });
+        }
+
+        function logApiResponse(method, url, response, data = null) {
+            logInfo(`API 응답: ${method} ${url}`, { 
+                status: response.status, 
+                statusText: response.statusText,
+                data 
+            });
+        }
+
+        function logStateTransition(fromState, toState, sessionId) {
+            logInfo(`State 전이: ${fromState} → ${toState}`, { sessionId });
+        }

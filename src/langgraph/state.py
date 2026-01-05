@@ -2,7 +2,7 @@
 LangGraph State Context 구조 정의
 """
 from typing import TypedDict, Optional, List, Dict, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class StateContext(TypedDict, total=False):
@@ -16,6 +16,7 @@ class StateContext(TypedDict, total=False):
     completion_rate: int
     last_user_input: str
     missing_fields: List[str]
+    asked_fields: List[str]  # 이미 질문한 필드 목록 (중복 질문 방지)
     bot_message: Optional[str]
     expected_input: Optional[Dict[str, Any]]
 
@@ -31,11 +32,13 @@ class StateContextModel(BaseModel):
     completion_rate: int = Field(default=0, ge=0, le=100)
     last_user_input: str = Field(default="")
     missing_fields: List[str] = Field(default_factory=list)
+    asked_fields: List[str] = Field(default_factory=list)  # 이미 질문한 필드 목록
     bot_message: Optional[str] = None
     expected_input: Optional[Dict[str, Any]] = None
     
-    @validator('current_state')
-    def validate_state(cls, v):
+    @field_validator('current_state')
+    @classmethod
+    def validate_state(cls, v: str) -> str:
         """State 유효성 검증"""
         valid_states = [
             "INIT",
@@ -80,6 +83,7 @@ def create_initial_context(session_id: str) -> StateContext:
         "completion_rate": 0,
         "last_user_input": "",
         "missing_fields": [],
+        "asked_fields": [],  # 이미 질문한 필드 추적
         "bot_message": None,
         "expected_input": None
     }

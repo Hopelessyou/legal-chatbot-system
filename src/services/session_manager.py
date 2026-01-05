@@ -1,15 +1,16 @@
 """
 세션 관리 서비스 모듈
 """
-import json
 from typing import Optional, Dict, Any
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
+from src.utils.helpers import get_kst_now
 from src.db.connection import db_manager
 from src.db.models.chat_session import ChatSession
 from src.langgraph.state import StateContext, create_initial_context
 from src.utils.helpers import generate_session_id, generate_user_hash
 from src.utils.logger import get_logger
+from src.utils.constants import SessionStatus, PARTY_ROLES
 from config.settings import settings
 
 logger = get_logger(__name__)
@@ -43,9 +44,9 @@ class SessionManager:
                     channel=channel,
                     user_hash=user_hash,
                     current_state="INIT",
-                    status="ACTIVE",
+                    status=SessionStatus.ACTIVE.value,
                     completion_rate=0,
-                    started_at=datetime.utcnow()
+                    started_at=get_kst_now()
                 )
                 db_session.add(session)
                 db_session.commit()
@@ -124,16 +125,18 @@ class SessionManager:
                         CaseFact.case_id == case.case_id
                     ).order_by(CaseFact.created_at.desc()).all()
                     
-                    for fact in all_facts:
-                        if fact.incident_date and not facts.get("incident_date"):
-                            facts["incident_date"] = fact.incident_date.strftime("%Y-%m-%d")
-                        if fact.amount and not facts.get("amount"):
-                            facts["amount"] = fact.amount
+                    # 최신 값만 사용 (첫 번째 항목)
+                    if all_facts:
+                        latest_fact = all_facts[0]
+                        if latest_fact.incident_date:
+                            facts["incident_date"] = latest_fact.incident_date.strftime("%Y-%m-%d")
+                        if latest_fact.amount:
+                            facts["amount"] = latest_fact.amount
                     
                     # CaseParty에서 counterparty 복원
                     counterparty = db_session.query(CaseParty).filter(
                         CaseParty.case_id == case.case_id,
-                        CaseParty.party_role == "상대방"
+                        CaseParty.party_role == PARTY_ROLES["COUNTERPARTY"]
                     ).first()
                     
                     if counterparty and counterparty.party_description:
@@ -151,9 +154,16 @@ class SessionManager:
                             facts["evidence_type"] = evidence.evidence_type
                     
                     context["facts"] = facts
+                    
+                    # asked_fields 초기화 (중복 질문 방지)
+                    context["asked_fields"] = []
+                    
                     logger.debug(f"세션 상태 로드 완료: {session_id}, facts={list(facts.keys())}")
             
-            logger.debug(f"세션 상태 로드 완료: {session_id}")
+            # asked_fields가 없으면 초기화
+            if "asked_fields" not in context:
+                context["asked_fields"] = []
+            
             return context
         
         except Exception as e:
@@ -192,11 +202,22 @@ def _update_session(session: Session, session_id: str, state: StateContext):
         ChatSession.session_id == session_id
     ).first()
     
-    if chat_session:
-        chat_session.current_state = state.get("current_state", "INIT")
-        chat_session.completion_rate = state.get("completion_rate", 0)
-        chat_session.updated_at = datetime.utcnow()
-        session.commit()
+    if not chat_session:
+        logger.warning(f"세션을 찾을 수 없습니다: {session_id}")
+        return
+    
+    # current_state 우선순위: result의 current_state > next_state > 기본값 "INIT"
+    current_state = state.get("current_state")
+    if not current_state:
+        # next_state가 있으면 그것을 current_state로 사용
+        current_state = state.get("next_state", "INIT")
+    
+    chat_session.current_state = current_state
+    chat_session.completion_rate = state.get("completion_rate", 0)
+    chat_session.updated_at = get_kst_now()
+    
+    logger.debug(f"세션 상태 저장: session_id={session_id}, current_state={current_state}, completion_rate={chat_session.completion_rate}")
+    session.commit()
 
 
 def validate_session_id(session_id: str) -> bool:
@@ -254,16 +275,16 @@ def cleanup_expired_sessions():
     """만료된 세션 정리"""
     try:
         expiry_hours = settings.session_expiry_hours
-        expiry_time = datetime.utcnow() - timedelta(hours=expiry_hours)
+        expiry_time = get_kst_now() - timedelta(hours=expiry_hours)
         
         with db_manager.get_db_session() as db_session:
             expired_sessions = db_session.query(ChatSession).filter(
-                ChatSession.status == "ACTIVE",
+                ChatSession.status == SessionStatus.ACTIVE.value,
                 ChatSession.updated_at < expiry_time
             ).all()
             
             for session in expired_sessions:
-                session.status = "ABORTED"
+                session.status = SessionStatus.ABORTED.value
             
             db_session.commit()
             

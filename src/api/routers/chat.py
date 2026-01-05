@@ -11,6 +11,7 @@ import uuid
 import mimetypes
 from src.utils.response import success_response, error_response
 from src.utils.exceptions import SessionNotFoundError, InvalidInputError
+from src.utils.constants import SessionStatus
 from src.db.connection import db_manager
 from src.db.models.chat_session import ChatSession
 from src.db.models.chat_file import ChatFile
@@ -24,12 +25,27 @@ from src.services.session_manager import (
 )
 from src.langgraph.graph import run_graph_step
 from src.langgraph.state import create_initial_context, StateContext
+from src.api.auth import verify_api_key
 from config.settings import settings
 from src.utils.logger import get_logger
+from fastapi import Request
 
 logger = get_logger(__name__)
 
 router = APIRouter(prefix="/chat", tags=["chat"])
+
+# 파일 업로드 보안 설정
+ALLOWED_EXTENSIONS = {".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png", ".txt", ".xlsx", ".xls"}
+ALLOWED_MIME_TYPES = {
+    "application/pdf",
+    "application/msword",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "image/jpeg",
+    "image/png",
+    "text/plain",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel"
+}
 
 
 # Request/Response 모델
@@ -78,7 +94,7 @@ class ChatMessageResponse(BaseModel):
 
 
 @router.post("/start")
-async def start_chat(request: ChatStartRequest):
+async def start_chat(request: ChatStartRequest, _: str = Depends(verify_api_key)):
     """상담 세션 시작"""
     try:
         # 세션 생성
@@ -105,14 +121,12 @@ async def start_chat(request: ChatStartRequest):
         })
     
     except Exception as e:
-        from src.utils.logger import get_logger
-        logger = get_logger(__name__)
         logger.error(f"상담 세션 시작 실패: {str(e)}", exc_info=True)
         raise HTTPException(status_code=500, detail=f"서버 내부 오류: {str(e)}")
 
 
 @router.post("/message")
-async def process_message(request: ChatMessageRequest):
+async def process_message(request: ChatMessageRequest, _: str = Depends(verify_api_key)):
     """사용자 메시지 처리"""
     try:
         # 세션 ID 검증
@@ -128,8 +142,6 @@ async def process_message(request: ChatMessageRequest):
         state["last_user_input"] = request.user_message
         
         # 디버깅 로그
-        from src.utils.logger import get_logger
-        logger = get_logger(__name__)
         logger.info(f"메시지 처리 시작: session_id={request.session_id}, current_state={state.get('current_state')}, user_message={request.user_message[:50]}...")
         
         # LangGraph 1 step 실행
@@ -162,7 +174,7 @@ async def process_message(request: ChatMessageRequest):
 
 
 @router.post("/end")
-async def end_chat(request: ChatEndRequest):
+async def end_chat(request: ChatEndRequest, _: str = Depends(verify_api_key)):
     """상담 종료"""
     try:
         # 세션 검증
@@ -176,20 +188,21 @@ async def end_chat(request: ChatEndRequest):
             raise SessionNotFoundError(request.session_id)
         
         # SUMMARY → COMPLETED 실행 (아직 SUMMARY가 아닌 경우)
-        if state.get("current_state") != "COMPLETED":
-            # SUMMARY Node 실행
-            from src.langgraph.nodes.summary_node import summary_node
-            state = summary_node(state)
-            
-            # COMPLETED Node 실행
-            from src.langgraph.nodes.completed_node import completed_node
-            state = completed_node(state)
-            
-            # 상태 저장
-            save_session_state(request.session_id, state, db_session=db)
-        
-        # 최종 결과 조회
+        # 하나의 DB 세션으로 통합하여 트랜잭션 일관성 확보
         with db_manager.get_db_session() as db_session:
+            if state.get("current_state") != "COMPLETED":
+                # SUMMARY Node 실행
+                from src.langgraph.nodes.summary_node import summary_node
+                state = summary_node(state)
+                
+                # COMPLETED Node 실행
+                from src.langgraph.nodes.completed_node import completed_node
+                state = completed_node(state)
+                
+                # 상태 저장 (같은 세션 사용)
+                save_session_state(request.session_id, state, db_session=db_session)
+            
+            # 최종 결과 조회 (같은 세션 사용)
             case = db_session.query(CaseMaster).filter(
                 CaseMaster.session_id == request.session_id
             ).first()
@@ -220,7 +233,7 @@ async def end_chat(request: ChatEndRequest):
 
 
 @router.get("/status")
-async def get_chat_status(session_id: str):
+async def get_chat_status(session_id: str, _: str = Depends(verify_api_key)):
     """현재 상담 상태 조회"""
     try:
         with db_manager.get_db_session() as db_session:
@@ -255,7 +268,8 @@ async def get_chat_status(session_id: str):
             
             return success_response({
                 "session_id": session_id,
-                "state": session.current_state,
+                "current_state": session.current_state,  # state -> current_state로 변경
+                "status": session.status,  # status 추가
                 "completion_rate": session.completion_rate,
                 "filled_fields": filled_fields,
                 "missing_fields": missing_fields
@@ -268,7 +282,7 @@ async def get_chat_status(session_id: str):
 
 
 @router.get("/detail")
-async def get_session_detail(session_id: str):
+async def get_session_detail(session_id: str, _: str = Depends(verify_api_key)):
     """세션 상세 정보 조회 (관리자용)"""
     try:
         if not validate_session_id(session_id):
@@ -414,7 +428,7 @@ async def get_session_detail(session_id: str):
 
 
 @router.get("/result")
-async def get_chat_result(session_id: str):
+async def get_chat_result(session_id: str, _: str = Depends(verify_api_key)):
     """최종 상담 결과 조회"""
     try:
         with db_manager.get_db_session() as db_session:
@@ -426,7 +440,7 @@ async def get_chat_result(session_id: str):
             if not session:
                 raise SessionNotFoundError(session_id)
             
-            if session.status != "COMPLETED":
+            if session.status != SessionStatus.COMPLETED.value:
                 raise HTTPException(
                     status_code=400,
                     detail="상담이 아직 완료되지 않았습니다."
@@ -461,6 +475,7 @@ async def get_chat_result(session_id: str):
 
 @router.post("/upload")
 async def upload_file(
+    _: str = Depends(verify_api_key),
     session_id: str = Form(...),
     description: Optional[str] = Form(None),
     files: List[UploadFile] = File(...)
@@ -490,40 +505,70 @@ async def upload_file(
         max_file_size = settings.max_file_size_mb * 1024 * 1024  # MB to bytes
         uploaded_files = []
         
-        for file in files:
-            # 파일 크기 검증
-            file_content = await file.read()
-            file_size = len(file_content)
-            
-            if file_size > max_file_size:
-                raise HTTPException(
-                    status_code=413,
-                    detail=f"파일 '{file.filename}'이 너무 큽니다. (최대 {settings.max_file_size_mb}MB)"
-                )
-            
-            if file_size == 0:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"파일 '{file.filename}'이 비어있습니다."
-                )
-            
-            # 파일 확장자 및 MIME 타입 확인
-            file_ext = Path(file.filename).suffix.lower()
-            mime_type, _ = mimetypes.guess_type(file.filename)
-            
-            # 고유한 파일명 생성 (중복 방지)
-            unique_filename = f"{uuid.uuid4().hex}{file_ext}"
-            file_path = session_upload_dir / unique_filename
-            
-            # 파일 저장
-            with open(file_path, "wb") as f:
-                f.write(file_content)
-            
-            # DB에 파일 정보 저장
-            with db_manager.get_db_session() as db_session:
+        # 모든 파일을 하나의 트랜잭션으로 저장
+        with db_manager.get_db_session() as db_session:
+            for file in files:
+                # 파일명 정규화 (경로 탐색 공격 방지)
+                safe_filename = Path(file.filename).name  # 경로 제거
+                if ".." in safe_filename or "/" in safe_filename or "\\" in safe_filename:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"파일명에 경로 문자가 포함되어 있습니다: {file.filename}"
+                    )
+                
+                # 파일 크기 검증
+                file_content = await file.read()
+                file_size = len(file_content)
+                
+                if file_size > max_file_size:
+                    raise HTTPException(
+                        status_code=413,
+                        detail=f"파일 '{safe_filename}'이 너무 큽니다. (최대 {settings.max_file_size_mb}MB)"
+                    )
+                
+                if file_size == 0:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"파일 '{safe_filename}'이 비어있습니다."
+                    )
+                
+                # 파일 확장자 검증
+                file_ext = Path(safe_filename).suffix.lower()
+                if file_ext not in ALLOWED_EXTENSIONS:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"허용되지 않은 파일 형식입니다: {file_ext}. 허용된 형식: {', '.join(ALLOWED_EXTENSIONS)}"
+                    )
+                
+                # MIME 타입 검증
+                mime_type, _ = mimetypes.guess_type(safe_filename)
+                if mime_type and mime_type not in ALLOWED_MIME_TYPES:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"허용되지 않은 MIME 타입입니다: {mime_type}"
+                    )
+                
+                # 고유한 파일명 생성 (중복 방지)
+                unique_filename = f"{uuid.uuid4().hex}{file_ext}"
+                file_path = session_upload_dir / unique_filename
+                
+                # 경로 검증 (절대 경로로 변환 후 upload_dir 내부인지 확인)
+                upload_dir_resolved = upload_dir.resolve()
+                file_path_resolved = file_path.resolve()
+                if not str(file_path_resolved).startswith(str(upload_dir_resolved)):
+                    raise HTTPException(
+                        status_code=403,
+                        detail="접근할 수 없는 파일 경로입니다."
+                    )
+                
+                # 파일 저장
+                with open(file_path, "wb") as f:
+                    f.write(file_content)
+                
+                # DB에 파일 정보 저장 (트랜잭션 내에서)
                 chat_file = ChatFile(
                     session_id=session_id,
-                    file_name=file.filename,
+                    file_name=safe_filename,
                     file_path=str(file_path.relative_to(upload_dir)),  # 상대 경로 저장
                     file_size=file_size,
                     file_type=mime_type or "application/octet-stream",
@@ -531,9 +576,15 @@ async def upload_file(
                     description=description
                 )
                 db_session.add(chat_file)
-                db_session.commit()
-                db_session.refresh(chat_file)
-                
+                logger.info(f"파일 업로드 완료: session_id={session_id}, file={safe_filename}, size={file_size}")
+            
+            # 모든 파일 저장 후 한 번에 커밋
+            db_session.commit()
+            
+            # 업로드된 파일 정보 조회
+            for chat_file in db_session.query(ChatFile).filter(
+                ChatFile.session_id == session_id
+            ).order_by(ChatFile.uploaded_at.desc()).limit(len(files)).all():
                 uploaded_files.append({
                     "id": chat_file.id,
                     "file_name": chat_file.file_name,
@@ -541,8 +592,6 @@ async def upload_file(
                     "file_type": chat_file.file_type,
                     "uploaded_at": chat_file.uploaded_at.isoformat() if chat_file.uploaded_at else None
                 })
-            
-            logger.info(f"파일 업로드 완료: session_id={session_id}, file={file.filename}, size={file_size}")
         
         return success_response({
             "session_id": session_id,
@@ -567,7 +616,8 @@ async def upload_file(
 async def list_sessions(
     limit: int = 50,
     status: Optional[str] = None,
-    offset: int = 0
+    offset: int = 0,
+    _: str = Depends(verify_api_key)
 ):
     """세션 목록 조회 (관리자용)"""
     try:
@@ -645,7 +695,7 @@ async def list_sessions(
 
 
 @router.get("/files")
-async def get_session_files(session_id: str):
+async def get_session_files(session_id: str, _: str = Depends(verify_api_key)):
     """세션에 첨부된 파일 목록 조회"""
     try:
         # 세션 검증
@@ -692,7 +742,7 @@ async def get_session_files(session_id: str):
 
 
 @router.get("/file/{file_id}/download")
-async def download_file(file_id: int):
+async def download_file(file_id: int, _: str = Depends(verify_api_key)):
     """파일 다운로드"""
     try:
         with db_manager.get_db_session() as db_session:
@@ -704,9 +754,16 @@ async def download_file(file_id: int):
             if not chat_file:
                 raise HTTPException(status_code=404, detail="파일을 찾을 수 없습니다.")
             
-            # 파일 경로 구성
-            upload_dir = Path(settings.upload_dir)
-            file_path = upload_dir / chat_file.file_path
+            # 파일 경로 구성 및 검증
+            upload_dir = Path(settings.upload_dir).resolve()
+            file_path = (upload_dir / chat_file.file_path).resolve()
+            
+            # 경로 탐색 공격 방지 (upload_dir 외부 접근 차단)
+            if not str(file_path).startswith(str(upload_dir)):
+                raise HTTPException(
+                    status_code=403,
+                    detail="접근할 수 없는 파일 경로입니다."
+                )
             
             # 파일 존재 확인
             if not file_path.exists():

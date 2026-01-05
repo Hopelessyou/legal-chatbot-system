@@ -1,11 +1,12 @@
 """
 INIT Node 구현
 """
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Tuple
 from pathlib import Path
 from src.langgraph.state import StateContext
-from src.utils.helpers import generate_session_id
+from src.utils.helpers import generate_session_id, get_kst_now
 from src.utils.logger import get_logger, log_execution_time
+from src.utils.constants import SessionStatus
 from src.db.connection import db_manager
 from src.db.models.chat_session import ChatSession
 from src.rag.parser import RAGDocumentParser
@@ -40,7 +41,7 @@ def _load_k0_messages() -> Optional[Dict[str, Any]]:
         return None
 
 
-def _build_initial_message(k0_data: Optional[Dict[str, Any]]) -> tuple[str, Dict[str, Any]]:
+def _build_initial_message(k0_data: Optional[Dict[str, Any]]) -> Tuple[str, Dict[str, Any]]:
     """
     초기 메시지 생성
     
@@ -116,6 +117,7 @@ def init_node(state: StateContext) -> Dict[str, Any]:
     """
     try:
         session_id = state.get("session_id")
+        user_input = state.get("last_user_input", "").strip()
         
         # 세션 ID가 없으면 생성
         if not session_id:
@@ -137,9 +139,9 @@ def init_node(state: StateContext) -> Dict[str, Any]:
                         channel=state.get("channel", "web"),
                         user_hash=state.get("user_hash"),
                         current_state="INIT",
-                        status="ACTIVE",
+                        status=SessionStatus.ACTIVE.value,
                         completion_rate=0,
-                        started_at=datetime.utcnow()
+                        started_at=get_kst_now()
                     )
                     db_session.add(new_session)
                     db_session.commit()
@@ -150,6 +152,18 @@ def init_node(state: StateContext) -> Dict[str, Any]:
             logger.error(f"DB 세션 생성 실패: {str(db_error)}")
             # DB 오류가 있어도 계속 진행 (세션은 메모리에 저장됨)
         
+        # 사용자 입력이 있으면 CASE_CLASSIFICATION으로 바로 이동
+        if user_input and len(user_input) >= 2:
+            logger.info(f"[{session_id}] INIT: 사용자 입력 감지, CASE_CLASSIFICATION으로 이동: {user_input[:50]}")
+            # 사용자 입력을 그대로 전달하고 CASE_CLASSIFICATION으로 이동
+            # 그래프 엣지에 의해 자동으로 CASE_CLASSIFICATION 노드가 실행됨
+            return {
+                **state,
+                "current_state": "CASE_CLASSIFICATION",
+                "next_state": "CASE_CLASSIFICATION"
+            }
+        
+        # 사용자 입력이 없으면 초기 메시지 표시
         # K0 메시지 로드
         k0_data = _load_k0_messages()
         bot_message, expected_input = _build_initial_message(k0_data)
@@ -159,7 +173,7 @@ def init_node(state: StateContext) -> Dict[str, Any]:
         state["bot_message"] = bot_message
         state["expected_input"] = expected_input
         
-        logger.info(f"INIT Node 완료: session_id={session_id}")
+        logger.info(f"[{session_id}] INIT Node 완료: 초기 메시지 표시")
         
         return {
             **state,

@@ -79,23 +79,18 @@ JSON:"""
                 max_tokens=300
             )
             
-            import json
-            import re
-            
-            # 응답에서 JSON 추출 (마크다운 코드 블록 제거)
+            # 응답에서 JSON 추출 (견고한 파싱 사용)
+            from src.utils.helpers import parse_json_from_text
             content = response["content"].strip()
+            result = parse_json_from_text(content, default={
+                "domain": None,
+                "keywords": [],
+                "main_issue": None,
+                "related_concepts": []
+            })
             
-            # ```json ... ``` 또는 ``` ... ``` 제거
-            json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', content, re.DOTALL)
-            if json_match:
-                content = json_match.group(1)
-            else:
-                # JSON 객체만 추출
-                json_match = re.search(r'\{.*\}', content, re.DOTALL)
-                if json_match:
-                    content = json_match.group(0)
-            
-            result = json.loads(content)
+            if result is None:
+                raise ValueError("JSON 파싱 실패")
             
             logger.debug(f"의미적 특징 추출 완료: domain={result.get('domain')}")
             return result

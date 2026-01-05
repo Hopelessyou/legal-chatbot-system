@@ -26,16 +26,24 @@ class PromptBuilder:
         self._load_templates()
     
     def _load_templates(self):
-        """템플릿 파일 로드"""
+        """템플릿 파일 로드 (하위 디렉토리 포함)"""
         if not self.templates_dir.exists():
             logger.warning(f"템플릿 디렉토리를 찾을 수 없습니다: {self.templates_dir}")
             return
         
-        for template_file in self.templates_dir.glob("*.txt"):
+        # 하위 디렉토리 포함하여 모든 .txt 파일 로드
+        for template_file in self.templates_dir.rglob("*.txt"):
             try:
+                # 하위 디렉토리 경로를 키로 사용 (예: "summary/family_divorce")
+                relative_path = template_file.relative_to(self.templates_dir)
+                template_key = str(relative_path.with_suffix('')).replace('\\', '/')
+                
+                if template_key in self.templates:
+                    logger.warning(f"중복 템플릿 이름 감지: {template_key}")
+                
                 with open(template_file, 'r', encoding='utf-8') as f:
-                    self.templates[template_file.stem] = f.read()
-                logger.debug(f"템플릿 로드 완료: {template_file.stem}")
+                    self.templates[template_key] = f.read()
+                logger.debug(f"템플릿 로드 완료: {template_key}")
             except Exception as e:
                 logger.error(f"템플릿 로드 실패: {template_file} - {str(e)}")
     
@@ -83,7 +91,10 @@ class PromptBuilder:
             return prompt
         except KeyError as e:
             logger.error(f"템플릿 변수 누락: {template_name} - {str(e)}")
-            return template
+            return ""
+        except (ValueError, IndexError) as e:
+            logger.error(f"템플릿 변수 치환 실패: {template_name} - {str(e)}")
+            return ""
     
     def inject_rag_context(
         self,
@@ -107,7 +118,9 @@ class PromptBuilder:
         
         # RAG 컨텍스트 구성
         context_parts = []
-        current_length = 0
+        header = "\n\n참고 문서:\n"
+        separator = "\n"
+        current_length = len(header)  # 헤더 길이 포함
         
         for result in rag_results:
             content = result.get("content", "")
@@ -115,14 +128,16 @@ class PromptBuilder:
             
             context_line = f"[{metadata.get('doc_id', '')}] {content}"
             
-            if current_length + len(context_line) > max_context_length:
+            # 실제 추가될 길이 계산 (구분자 포함)
+            line_with_separator = context_line + separator
+            if current_length + len(line_with_separator) > max_context_length:
                 break
             
             context_parts.append(context_line)
-            current_length += len(context_line)
+            current_length += len(line_with_separator)
         
         if context_parts:
-            rag_context = "\n\n참고 문서:\n" + "\n".join(context_parts)
+            rag_context = header + separator.join(context_parts)
             return prompt + rag_context
         
         return prompt
@@ -138,7 +153,7 @@ class PromptBuilder:
         Returns:
             결합된 프롬프트
         """
-        return separator.join([p for p in prompts if p])
+        return separator.join([p for p in prompts if p and p.strip()])
 
 
 # 전역 프롬프트 빌더 인스턴스

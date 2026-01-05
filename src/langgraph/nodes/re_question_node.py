@@ -5,6 +5,10 @@ from typing import Dict, Any
 from src.langgraph.state import StateContext
 from src.rag.searcher import rag_searcher
 from src.utils.logger import get_logger, log_execution_time
+from src.utils.constants import FIELD_INPUT_TYPE_MAPPING
+from src.utils.question_loader import get_question_message
+from src.services.missing_field_manager import get_next_missing_field
+from src.utils.rag_helpers import extract_question_template_from_rag
 
 logger = get_logger(__name__)
 
@@ -35,9 +39,29 @@ def re_question_node(state: StateContext) -> Dict[str, Any]:
                 "next_state": "SUMMARY"
             }
         
-        # 1. 첫 번째 누락 필드 선택 (우선순위 기반)
-        next_field = missing_fields[0]
-        logger.info(f"[{session_id}] 다음 질문 필드: {next_field}")
+        # 1. 우선순위 기반으로 다음 질문할 필드 선택 (asked_fields 제외)
+        asked_fields = state.get("asked_fields", [])
+        
+        # asked_fields에 포함되지 않은 missing_fields만 필터링
+        unasked_missing_fields = [f for f in missing_fields if f not in asked_fields]
+        
+        if unasked_missing_fields:
+            next_field = get_next_missing_field(unasked_missing_fields, case_type)
+        else:
+            # 모든 missing_fields를 이미 질문한 경우, 다시 질문하지 않고 SUMMARY로 이동
+            logger.info(f"[{session_id}] 모든 누락 필드를 이미 질문했습니다. SUMMARY로 이동합니다.")
+            return {
+                **state,
+                "next_state": "SUMMARY"
+            }
+        
+        if not next_field:
+            logger.warning(f"[{session_id}] 다음 질문할 필드를 찾을 수 없습니다.")
+            return {
+                **state,
+                "next_state": "SUMMARY"
+            }
+        logger.info(f"[{session_id}] 다음 질문 필드: {next_field} (우선순위 기반, asked_fields: {asked_fields})")
         
         # 2. RAG K2에서 질문 템플릿 조회
         # case_type이 이미 영문이어야 함 (CIVIL, CRIMINAL, etc.)
@@ -55,39 +79,29 @@ def re_question_node(state: StateContext) -> Dict[str, Any]:
             logger.warning(f"[{session_id}] RAG 검색 실패 (계속 진행): {str(e)}")
             rag_results = []
         
-        # 3. 질문 생성
-        question_templates = {
-            "incident_date": "사건이 발생한 날짜를 알려주세요.",
-            "counterparty": "계약 상대방은 누구인가요?",
-            "amount": "문제가 된 금액은 얼마인가요?",
-            "evidence": "계약서나 관련 증거를 가지고 계신가요?",
-            "evidence_type": "어떤 증거를 가지고 계신가요? (예: 계약서, 카톡 대화내역, 송금내역, 사진, 영상 등)"
-        }
+        # 3. 질문 생성 (RAG 결과 우선 사용)
+        question = extract_question_template_from_rag(rag_results, next_field)
         
-        question = question_templates.get(next_field, f"{next_field}에 대한 정보를 알려주세요.")
+        # RAG 결과에서 추출 실패 시 YAML 파일에서 로드
+        if not question:
+            question = get_question_message(next_field, case_type)
+            logger.debug(f"[{session_id}] RAG 결과에서 질문 추출 실패, YAML 파일 사용")
+        else:
+            logger.info(f"[{session_id}] RAG 결과에서 질문 템플릿 추출 성공: {next_field}")
         
-        # RAG 결과에서 질문 템플릿 사용 (있는 경우)
-        if rag_results:
-            # 질문 템플릿 추출 로직 (간단화)
-            pass
+        # 4. asked_fields 업데이트 (중복 질문 방지)
+        if next_field not in asked_fields:
+            asked_fields.append(next_field)
+            state["asked_fields"] = asked_fields
         
-        # 4. State 업데이트
+        # 5. State 업데이트
         state["bot_message"] = question
-        
-        field_types = {
-            "incident_date": "date",
-            "counterparty": "text",
-            "amount": "number",
-            "evidence": "boolean",
-            "evidence_type": "text"
-        }
-        
         state["expected_input"] = {
-            "type": field_types.get(next_field, "text"),
+            "type": FIELD_INPUT_TYPE_MAPPING.get(next_field, "text"),
             "field": next_field
         }
         
-        logger.info(f"RE_QUESTION 완료: 필드={next_field}")
+        logger.info(f"[{session_id}] RE_QUESTION 완료: 필드={next_field}, asked_fields={asked_fields}")
         
         return {
             **state,
@@ -95,6 +109,22 @@ def re_question_node(state: StateContext) -> Dict[str, Any]:
         }
     
     except Exception as e:
-        logger.error(f"RE_QUESTION Node 실행 실패: {str(e)}")
-        raise
+        logger.error(f"RE_QUESTION Node 실행 실패: {str(e)}", exc_info=True)
+        # 폴백 처리: 기본 질문 메시지 반환
+        missing_fields = state.get("missing_fields", [])
+        if missing_fields:
+            next_field = missing_fields[0]
+            state["bot_message"] = get_question_message(next_field, state.get("case_type"))
+            state["expected_input"] = {
+                "type": FIELD_INPUT_TYPE_MAPPING.get(next_field, "text"),
+                "field": next_field
+            }
+        else:
+            state["bot_message"] = "추가 정보를 알려주세요."
+            state["next_state"] = "SUMMARY"
+        
+        return {
+            **state,
+            "next_state": "FACT_COLLECTION"
+        }
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>고객 문의사항 관리</title>
+    <link rel="icon" href="data:,">
     <style>
         * {
             margin: 0;
@@ -530,15 +531,74 @@
     </div>
 
     <script>
+        // 파일 프로토콜 체크
+        if (window.location.protocol === 'file:') {
+            document.body.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f5f5f7; flex-direction: column; padding: 20px; text-align: center;">
+                    <h2 style="color: #c62828; margin-bottom: 20px;">⚠️ 서버를 통해 접근해주세요</h2>
+                    <p style="color: #86868b; margin-bottom: 30px; font-size: 16px;">
+                        이 파일은 직접 열 수 없습니다.<br>
+                        FastAPI 서버를 실행한 후 다음 URL로 접근해주세요:
+                    </p>
+                    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px;">
+                        <code style="font-size: 18px; color: #0071e3;">http://localhost:8000/static/admin_dashboard.html</code>
+                    </div>
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 12px; border-left: 4px solid #ffc107; max-width: 600px;">
+                        <p style="margin: 0; color: #856404;">
+                            <strong>서버 실행 방법:</strong><br>
+                            1. 터미널에서 프로젝트 디렉토리로 이동<br>
+                            2. <code>uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000</code> 실행<br>
+                            3. 위 URL로 접근
+                        </p>
+                    </div>
+                </div>
+            `;
+            throw new Error('File protocol not supported');
+        }
+        
         const API_BASE_URL = window.location.origin;
+        console.log('API Base URL:', API_BASE_URL);
+        
+        // API 키 설정 (localStorage에서 가져오거나 입력받기)
+        let API_KEY = localStorage.getItem('api_key');
+        if (!API_KEY) {
+            API_KEY = prompt('API 키를 입력하세요 (한 번만 입력하면 저장됩니다):');
+            if (API_KEY) {
+                localStorage.setItem('api_key', API_KEY);
+                console.log('API 키 저장됨');
+            } else {
+                console.warn('API 키가 입력되지 않았습니다');
+            }
+        } else {
+            console.log('저장된 API 키 사용');
+        }
         let allSessions = [];
         let filteredSessions = [];
         let sortColumn = 'created_at';
         let sortDirection = 'desc';
 
+        // API 호출 헤더 생성
+        function getHeaders() {
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+            if (API_KEY) {
+                headers['Authorization'] = `Bearer ${API_KEY}`;
+                console.log('API 키 헤더 추가됨');
+            } else {
+                console.warn('API 키가 없습니다!');
+            }
+            return headers;
+        }
+
         // 초기 로드
         document.addEventListener('DOMContentLoaded', () => {
-            loadSessions();
+            if (API_KEY) {
+                loadSessions();
+            } else {
+                document.getElementById('sessionsContainer').innerHTML = 
+                    '<div class="empty-state">API 키가 필요합니다. 페이지를 새로고침하여 API 키를 입력해주세요.</div>';
+            }
         });
 
         // 세션 목록 로드
@@ -555,7 +615,22 @@
                     url += `&status=${status}`;
                 }
 
-                const response = await fetch(url);
+                console.log('API 요청:', url, 'Headers:', getHeaders());
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: getHeaders()
+                });
+                
+                console.log('API 응답 상태:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        throw new Error('API 키가 유효하지 않거나 권한이 없습니다. 페이지를 새로고침하여 API 키를 다시 입력해주세요.');
+                    }
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
                 const data = await response.json();
 
                 if (data.success && data.data) {
@@ -786,11 +861,23 @@
             content.innerHTML = '<div class="loading">로딩 중...</div>';
 
             try {
-                const response = await fetch(`${API_BASE_URL}/chat/detail?session_id=${sessionId}`);
+                const response = await fetch(`${API_BASE_URL}/chat/detail?session_id=${sessionId}`, {
+                    headers: getHeaders()
+                });
                 
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
                     throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // API 키 오류
+                        localStorage.removeItem('api_key');
+                        throw new Error('API 키가 유효하지 않습니다. 페이지를 새로고침하여 다시 입력해주세요.');
+                    }
+                    const errorData = await response.json().catch(() => ({ error: { message: `HTTP ${response.status}: ${response.statusText}` } }));
+                    throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
                 }
                 
                 const data = await response.json();
@@ -1078,7 +1165,11 @@
                 const url = `${API_BASE_URL}/chat/file/${fileId}/download`;
                 
                 // fetch로 다운로드하여 blob으로 처리
-                fetch(url)
+                const headers = {};
+                if (API_KEY) {
+                    headers['Authorization'] = `Bearer ${API_KEY}`;
+                }
+                fetch(url, { headers: headers })
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP ${response.status}: ${response.statusText}`);

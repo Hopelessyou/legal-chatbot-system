@@ -1,0 +1,102 @@
+# 코드 리뷰 문서
+
+이 폴더에는 프로젝트의 각 컴포넌트에 대한 상세 리뷰 문서가 포함되어 있습니다.
+
+## 문서 구조
+
+### API 레이어 (REVIEW_01 ~ REVIEW_06)
+- `REVIEW_01_API_MAIN.md` - API 메인 애플리케이션
+- `REVIEW_02_API_AUTH.md` - 인증 및 보안
+- `REVIEW_03_API_MIDDLEWARE.md` - 미들웨어
+- `REVIEW_04_API_ERROR_HANDLER.md` - 에러 핸들러
+- `REVIEW_05_API_CHAT_ROUTER.md` - 채팅 라우터
+- `REVIEW_06_API_RAG_ROUTER.md` - RAG 라우터
+
+### LangGraph 레이어 (REVIEW_07 ~ REVIEW_17)
+- `REVIEW_07_LANGGRAPH_STATE.md` - 상태 관리
+- `REVIEW_08_LANGGRAPH_GRAPH.md` - 그래프 구성
+- `REVIEW_09_LANGGRAPH_EDGES.md` - 엣지 및 라우팅
+- `REVIEW_10_LANGGRAPH_INIT_NODE.md` - INIT 노드
+- `REVIEW_11_LANGGRAPH_CLASSIFICATION_NODE.md` - 분류 노드
+- `REVIEW_12_LANGGRAPH_FACT_COLLECTION_NODE.md` - 사실 수집 노드
+- `REVIEW_13_LANGGRAPH_VALIDATION_NODE.md` - 검증 노드
+- `REVIEW_14_LANGGRAPH_RE_QUESTION_NODE.md` - 재질문 노드
+- `REVIEW_15_LANGGRAPH_SUMMARY_NODE.md` - 요약 노드
+- `REVIEW_16_LANGGRAPH_COMPLETED_NODE.md` - 완료 노드
+- `REVIEW_17_LANGGRAPH_STATE_LOGGER.md` - 상태 로거
+
+### RAG 레이어 (REVIEW_18 ~ REVIEW_24)
+- `REVIEW_18_RAG_SCHEMA.md` - 스키마 정의
+- `REVIEW_19_RAG_PARSER.md` - 파서
+- `REVIEW_20_RAG_CHUNKER.md` - 청커
+- `REVIEW_21_RAG_EMBEDDINGS.md` - 임베딩
+- `REVIEW_22_RAG_VECTOR_DB.md` - 벡터 DB
+- `REVIEW_23_RAG_SEARCHER.md` - 검색기
+- `REVIEW_24_RAG_PIPELINE.md` - 파이프라인
+
+### 서비스 레이어 (REVIEW_25 ~ REVIEW_35)
+- `REVIEW_25_SERVICE_GPT_CLIENT.md` - GPT 클라이언트
+- `REVIEW_26_SERVICE_GPT_LOGGER.md` - GPT 로거
+- `REVIEW_27_SERVICE_ENTITY_EXTRACTOR.md` - 엔티티 추출기
+- `REVIEW_28_SERVICE_KEYWORD_EXTRACTOR.md` - 키워드 추출기
+- `REVIEW_29_SERVICE_FACT_EMOTION_SPLITTER.md` - 사실/감정 분리기
+- `REVIEW_30_SERVICE_SUMMARIZER.md` - 요약기
+- `REVIEW_31_SERVICE_MISSING_FIELD_MANAGER.md` - 누락 필드 관리자
+- `REVIEW_32_SERVICE_COMPLETION_CALCULATOR.md` - 완성도 계산기
+- `REVIEW_33_SERVICE_SESSION_MANAGER.md` - 세션 관리자
+- `REVIEW_34_SERVICE_PROMPT_LOADER.md` - 프롬프트 로더
+- `REVIEW_35_SERVICE_PROMPT_BUILDER.md` - 프롬프트 빌더
+
+### 데이터베이스 레이어 (REVIEW_36 ~ REVIEW_49)
+- `REVIEW_36_DB_CONNECTION.md` - DB 연결
+- `REVIEW_37_DB_BASE.md` - 베이스 모델
+- `REVIEW_38_DB_MODELS_CHAT_SESSION.md` - 채팅 세션 모델
+- `REVIEW_39_DB_MODELS_CASE_MASTER.md` - 사건 마스터 모델
+- `REVIEW_40_DB_MODELS_CASE_FACT.md` - 사건 사실 모델
+- `REVIEW_41_DB_MODELS_CASE_PARTY.md` - 사건 당사자 모델
+- `REVIEW_42_DB_MODELS_CASE_EMOTION.md` - 사건 감정 모델
+- `REVIEW_43_DB_MODELS_CASE_EVIDENCE.md` - 사건 증거 모델
+- `REVIEW_44_DB_MODELS_CASE_MISSING_FIELD.md` - 누락 필드 모델
+- `REVIEW_45_DB_MODELS_CASE_SUMMARY.md` - 사건 요약 모델
+- `REVIEW_46_DB_MODELS_CHAT_FILE.md` - 채팅 파일 모델
+- `REVIEW_47_DB_MODELS_AI_PROCESS_LOG.md` - AI 프로세스 로그 모델
+- `REVIEW_48_DB_MODELS_CHAT_SESSION_STATE_LOG.md` - 상태 로그 모델
+- `REVIEW_49_DB_CONSTANTS.md` - DB 상수
+
+### 유틸리티 레이어 (REVIEW_50 ~ REVIEW_56)
+- `REVIEW_50_UTILS_LOGGER.md` - 로거
+- `REVIEW_51_UTILS_EXCEPTIONS.md` - 예외 처리
+- `REVIEW_52_UTILS_CONSTANTS.md` - 상수
+- `REVIEW_53_UTILS_HELPERS.md` - 헬퍼 함수
+- `REVIEW_54_UTILS_RESPONSE.md` - 응답 포맷
+- `REVIEW_55_UTILS_ENV.md` - 환경 변수
+- `REVIEW_56_UTILS_QUESTION_LOADER.md` - 질문 로더
+
+### 설정 레이어 (REVIEW_57 ~ REVIEW_62)
+- `REVIEW_57_CONFIG_SETTINGS.md` - 설정
+- `REVIEW_58_CONFIG_FALLBACK_KEYWORDS.md` - 폴백 키워드
+- `REVIEW_59_CONFIG_PRIORITY.md` - 우선순위
+- `REVIEW_60_CONFIG_QUESTIONS.md` - 질문 템플릿
+- `REVIEW_61_CONFIG_LOGGING.md` - 로깅 설정
+- `REVIEW_62_PROMPTS_STRUCTURE.md` - 프롬프트 구조
+
+### 기타 (REVIEW_63 ~ REVIEW_75)
+- `REVIEW_63_TYPES.md` - 타입 정의
+- `REVIEW_64_INTEGRATION_FLOW.md` - 통합 플로우
+- `REVIEW_65_SECURITY.md` - 보안
+- `REVIEW_66_PERFORMANCE.md` - 성능
+- `REVIEW_67_ERROR_HANDLING.md` - 에러 처리
+- `REVIEW_68_TESTING.md` - 테스트
+- `REVIEW_69_SCRIPTS.md` - 스크립트
+- `REVIEW_70_DOCKER.md` - Docker
+- `REVIEW_71_DEPENDENCIES.md` - 의존성
+- `REVIEW_72_DOCUMENTATION.md` - 문서화
+- `REVIEW_73_DATA_RAG.md` - RAG 데이터
+- `REVIEW_74_CODE_QUALITY.md` - 코드 품질
+- `REVIEW_75_MAINTAINABILITY.md` - 유지보수성
+
+## 사용 방법
+
+각 리뷰 문서는 해당 컴포넌트의 구조, 문제점, 개선 사항을 상세히 다룹니다. 
+특정 컴포넌트를 이해하거나 개선할 때 해당 문서를 참고하세요.
+

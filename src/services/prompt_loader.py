@@ -4,6 +4,7 @@
 from pathlib import Path
 from typing import Optional
 from src.utils.logger import get_logger
+from src.utils.constants import CASE_TYPE_MAPPING
 
 logger = get_logger(__name__)
 
@@ -24,7 +25,12 @@ class PromptLoader:
             prompts_dir = current_file.parent.parent / "prompts"
         
         self.prompts_dir = prompts_dir
-        logger.debug(f"프롬프트 디렉토리: {self.prompts_dir}")
+        
+        # 디렉토리 존재 여부 확인
+        if not self.prompts_dir.exists():
+            logger.warning(f"프롬프트 디렉토리가 존재하지 않습니다: {self.prompts_dir}")
+        else:
+            logger.debug(f"프롬프트 디렉토리: {self.prompts_dir}")
     
     def load_prompt(
         self,
@@ -55,7 +61,7 @@ class PromptLoader:
             return content
         
         except Exception as e:
-            logger.error(f"프롬프트 로드 실패: {template_name} - {str(e)}")
+            logger.error(f"프롬프트 로드 실패: {template_name} (경로: {prompt_path}) - {str(e)}")
             return None
     
     def get_summary_prompt_name(
@@ -67,12 +73,19 @@ class PromptLoader:
         케이스 타입에 따른 요약 프롬프트 파일명 결정
         
         Args:
-            main_case_type: 주 사건 유형 (CIVIL, CRIMINAL, FAMILY, ADMIN)
-            sub_case_type: 세부 사건 유형
+            main_case_type: 주 사건 유형 (한글: "민사", "형사", "가족", "행정" 또는 영문: "CIVIL", "CRIMINAL", "FAMILY", "ADMIN")
+            sub_case_type: 세부 사건 유형 (한글 또는 영문 코드)
         
         Returns:
             프롬프트 파일명 (확장자 제외)
         """
+        # main_case_type이 None이거나 빈 문자열인 경우
+        if not main_case_type:
+            return "default"
+        
+        # main_case_type 변환 (한글 → 영문)
+        main_case_type_en = CASE_TYPE_MAPPING.get(main_case_type, main_case_type)
+        
         # 케이스 타입별 매핑 (한글 및 영문 코드 모두 지원)
         prompt_mapping = {
             "FAMILY": {
@@ -108,12 +121,12 @@ class PromptLoader:
         }
         
         # 세부 사건 유형별 프롬프트 선택
-        if main_case_type in prompt_mapping:
-            if sub_case_type and sub_case_type in prompt_mapping[main_case_type]:
-                return prompt_mapping[main_case_type][sub_case_type]
+        if main_case_type_en in prompt_mapping:
+            if sub_case_type and sub_case_type in prompt_mapping[main_case_type_en]:
+                return prompt_mapping[main_case_type_en][sub_case_type]
             else:
                 # 세부 사건 유형이 없거나 매핑에 없으면 "기타" 사용
-                return prompt_mapping[main_case_type].get("기타", "default")
+                return prompt_mapping[main_case_type_en].get("기타", "default")
         
         # 주 사건 유형이 매핑에 없으면 기본값
         return "default"

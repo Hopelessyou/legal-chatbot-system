@@ -1,0 +1,92 @@
+# Git 관련
+.git
+.gitignore
+.gitattributes
+
+# Python 관련
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 가상 환경
+venv/
+env/
+ENV/
+.venv
+
+# IDE 관련
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 테스트 관련
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+tests/
+
+# 로그 파일
+logs/
+*.log
+
+# 환경 변수 파일
+.env
+.env.local
+.env.*.local
+
+# 문서 및 검토 보고서 (Docker 이미지에는 불필요)
+*.md
+!README.md
+docs/
+REVIEW_*.md
+CODE_REVIEW_REPORT.md
+COMPREHENSIVE_REVIEW_REPORT.md
+HARDCODED_ISSUES.md
+*.md.bak
+
+# 데이터 파일 (필요시 마운트)
+data/rag/
+data/uploads/
+excel/
+
+# 마이그레이션 파일 (필요시 포함)
+# migrations/
+
+# 스크립트 (필요시 포함)
+# scripts/
+
+# 정적 파일 (필요시 포함)
+# static/
+
+# 기타
+*.bak
+*.tmp
+*.cache
+.cache/
+.python-version
+pyproject.toml.bak
+requirements.txt.bak
+

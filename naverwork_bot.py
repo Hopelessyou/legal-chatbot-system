@@ -39,86 +39,37 @@ except ImportError:
     print("   다음 명령어로 설치하세요: pip install PyJWT")
     raise
 
-# 설정 정보
-CLIENT_ID = 'FCfZT2AnOAVJodPjbPoT'
-CLIENT_SECRET = '06xJaKX_CO'  # 참고: 일부 구현에서는 CLIENT_SECRET을 사용할 수 있음
-BOT_ID = '11012551'
-USER_ID = 'dhk@ibslaw.co.kr' # 메시지를 받을 사용자의 ID
+# 설정 정보 - 환경변수에서 로드
+import os
+from config.settings import settings
 
-# ⚠️ 중요: Naver Works 개발자 콘솔에서 서비스 계정 정보 확인
-# 
-# 서비스 계정 인증 (JWT)에 필요한 정보:
-# 1. Service Account: 가상 관리자 계정 (서비스 계정 ID)
-# 2. Private Key: Service Account와 함께 사용되는 개인 키
-# 
-# 확인 방법:
-# 1. https://developers.worksmobile.com 접속 및 로그인
-# 2. 상단 메뉴에서 "내 앱" 또는 "앱 관리" 클릭
-# 3. 해당 봇 앱 선택
-# 4. 좌측 메뉴에서 "서비스 계정" 또는 "Service Account" 메뉴 클릭
-# 5. 서비스 계정이 없으면 "생성" 버튼으로 새로 생성
-# 6. 서비스 계정 정보 확인:
-#    - Service Account: 계정 ID (예: 'bot@yourdomain.com' 또는 이메일 형식)
-#    - Private Key: 개인 키 (다운로드 또는 복사)
-# 
-# 주의: Private Key는 재발행 가능하며, 재발행하면 이전 키는 사용 불가
-SERVICE_ACCOUNT = '29jda.serviceaccount@ibslaw.co.kr'  # Service Account ID (이메일 형식 또는 계정 ID)
+# Naver Works 설정 (환경변수 또는 settings에서 로드)
+CLIENT_ID = os.getenv('NAVERWORKS_CLIENT_ID', settings.naverworks_client_id) or 'FCfZT2AnOAVJodPjbPoT'
+CLIENT_SECRET = os.getenv('NAVERWORKS_CLIENT_SECRET', settings.naverworks_client_secret) or '06xJaKX_CO'
+BOT_ID = os.getenv('NAVERWORKS_BOT_ID', settings.naverworks_bot_id) or '11012551'
+USER_ID = os.getenv('NAVERWORKS_USER_ID', settings.naverworks_user_id) or 'dhk@ibslaw.co.kr'
+SERVICE_ACCOUNT = os.getenv('NAVERWORKS_SERVICE_ACCOUNT', settings.naverworks_service_account) or '29jda.serviceaccount@ibslaw.co.kr'
 
-# Private Key 설정
-# ⚠️ 중요: Naver Works API 문서에 따르면 서비스 계정 인증에는 Private Key를 사용해야 합니다
-# CLIENT_SECRET은 구성원 계정 인증에 사용되며, 서비스 계정 인증에는 사용할 수 없습니다
-# 
-# Naver Works 개발자 콘솔에서 다운로드한 Private Key를 여기에 설정
-# 
-# 설정 방법 1: 직접 문자열로 설정
-# PRIVATE_KEY = '''-----BEGIN PRIVATE KEY-----
-# MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC...
-# -----END PRIVATE KEY-----'''
-#
-# 설정 방법 2: 파일에서 읽기 (보안상 권장)
-# import os
-# PRIVATE_KEY_PATH = 'private_key.pem'  # Private Key 파일 경로
-# if os.path.exists(PRIVATE_KEY_PATH):
-#     with open(PRIVATE_KEY_PATH, 'r', encoding='utf-8') as f:
-#         PRIVATE_KEY = f.read()
-# else:
-#     PRIVATE_KEY = None
-#
-# ⚠️ Private Key 확인 방법:
-# 1. Naver Works 개발자 콘솔(https://developers.worksmobile.com) 접속
-# 2. 봇 앱 선택
-# 3. 좌측 메뉴에서 "서비스 계정" 클릭
-# 4. "Private Key" 다운로드 버튼 클릭 또는 복사
-# 5. 다운로드한 파일의 내용을 PRIVATE_KEY에 설정
-PRIVATE_KEY = """-----BEGIN PRIVATE KEY-----
-MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCv3bybhGNGnDav
-zz/6SpxYSLOyu7HPwh+lCX8GNbaKhtsNqP9imZ/2EZ81ccQZCs0y+HwwcR4uDRpF
-+mEI0FWoJV7AXbDdwqa8lt1LJweCvfgsjpFKVCvMXa6IAr/Bs5rqbwuYQtO+UOVY
-Ncc4XD5dDl5HuwUqomSFb2crxLMtZZsHK4W/D0Ltq1AVJvEv0JlcycX00yZmK0Ir
-CuCh14ijUYrTwXpLFe6h3kXyp77RRWI4WAqCJfsoO+1bwLkDl9BSNTGgFfagvCiO
-lbpDP7ahndLzrj/kEGWjaox6oRUbt+YC077QrVhy8QrWo7GfQZr+PCYsqC7i4vfc
-cY1ubv2fAgMBAAECggEACYaKfOBfjGrtxHl4cNFK9u8wtr7JEbZW+FZlSDaoPmvO
-DpyFyDrOSBDmnVC6kIzlK2qmb9CYsH3422R3OOmaGTxDm/UznTA6CIn3I/VR8uE2
-QX6vlV6RMzBkeoJ11MpVIgXiE2Qiy88W5s26ci3GNr4ANkxMxrqQBkZsZRmrFURc
-NqK8ZHXVt/k6SLJURVLdGSHOAtrFEyDroSrKvgcuA6G+qjW81SYPL1nO+lEEfPK9
-7d3LPgS/hC55wW7PnZcGu6C386bjPSiftopeVbftWnyBbKZR77o5csy8EqEnRVVs
-AO2yVG3XU/eS/hfuzFLeKMUAcvnM0NuKHzuvGGiJnQKBgQC+0hIAk9EZ0O5t26g6
-if4+zW7sc84MVCg/rCG18rWiS6ynFYan0i6iYhEKv6clE2T3fl5E+K2AHxsgnMbV
-0hUh19EvPdxqTPaU1MgSbJxAPFtbEMUUiW25D9QlAbO1WBZrF3mNdvw/7M1ieLpU
-ruKVsjzzMHBZKy2Z06HdciI4xQKBgQDr8AGH4yLa25ART7D1T8E7NXdl7UkK2krt
-3RQ2PXKQqMtqW/SfuadNA1CegEsiBhUg0kiStgthDNKgyNLP1z17FCNt/E0XkoVG
-3B8soUnDG42IrLt550ttI4GmvOocpaG2VemoVR+9IseBYf/pblRy1a3dsN9faYO8
-QNx4AMgbEwKBgQCBel82vxYSM1+lcXeMCRhYGuMaVFXKrcwFsFHLeN3gOwLy+Ls+
-4nI8QtiXd4X9tVQ8TyW+HRL1LaYlkdulOICYTy2kpZALHR/vyxXa0pGPUKUYfJ+N
-mNa3zNLBLY94DEZh8jLLV6I/6flOyOZ+EZCzzJZo2URSbObrStu5O/mWlQKBgQC1
-5olXmd+CeqrdHeKhjsa8fmE6XTHmQxxnvP3bP463RtvleVXlWz5IGtkqCmFiruvV
-LSq0qdOmFDvDqHEXuqt027bhEhbhqJ5GXmlOgF8dJH3/NKUpvBAj6a8IvTeFtJEz
-wZLurApXSJwl/UdPUjebfXCZrcbZicD9/8e6YWflrwKBgCPpZi8vnBlZlGt4P5Ed
-Q8JPrPE6D8xgze/eKvWIbHy+/KevBftvvU4FXwXCezCxPEYxgH8yhiDwTw9awHst
-BEJTgPfSktlSVPqp3L/34dyBLdrU+7phDbXjPf9QL/zdqcZ/IUOyjR32YdoZC7qG
-ISEenrHeFop+A0nvAfSX68ig
------END PRIVATE KEY-----
-"""  # Private Key 문자열 (필수) - 위 방법 중 하나로 설정하세요
+# Private Key 로드 (환경변수 우선, 파일 경로, settings 순서)
+PRIVATE_KEY = None
+
+# 1. 환경변수에서 직접 로드 (가장 안전)
+if os.getenv('NAVERWORKS_PRIVATE_KEY'):
+    PRIVATE_KEY = os.getenv('NAVERWORKS_PRIVATE_KEY')
+# 2. 파일 경로에서 로드
+elif os.getenv('NAVERWORKS_PRIVATE_KEY_PATH') or settings.naverworks_private_key_path:
+    private_key_path = os.getenv('NAVERWORKS_PRIVATE_KEY_PATH') or settings.naverworks_private_key_path
+    if os.path.exists(private_key_path):
+        with open(private_key_path, 'r', encoding='utf-8') as f:
+            PRIVATE_KEY = f.read()
+# 3. settings에서 로드
+elif settings.naverworks_private_key:
+    PRIVATE_KEY = settings.naverworks_private_key
+
+if not PRIVATE_KEY:
+    print("⚠️ 경고: Naver Works Private Key가 설정되지 않았습니다.")
+    print("환경변수 NAVERWORKS_PRIVATE_KEY 또는 NAVERWORKS_PRIVATE_KEY_PATH를 설정하세요.")
+    print("또는 .env 파일에 naverworks_private_key 또는 naverworks_private_key_path를 설정하세요.")
 
 # Private Key 사용 여부 결정
 # ⚠️ 서비스 계정 인증에는 반드시 Private Key를 사용해야 합니다

@@ -1,0 +1,30 @@
+다음 텍스트에서 다음 정보를 추출하여 JSON 형식으로 반환하세요:
+{requested_fields}
+
+JSON 형식:
+{{
+    "date": "YYYY-MM-DD 또는 null",
+    "amount": 숫자 또는 null,
+    "party": {{
+        "name": "이름 또는 없음",
+        "role": "의뢰인/상대방/기타",
+        "type": "개인/법인/기타",
+        "relationship": "관계 설명 또는 없음"
+    }} 또는 null,
+    "action": {{
+        "action_verb": "행위 동사",
+        "action_description": "행위 내용 요약",
+        "result": "결과 또는 없음"
+    }} 또는 null
+}}
+
+주의사항:
+- 추출할 수 없는 필드는 null로 반환
+- 날짜는 YYYY-MM-DD 형식으로 정확히 반환
+- 금액은 숫자만 반환 (원, 만원 등 단위 제거)
+- party와 action은 객체 또는 null만 반환
+
+텍스트: {text}
+
+JSON:
+

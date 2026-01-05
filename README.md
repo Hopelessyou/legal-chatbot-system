@@ -125,5 +125,27 @@ API 문서는 서버 실행 후 `http://localhost:8000/docs`에서 확인할 수
 
 ## 라이선스
 
+## 문서 구조
+
+프로젝트의 문서는 다음과 같이 구성되어 있습니다:
+
+### 루트 문서
+- `README.md` - 프로젝트 개요 및 시작 가이드
+- `CHANGELOG.md` - 변경 이력
+- `SETUP.md` - 설치 및 설정 가이드
+
+### docs/ 디렉토리
+- `docs/README.md` - 문서 디렉토리 가이드
+- `docs/DOCUMENTATION_INDEX.md` - 문서 인덱스 (빠른 참조)
+- `docs/reviews/` - 컴포넌트별 상세 리뷰 문서 (75개)
+  - `docs/reviews/README.md` - 리뷰 문서 가이드
+  - `docs/reviews/REVIEW_*.md` - 각 컴포넌트별 리뷰 문서
+- `docs/reports/` - 종합 분석 및 개선 리포트 (10개)
+  - `docs/reports/README.md` - 리포트 문서 가이드
+  - 종합 리포트, 분석 리포트, 개선 리포트
+- 기타 사용 가이드 문서 (API, ARCHITECTURE, DATABASE_SETUP 등)
+
+자세한 내용은 `docs/DOCUMENTATION_INDEX.md`를 참고하세요.
+
 [라이선스 정보]
 

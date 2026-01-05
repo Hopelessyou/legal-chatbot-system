@@ -70,9 +70,17 @@ class Summarizer:
             구조화된 요약 딕셔너리
         """
         # Context 정보 정리
-        main_case_type = context.get('case_type', '')
+        main_case_type = context.get('case_type', '') or context.get('main_case_type', '')
         sub_case_type = context.get('sub_case_type', '')
-        case_type = f"{main_case_type} / {sub_case_type}"
+        if main_case_type and sub_case_type:
+            case_type = f"{main_case_type} / {sub_case_type}"
+        elif main_case_type:
+            case_type = main_case_type
+        elif sub_case_type:
+            case_type = sub_case_type
+        else:
+            case_type = "미분류"
+        
         facts = context.get('facts', {})
         emotions = context.get('emotion', [])
         completion_rate = context.get('completion_rate', 0)
@@ -128,10 +136,19 @@ class Summarizer:
         # 프롬프트 변수 준비
         important_info_guide_first = important_info_guide.split('\n')[0].replace('- ', '') if important_info_guide else "중요한 사실 관계"
         
+        # facts와 emotions를 문자열로 변환
+        facts_text = "\n".join([
+            f"- {key}: {value}"
+            for key, value in facts.items()
+            if value is not None
+        ]) if facts else "없음"
+        
+        emotions_text = ", ".join(str(e) for e in emotions) if emotions else "없음"
+        
         prompt_variables = {
             "case_type": case_type,
-            "facts": facts,
-            "emotions": emotions,
+            "facts": facts_text,
+            "emotions": emotions_text,
             "completion_rate": completion_rate,
             "user_inputs_section": user_inputs_section,
             "sections_info": sections_info,
@@ -146,13 +163,13 @@ class Summarizer:
             except KeyError as e:
                 logger.warning(f"프롬프트 템플릿 변수 누락: {e}, 기본 프롬프트 사용")
                 prompt = self._build_default_prompt(
-                    case_type, facts, emotions, completion_rate,
+                    case_type, facts_text, emotions_text, completion_rate,
                     user_inputs_section, sections_info, important_info_guide_first
                 )
         else:
             # 기본 프롬프트 사용
             prompt = self._build_default_prompt(
-                case_type, facts, emotions, completion_rate,
+                case_type, facts_text, emotions_text, completion_rate,
                 user_inputs_section, sections_info, important_info_guide_first
             )
         
@@ -163,23 +180,13 @@ class Summarizer:
                 max_tokens=800
             )
             
-            import json
-            import re
-            
-            # 응답에서 JSON 추출 (마크다운 코드 블록 제거)
+            # 응답에서 JSON 추출 (견고한 파싱 사용)
+            from src.utils.helpers import parse_json_from_text
             content = response["content"].strip()
+            summary_dict = parse_json_from_text(content, default={})
             
-            # ```json ... ``` 또는 ``` ... ``` 제거
-            json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', content, re.DOTALL)
-            if json_match:
-                content = json_match.group(1)
-            else:
-                # JSON 객체만 추출
-                json_match = re.search(r'\{.*\}', content, re.DOTALL)
-                if json_match:
-                    content = json_match.group(0)
-            
-            summary_dict = json.loads(content)
+            if summary_dict is None:
+                summary_dict = {}
             
             # 요약 텍스트 생성
             summary_text = "\n".join([
@@ -207,8 +214,8 @@ class Summarizer:
     def _build_default_prompt(
         self,
         case_type: str,
-        facts: Dict[str, Any],
-        emotions: list,
+        facts: str,
+        emotions: str,
         completion_rate: int,
         user_inputs_section: str,
         sections_info: str,
@@ -219,8 +226,8 @@ class Summarizer:
         
         Args:
             case_type: 사건 유형
-            facts: 수집된 사실
-            emotions: 감정 정보
+            facts: 수집된 사실 (문자열)
+            emotions: 감정 정보 (문자열)
             completion_rate: 완성도
             user_inputs_section: 사용자 입력 섹션
             sections_info: 섹션 정보
@@ -255,6 +262,38 @@ class Summarizer:
 }}
 
 JSON:"""
+    
+    def convert_to_legal_language(self, text: str) -> str:
+        """
+        일상 언어를 법률 언어로 변환
+        
+        Args:
+            text: 일상 언어 텍스트
+        
+        Returns:
+            법률 언어로 변환된 텍스트
+        """
+        prompt = f"""다음 텍스트를 법률 용어를 사용하여 정확하고 전문적으로 변환하세요.
+의미는 유지하되 법률 용어를 사용하세요.
+
+텍스트: {text}
+
+법률 언어:"""
+        
+        try:
+            response = self.gpt_client.chat_completion(
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.3,
+                max_tokens=500
+            )
+            
+            legal_text = response["content"].strip()
+            logger.debug("법률 언어 변환 완료")
+            return legal_text
+        
+        except Exception as e:
+            logger.error(f"법률 언어 변환 실패: {str(e)}")
+            return text
 
 
 def _get_case_specific_guide(main_case_type: str, sub_case_type: str) -> str:
@@ -298,38 +337,6 @@ def _get_case_specific_guide(main_case_type: str, sub_case_type: str) -> str:
         return guides[main_case_type][sub_case_type]
     
     return main_guide
-    
-    def convert_to_legal_language(self, text: str) -> str:
-        """
-        일상 언어를 법률 언어로 변환
-        
-        Args:
-            text: 일상 언어 텍스트
-        
-        Returns:
-            법률 언어로 변환된 텍스트
-        """
-        prompt = f"""다음 텍스트를 법률 용어를 사용하여 정확하고 전문적으로 변환하세요.
-의미는 유지하되 법률 용어를 사용하세요.
-
-텍스트: {text}
-
-법률 언어:"""
-        
-        try:
-            response = self.gpt_client.chat_completion(
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3,
-                max_tokens=500
-            )
-            
-            legal_text = response["content"].strip()
-            logger.debug("법률 언어 변환 완료")
-            return legal_text
-        
-        except Exception as e:
-            logger.error(f"법률 언어 변환 실패: {str(e)}")
-            return text
 
 
 # 전역 요약 생성기 인스턴스

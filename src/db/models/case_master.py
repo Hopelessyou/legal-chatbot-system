@@ -1,10 +1,10 @@
 """
 CaseMaster 모델
 """
-from sqlalchemy import Column, BigInteger, String, Integer, DateTime, ForeignKey, CheckConstraint, UniqueConstraint
+from sqlalchemy import Column, BigInteger, String, DateTime, ForeignKey, CheckConstraint, Index
 from sqlalchemy.orm import relationship
-from datetime import datetime
 from src.db.base import BaseModel
+from src.utils.helpers import get_kst_now
 
 
 class CaseMaster(BaseModel):
@@ -12,6 +12,11 @@ class CaseMaster(BaseModel):
     __tablename__ = "case_master"
     __table_args__ = (
         CheckConstraint("urgency_level IN ('LOW', 'MID', 'HIGH')", name="check_urgency_level"),
+        CheckConstraint("case_stage IN ('상담전', '상담중', '상담완료', '수임', '거절')", name="check_case_stage"),
+        CheckConstraint("estimated_value IS NULL OR estimated_value >= 0", name="check_estimated_value"),
+        Index('idx_case_type', 'main_case_type', 'sub_case_type'),
+        Index('idx_case_value', 'estimated_value'),
+        Index('idx_case_session', 'session_id'),
     )
     
     case_id = Column(BigInteger, primary_key=True, autoincrement=True)
@@ -21,8 +26,8 @@ class CaseMaster(BaseModel):
     case_stage = Column(String(30), default="상담전")
     urgency_level = Column(String(20))
     estimated_value = Column(BigInteger)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, nullable=False, default=get_kst_now)
+    updated_at = Column(DateTime, nullable=False, default=get_kst_now, onupdate=get_kst_now)
     
     # Relationships
     session = relationship("ChatSession", back_populates="case")

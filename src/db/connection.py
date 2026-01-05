@@ -29,6 +29,7 @@ class DatabaseManager:
                 pool_size=5,
                 max_overflow=10,
                 pool_pre_ping=True,  # 연결 유효성 사전 확인
+                pool_timeout=30,  # 연결 풀에서 연결을 기다리는 최대 시간 (초)
                 echo=False,  # SQL 쿼리 로깅 (개발 시 True)
             )
             
@@ -72,8 +73,11 @@ class DatabaseManager:
             yield session
             session.commit()
         except Exception as e:
-            session.rollback()
-            logger.error(f"데이터베이스 세션 오류: {str(e)}")
+            try:
+                session.rollback()
+            except Exception as rollback_error:
+                logger.error(f"롤백 실패: {str(rollback_error)}")
+            logger.error(f"데이터베이스 세션 오류: {str(e)}", exc_info=True)
             raise
         finally:
             session.close()
@@ -97,6 +101,11 @@ class DatabaseManager:
     def close(self):
         """데이터베이스 연결 종료"""
         if self.engine:
+            if self.SessionLocal:
+                try:
+                    self.SessionLocal.remove()  # 스레드 로컬 세션 정리
+                except Exception as e:
+                    logger.warning(f"세션 정리 실패: {str(e)}")
             self.engine.dispose()
             logger.info("데이터베이스 연결 종료")
 

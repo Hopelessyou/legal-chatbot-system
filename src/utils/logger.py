@@ -11,6 +11,27 @@ import yaml
 from config.settings import settings
 
 
+def _setup_default_logging():
+    """기본 로깅 설정"""
+    log_dir = Path(settings.log_file_path).parent
+    if not log_dir.exists():
+        log_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 로그 레벨 검증
+    valid_levels = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
+    log_level = settings.log_level.upper()
+    if log_level not in valid_levels:
+        logging.warning(f"잘못된 로그 레벨: {log_level}. INFO를 사용합니다.")
+        log_level = 'INFO'
+    
+    logging.basicConfig(
+        level=getattr(logging, log_level),
+        format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        filename=settings.log_file_path
+    )
+
+
 def setup_logging(config_path: str = "config/logging.yaml") -> None:
     """
     로깅 설정 초기화
@@ -21,16 +42,29 @@ def setup_logging(config_path: str = "config/logging.yaml") -> None:
     config_file = Path(config_path)
     
     if config_file.exists():
-        with open(config_file, 'r', encoding='utf-8') as f:
-            config = yaml.safe_load(f)
-            logging.config.dictConfig(config)
+        try:
+            with open(config_file, 'r', encoding='utf-8') as f:
+                config = yaml.safe_load(f)
+                
+                if config is None:
+                    raise ValueError("YAML 파일이 비어있습니다.")
+                
+                # 로그 디렉토리 자동 생성
+                if 'handlers' in config:
+                    for handler_name, handler_config in config['handlers'].items():
+                        if isinstance(handler_config, dict) and 'filename' in handler_config:
+                            log_file = Path(handler_config['filename'])
+                            log_dir = log_file.parent
+                            if not log_dir.exists():
+                                log_dir.mkdir(parents=True, exist_ok=True)
+                
+                logging.config.dictConfig(config)
+        except (yaml.YAMLError, KeyError, ValueError, TypeError) as e:
+            # YAML 파싱 오류 또는 설정 오류 시 기본 설정 사용
+            logging.warning(f"로깅 설정 파일 로드 실패 ({config_path}): {e}. 기본 설정을 사용합니다.")
+            _setup_default_logging()
     else:
-        # 기본 로깅 설정
-        logging.basicConfig(
-            level=getattr(logging, settings.log_level.upper()),
-            format='%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-            datefmt='%Y-%m-%d %H:%M:%S'
-        )
+        _setup_default_logging()
 
 
 def get_logger(name: str) -> logging.Logger:

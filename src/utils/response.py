@@ -57,7 +57,15 @@ def error_response(
     
     Returns:
         에러 응답 딕셔너리
+    
+    Raises:
+        ValueError: code나 message가 비어있을 때
     """
+    if not code or not code.strip():
+        raise ValueError("에러 코드는 필수입니다.")
+    if not message or not message.strip():
+        raise ValueError("에러 메시지는 필수입니다.")
+    
     return {
         "success": False,
         "data": None,

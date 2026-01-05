@@ -19,7 +19,7 @@ def load_environment_variables(env_file: str = ".env") -> None:
         raise FileNotFoundError(f"환경 변수 파일을 찾을 수 없습니다: {env_file}")
 
 
-def get_env(key: str, default: Optional[str] = None, required: bool = False) -> str:
+def get_env(key: str, default: Optional[str] = None, required: bool = False) -> Optional[str]:
     """
     환경 변수 조회
     
@@ -29,14 +29,14 @@ def get_env(key: str, default: Optional[str] = None, required: bool = False) -> 
         required: 필수 여부
     
     Returns:
-        환경 변수 값
+        환경 변수 값 (없으면 None 또는 default)
     
     Raises:
         ValueError: 필수 환경 변수가 없을 경우
     """
     value = os.getenv(key, default)
     
-    if required and value is None:
+    if required and (value is None or not value.strip()):
         raise ValueError(f"필수 환경 변수가 설정되지 않았습니다: {key}")
     
     return value
@@ -55,7 +55,8 @@ def validate_required_env_vars(required_vars: List[str]) -> None:
     missing_vars = []
     
     for var in required_vars:
-        if not os.getenv(var):
+        value = os.getenv(var)
+        if not value or not value.strip():
             missing_vars.append(var)
     
     if missing_vars:

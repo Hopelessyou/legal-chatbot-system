@@ -1,23 +1,17 @@
 """
 공통 타입 정의
+
+주의: StateContext는 src/langgraph/state.py에서 정의됩니다.
+이 파일에는 StateContext를 제외한 공통 타입만 정의합니다.
 """
 from typing import TypedDict, Optional, List, Dict, Any
 from datetime import datetime
 
 
-class StateContext(TypedDict, total=False):
-    """LangGraph State Context 타입 정의"""
-    session_id: str
-    current_state: str
-    case_type: Optional[str]
-    sub_case_type: Optional[str]
-    facts: Dict[str, Any]
-    emotion: List[Dict[str, Any]]
-    completion_rate: int
-    last_user_input: str
-    missing_fields: List[str]
-    bot_message: Optional[str]
-    expected_input: Optional[Dict[str, Any]]
+# 타입 별칭 (선택적)
+JsonDict = Dict[str, Any]
+JsonList = List[JsonDict]
+EmotionList = List[Dict[str, Any]]
 
 
 class FactDict(TypedDict, total=False):
