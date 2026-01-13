@@ -52,7 +52,7 @@ loggers:
   langgraph:
     level: INFO
     handlers: [console, file, error_file]
-    propagate: false
+    propagate: true  # root logger로 전파하여 콘솔에 출력
   
   rag:
     level: INFO

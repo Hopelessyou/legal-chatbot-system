@@ -31,7 +31,21 @@ def summary_node(state: StateContext) -> Dict[str, Any]:
         session_id = state["session_id"]
         facts = state.get("facts", {})
         
-        logger.info(f"[{session_id}] SUMMARY Node 실행: facts={list(facts.keys())}, completion_rate={state.get('completion_rate', 0)}%")
+        # 단계 표시
+        print("\n" + "="*70)
+        print("📍 [STEP 6] SUMMARY 노드 실행")
+        print("="*70)
+        print(f"📌 세션 ID: {session_id}")
+        print(f"📊 수집된 Facts: {list(facts.keys())}")
+        print(f"📈 완성도: {state.get('completion_rate', 0)}%")
+        print("="*70 + "\n")
+        logger.info("="*70)
+        logger.info("📍 [STEP 6] SUMMARY 노드 실행")
+        logger.info("="*70)
+        logger.info(f"📌 세션 ID: {session_id}")
+        logger.info(f"📊 수집된 Facts: {list(facts.keys())}")
+        logger.info(f"📈 완성도: {state.get('completion_rate', 0)}%")
+        logger.info("="*70)
         
         # 1. 전체 Context 취합
         # 사용자 입력 텍스트 수집 (DB의 CaseFact에서 source_text 수집)
@@ -134,16 +148,19 @@ def summary_node(state: StateContext) -> Dict[str, Any]:
                 logger.warning(f"[{session_id}] CaseMaster를 찾을 수 없어 요약을 저장할 수 없습니다.")
         
         # 5. State 업데이트
-        state["bot_message"] = "모든 필수 정보가 수집되었습니다. 요약을 생성하겠습니다."
+        bot_message = "모든 필수 정보가 수집되었습니다. 요약을 생성하겠습니다."
+        state["bot_message"] = bot_message
         state["expected_input"] = None
         
-        logger.info(f"SUMMARY 완료: session_id={session_id}")
+        logger.info(f"[{session_id}] SUMMARY 완료: bot_message={bot_message}")
+        logger.debug(f"[{session_id}] SUMMARY: state['bot_message']={state.get('bot_message')}")
         
         # 6. 그래프 엣지를 통한 자동 전이 (COMPLETED 노드 직접 호출 제거)
         # graph.py에서 이미 SUMMARY → COMPLETED 엣지가 정의되어 있으므로
         # next_state만 반환하면 LangGraph가 자동으로 COMPLETED 노드로 전이함
         return {
             **state,
+            "bot_message": bot_message,  # 명시적으로 반환
             "next_state": "COMPLETED"
         }
     

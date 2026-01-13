@@ -870,6 +870,18 @@
                     <span>☎ 060-604-1000</span>
                     <span class="phone-button">상담 연결</span>
                 </div>
+                <div class="header-icon-button" onclick="handleStartSession()" title="세션 시작" id="startSessionBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </div>
+                <div class="header-icon-button" onclick="handleResetSession()" title="초기화">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </div>
                 <div class="header-icon-button" onclick="openFileUpload()" title="파일 첨부" style="display: none;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -1200,7 +1212,6 @@
         let sessionId = null;
         let isProcessing = false;
         let currentStep = 'greeting';
-        let lastBotMessage = ''; // 마지막 봇 메시지 저장 (중복 방지)
 
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
@@ -1225,9 +1236,12 @@
             try {
                 logInfo('API 연결 테스트 시작', { baseUrl: API_BASE_URL });
                 // 간단한 GET 요청으로 연결 테스트 (루트 경로 또는 health check)
-                const testResponse = await fetch(`${API_BASE_URL}/`, {
+                // 캐시 완전 비활성화
+                const testResponse = await fetch(`${API_BASE_URL}/?t=${Date.now()}`, {
                     method: 'GET',
-                    headers: getHeaders()
+                    headers: getHeaders(),
+                    cache: 'no-store',
+                    credentials: 'omit'
                 });
                 logInfo('API 연결 테스트 결과', { 
                     status: testResponse.status, 
@@ -1239,7 +1253,8 @@
                 logError('API 연결 테스트 실패', { 
                     error: error.message,
                     baseUrl: API_BASE_URL,
-                    errorName: error.name
+                    errorName: error.name,
+                    stack: error.stack
                 });
                 return false;
             }
@@ -1257,6 +1272,19 @@
                 logInfo('세션 시작 시도', { apiBaseUrl: API_BASE_URL });
                 statusIndicator.classList.remove('hidden');
                 updateStatus('세션 시작 중...', false);
+                
+                // Service Worker가 등록되어 있으면 해제
+                if ('serviceWorker' in navigator) {
+                    try {
+                        const registrations = await navigator.serviceWorker.getRegistrations();
+                        for (let registration of registrations) {
+                            await registration.unregister();
+                            logInfo('Service Worker 해제됨', { scope: registration.scope });
+                        }
+                    } catch (swError) {
+                        logWarn('Service Worker 해제 실패', { error: swError.message });
+                    }
+                }
                 
                 if (!API_KEY) {
                     throw new Error('API 키가 설정되지 않았습니다. 페이지를 새로고침하여 API 키를 입력해주세요.');
@@ -1288,13 +1316,66 @@
                 };
                 logApiRequest('POST', `${API_BASE_URL}/chat/start`, startRequestBody);
                 
-                const response = await fetch(`${API_BASE_URL}/chat/start`, {
-                    method: 'POST',
-                    headers: getHeaders(),
-                    body: JSON.stringify(startRequestBody)
-                });
+                let response;
+                try {
+                    // 캐시를 완전히 비활성화하고 항상 서버에서 가져오도록 설정
+                    // 타임스탬프와 랜덤 값을 추가하여 브라우저 캐시 완전 우회
+                    const headers = {
+                        ...getHeaders(),
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0',
+                        'X-Request-ID': `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`  // 고유 요청 ID
+                    };
+                    
+                    // 타임아웃을 추가한 fetch
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000);  // 5초 타임아웃
+                    
+                    try {
+                        response = await fetch(`${API_BASE_URL}/chat/start?t=${Date.now()}&r=${Math.random()}`, {
+                            method: 'POST',
+                            headers: headers,
+                            body: JSON.stringify(startRequestBody),
+                            cache: 'no-store',  // 캐시 비활성화
+                            credentials: 'omit',  // 쿠키/인증 정보 제외
+                            signal: controller.signal  // 타임아웃 신호
+                        });
+                        clearTimeout(timeoutId);
+                    } catch (fetchError) {
+                        clearTimeout(timeoutId);
+                        if (fetchError.name === 'AbortError') {
+                            throw new Error('서버 응답 시간이 초과되었습니다. API 서버가 실행 중인지 확인해주세요.');
+                        }
+                        throw fetchError;
+                    }
+                } catch (fetchError) {
+                    // 네트워크 오류 또는 서버가 실행되지 않은 경우
+                    logError('API 서버 연결 실패', { 
+                        error: fetchError.message,
+                        apiBaseUrl: API_BASE_URL,
+                        errorName: fetchError.name,
+                        stack: fetchError.stack
+                    });
+                    
+                    // 즉시 에러 표시 및 입력 비활성화
+                    addErrorMessage(`API 서버에 연결할 수 없습니다.\n\n서버 주소: ${API_BASE_URL}\n\n서버가 실행 중인지 확인해주세요.\n\n터미널에서 다음 명령어로 서버를 실행하세요:\nuvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000`);
+                    updateStatus('연결 실패', false);
+                    chatInput.disabled = true;
+                    sendButton.disabled = true;
+                    document.getElementById('fileAttachButton').disabled = true;
+                    sessionId = null;
+                    
+                    throw fetchError;  // 에러를 다시 throw하여 catch 블록으로 이동
+                }
 
                 logApiResponse('POST', `${API_BASE_URL}/chat/start`, response);
+                
+                // 응답이 실제로 서버에서 온 것인지 확인
+                // 네트워크 오류나 타임아웃인 경우 response가 없을 수 있음
+                if (!response) {
+                    throw new Error('서버로부터 응답을 받을 수 없습니다. API 서버가 실행 중인지 확인해주세요.');
+                }
 
                 if (!response.ok) {
                     if (response.status === 401) {
@@ -1312,38 +1393,73 @@
                     throw new Error(errorData.error?.message || errorData.error?.detail || `HTTP ${response.status}: ${response.statusText}`);
                 }
                 
-                const data = await response.json();
+                let data;
+                try {
+                    // 응답 텍스트를 먼저 읽어서 실제로 서버에서 온 것인지 확인
+                    const responseText = await response.text();
+                    logInfo('응답 원문 확인', { 
+                        responseLength: responseText.length,
+                        responsePreview: responseText.substring(0, 200)
+                    });
+                    
+                    if (!responseText || responseText.trim() === '') {
+                        throw new Error('서버로부터 빈 응답을 받았습니다. API 서버가 실행 중인지 확인해주세요.');
+                    }
+                    
+                    // JSON 파싱 시도
+                    try {
+                        data = JSON.parse(responseText);
+                    } catch (parseError) {
+                        logError('응답 JSON 파싱 실패', { 
+                            error: parseError.message,
+                            responseText: responseText.substring(0, 500)
+                        });
+                        throw new Error(`서버 응답을 파싱할 수 없습니다. 서버가 정상적으로 실행 중인지 확인해주세요.\n\n응답 내용: ${responseText.substring(0, 200)}`);
+                    }
+                } catch (jsonError) {
+                    logError('응답 처리 실패', { error: jsonError.message });
+                    throw jsonError;
+                }
+                
                 logInfo('세션 시작 응답', { 
                     success: data.success,
                     sessionId: data.data?.session_id,
                     state: data.data?.current_state || data.data?.state
                 });
                 
-                if (data.success && data.data) {
-                    sessionId = data.data.session_id;
-                    // 세션 ID 저장하지 않음 (새로고침 시 항상 새 세션 시작)
-                    lastBotMessage = ''; // 새 세션 시작 시 초기화
-                    
-                    // AI 첫 메시지 (간단한 인사)
-                    setTimeout(() => {
-                        addMessage('bot', '안녕하세요.\n상담 전에 상황을 정리해드릴게요.\n\n아래 질문에 편하게 답해주시면,\n변호사 상담에 필요한 핵심만 정리해드립니다.');
-                        
-                        // STEP 1 메시지
-                        setTimeout(() => {
-                            addStepMessage('STEP 1. 어떤 일이 있었나요?', 
-                                '언제 / 누구와 / 어떤 일이 있었는지\n3~5줄로 편하게 적어주세요.\n(금액, 증거가 있다면 함께 적어주시면 좋아요)');
-                            currentStep = 'situation';
-                        }, 500);
-                    }, 300);
-                    
-                    chatInput.disabled = false;
-                    sendButton.disabled = false;
-                    document.getElementById('fileAttachButton').disabled = false;
-                    updateStatus('연결됨', true);
-                    statusIndicator.classList.add('hidden');
-                } else {
+                if (!data.success) {
                     throw new Error(data.error?.message || '세션 시작 실패');
                 }
+                
+                if (!data.data) {
+                    throw new Error('서버 응답에 데이터가 없습니다.');
+                }
+                
+                if (!data.data.session_id) {
+                    throw new Error('서버 응답에 세션 ID가 없습니다.');
+                }
+                
+                sessionId = data.data.session_id;
+                // 세션 ID 저장하지 않음 (새로고침 시 항상 새 세션 시작)
+                
+                // 세션 시작 버튼 상태 업데이트
+                updateStartSessionButtonState();
+                
+                // API 응답에서 bot_message가 있으면 표시, 없으면 기본 메시지도 표시하지 않음
+                // 모든 메시지는 서버에서만 생성되어야 함
+                const botMessage = data.data.bot_message;
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
+                
+                // STEP 1 메시지는 서버에서만 생성되어야 하므로 클라이언트에서 생성하지 않음
+                // 서버 응답에 bot_message가 없으면 아무것도 표시하지 않음
+                
+                chatInput.disabled = false;
+                sendButton.disabled = false;
+                document.getElementById('fileAttachButton').disabled = false;
+                updateStatus('연결됨', true);
+                statusIndicator.classList.add('hidden');
             } catch (error) {
                 logError('세션 시작 오류', { 
                     error: error.message, 
@@ -1354,18 +1470,28 @@
                     errorName: error.name
                 });
                 
-                // 네트워크 오류인 경우 명확한 메시지 표시
+                // 모든 오류에 대해 명확한 메시지 표시
                 let errorMessage = error.message;
+                
+                // 네트워크 오류인 경우
                 if (error.message.includes('Failed to fetch') || 
                     error.message.includes('NetworkError') || 
                     error.message.includes('Network request failed') ||
                     error.name === 'TypeError' ||
-                    error.message.includes('CORS')) {
+                    error.message.includes('CORS') ||
+                    error.message.includes('API 서버에 연결할 수 없습니다')) {
                     errorMessage = `API 서버에 연결할 수 없습니다.\n\n서버 주소: ${API_BASE_URL}\n\n서버가 실행 중인지 확인해주세요.\n\n터미널에서 다음 명령어로 서버를 실행하세요:\nuvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000`;
                 }
                 
+                // 에러 메시지 표시 및 입력 비활성화
                 addErrorMessage(`세션 시작 실패: ${errorMessage}`);
                 updateStatus('연결 실패', false);
+                chatInput.disabled = true;
+                sendButton.disabled = true;
+                document.getElementById('fileAttachButton').disabled = true;
+                
+                // 세션 ID 초기화
+                sessionId = null;
             }
         }
 
@@ -1538,10 +1664,8 @@
 
         // 봇 응답 처리
         function handleBotResponse(data) {
-            // bot_message가 없거나 빈 문자열이면 스킵 (기본 메시지 표시하지 않음)
-            const botMessage = data.bot_message;
-            
-            // 상태에 따라 다른 처리
+            // 서버에서 받은 데이터를 그대로 처리 (필터링 없음)
+            const botMessage = data.bot_message || '';
             const state = data.current_state || data.state;
             const previousState = currentStep;
             
@@ -1552,71 +1676,66 @@
                 sessionId,
                 completionRate: data.completion_rate,
                 expectedInput: data.expected_input,
-                hasBotMessage: !!botMessage
+                hasBotMessage: !!botMessage,
+                // Q-A 매칭 방식 디버깅 정보 (있는 경우만)
+                conversationHistoryCount: data.conversation_history ? data.conversation_history.length : undefined,
+                skippedFields: data.skipped_fields || undefined,
+                hasInitialAnalysis: !!data.initial_analysis
             });
-            
-            // 빈 메시지나 안내 메시지가 반복되는 경우 스킵
-            if (!botMessage || botMessage.trim() === '') {
-                logWarn('빈 봇 메시지 수신, 스킵', { state, previousState });
-                // 상태 전이만 업데이트 (메시지 없이)
-                if (previousState !== state) {
-                    logStateTransition(previousState, state, sessionId);
-                    currentStep = state.toLowerCase();
-                }
-                return;
-            }
-            
-            // 중복 메시지 체크 제거 - 노드에서 처리하도록 변경
-            // HTML에서는 모든 메시지를 표시하고, 노드에서 사용자 입력 처리 여부를 확인하도록 함
             
             // State 전이 로깅
             if (previousState !== state) {
                 logStateTransition(previousState, state, sessionId);
             }
             
-            // 마지막 메시지 업데이트 (로깅용으로만 사용)
-            lastBotMessage = botMessage.trim();
+            // 상태 업데이트
+            currentStep = state ? state.toLowerCase() : currentStep;
             
-            // 세션 ID를 localStorage에 저장하지 않음 (새로고침 시 항상 새 세션 시작)
-            // if (sessionId) {
-            //     localStorage.setItem('current_session_id', sessionId);
-            // }
-            
+            // 상태에 따라 처리 (메시지가 있으면 표시, 없으면 상태만 업데이트)
             if (state === 'CASE_CLASSIFICATION' || state === 'case_classification') {
                 // 유형 선택 버튼 표시
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
                 addButtonGroup('🧭 STEP 2. 어떤 유형에 가까운가요?', [
                     { text: '💰 돈·계약·부동산', value: 'contract' },
                     { text: '🚨 사기·형사', value: 'criminal' },
                     { text: '👨‍👩‍👧 이혼·가족', value: 'family' },
                     { text: '🏛 행정처분', value: 'administrative' }
                 ]);
-                currentStep = 'classification';
             } else if (state === 'FACT_COLLECTION' || state === 'fact_collection') {
                 // 사실 수집 단계
-                addMessage('bot', botMessage);
-                currentStep = 'fact_collection';
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
             } else if (state === 'RE_QUESTION' || state === 're_question') {
                 // 재질문 단계
-                addMessage('bot', botMessage);
-                currentStep = 're_question';
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
             } else if (state === 'VALIDATION' || state === 'validation') {
                 // 검증 단계
-                addMessage('bot', botMessage);
-                currentStep = 'validation';
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
             } else if (state === 'SUMMARY' || state === 'summary') {
                 // 요약 단계
-                addMessage('bot', botMessage);
-                currentStep = 'summary';
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
             } else if (state === 'COMPLETED' || state === 'completed') {
                 // 완료 단계
-                addMessage('bot', botMessage);
-                currentStep = 'completed';
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
                 
                 // 최종 요약 정보 가져오기
                 loadFinalSummary(sessionId);
             } else {
-                // 일반 메시지 표시
-                addMessage('bot', botMessage);
+                // 일반 메시지 표시 (메시지가 있으면)
+                if (botMessage && botMessage.trim()) {
+                    addMessage('bot', botMessage);
+                }
             }
         }
 
@@ -2151,8 +2270,81 @@
             }
         });
 
-        // 초기화
-        startSession();
+        // 세션 시작 버튼 핸들러
+        function handleStartSession() {
+            if (sessionId) {
+                if (confirm('이미 세션이 시작되어 있습니다. 새로 시작하시겠습니까?')) {
+                    handleResetSession();
+                    setTimeout(() => startSession(), 500);
+                }
+            } else {
+                startSession();
+            }
+        }
+        
+        // 초기화 버튼 핸들러
+        async function handleResetSession() {
+            if (!confirm('모든 대화 내용이 삭제되고 세션이 초기화됩니다. 계속하시겠습니까?')) {
+                return;
+            }
+            
+            try {
+                logInfo('세션 초기화 시작');
+                
+                // 채팅 메시지 초기화
+                chatMessages.innerHTML = '';
+                
+                // 세션 ID 초기화
+                sessionId = null;
+                localStorage.removeItem('savedSessionId');
+                
+                // 상태 초기화
+                currentState = 'greeting';
+                statusIndicator.classList.add('hidden');
+                
+                // 입력 필드 활성화
+                chatInput.disabled = false;
+                sendButton.disabled = false;
+                
+                // 세션 시작 버튼 상태 업데이트
+                updateStartSessionButtonState();
+                
+                // 초기 메시지 표시
+                addMessage('bot', '상담을 시작하려면 상단의 "세션 시작" 버튼을 클릭하거나 메시지를 입력하세요.');
+                
+                logInfo('세션 초기화 완료');
+            } catch (error) {
+                logError('세션 초기화 오류', { error: error.message, stack: error.stack });
+                alert(`초기화 중 오류가 발생했습니다: ${error.message}`);
+            }
+        }
+        
+        // 세션 시작 버튼 상태 업데이트
+        function updateStartSessionButtonState() {
+            const startBtn = document.getElementById('startSessionBtn');
+            if (startBtn) {
+                if (sessionId) {
+                    startBtn.style.opacity = '0.6';
+                    startBtn.title = '세션이 이미 시작되어 있습니다. 초기화 버튼을 눌러주세요.';
+                } else {
+                    startBtn.style.opacity = '1';
+                    startBtn.title = '세션 시작';
+                }
+            }
+        }
+        
+        // 초기화 - 자동 실행 비활성화 (수동으로 시작하도록 변경)
+        // startSession(); // 자동 실행 제거 - 사용자가 명시적으로 시작 버튼을 누를 때만 실행
+        
+        // 대신 초기 메시지만 표시
+        if (chatMessages.children.length === 0) {
+            addMessage('bot', '상담을 시작하려면 상단의 "세션 시작" 버튼을 클릭하거나 메시지를 입력하세요.');
+        }
+        
+        // 세션 시작 버튼 상태 초기화
+        updateStartSessionButtonState();
+        
+        // sendMessage 함수에서 세션이 없으면 자동으로 시작하도록 수정됨 (이미 구현되어 있음)
     </script>
 
     <!-- 디버그 패널 -->
@@ -2169,119 +2361,4 @@
         </div>
     </div>
 
-    <script>
-        // 디버그 로깅 시스템
-        const DEBUG_ENABLED = true; // 항상 활성화
-        const MAX_DEBUG_LOGS = 100; // 최대 로그 개수
-
-        function debugLog(level, message, data = null) {
-            const timestamp = new Date().toLocaleTimeString('ko-KR');
-            const logEntry = {
-                level,
-                timestamp,
-                message,
-                data
-            };
-
-            // 콘솔 로그
-            const consoleMethod = {
-                'log': console.log,
-                'info': console.info,
-                'warn': console.warn,
-                'error': console.error
-            }[level] || console.log;
-
-            if (data) {
-                consoleMethod(`[${timestamp}] ${message}`, data);
-            } else {
-                consoleMethod(`[${timestamp}] ${message}`);
-            }
-
-            // HTML 디버그 패널에 추가
-            if (DEBUG_ENABLED) {
-                addDebugLogToPanel(logEntry);
-            }
-        }
-
-        function addDebugLogToPanel(logEntry) {
-            const panel = document.getElementById('debugPanel');
-            const content = document.getElementById('debugLogContent');
-            
-            if (!panel || !content) return;
-
-            // 최대 로그 개수 제한
-            const logs = content.children;
-            if (logs.length >= MAX_DEBUG_LOGS) {
-                content.removeChild(logs[0]);
-            }
-
-            const logDiv = document.createElement('div');
-            logDiv.className = `debug-log-entry ${logEntry.level}`;
-            
-            const timeDiv = document.createElement('div');
-            timeDiv.className = 'debug-log-time';
-            timeDiv.textContent = logEntry.timestamp;
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'debug-log-message';
-            messageDiv.textContent = logEntry.message;
-            
-            logDiv.appendChild(timeDiv);
-            logDiv.appendChild(messageDiv);
-
-            if (logEntry.data) {
-                const dataDiv = document.createElement('div');
-                dataDiv.className = 'debug-log-data';
-                dataDiv.textContent = JSON.stringify(logEntry.data, null, 2);
-                logDiv.appendChild(dataDiv);
-            }
-
-            content.appendChild(logDiv);
-            
-            // 자동 스크롤
-            content.scrollTop = content.scrollHeight;
-        }
-
-        function toggleDebugPanel() {
-            const panel = document.getElementById('debugPanel');
-            if (panel) {
-                panel.classList.toggle('visible');
-            }
-        }
-
-        function clearDebugLogs() {
-            const content = document.getElementById('debugLogContent');
-            if (content) {
-                content.innerHTML = '';
-                debugLog('info', '디버그 로그가 지워졌습니다.');
-            }
-        }
-
-        // 로깅 헬퍼 함수들
-        function logInfo(message, data = null) {
-            debugLog('info', message, data);
-        }
-
-        function logWarn(message, data = null) {
-            debugLog('warn', message, data);
-        }
-
-        function logError(message, data = null) {
-            debugLog('error', message, data);
-        }
-
-        function logApiRequest(method, url, body = null) {
-            logInfo(`API 요청: ${method} ${url}`, { body });
-        }
-
-        function logApiResponse(method, url, response, data = null) {
-            logInfo(`API 응답: ${method} ${url}`, { 
-                status: response.status, 
-                statusText: response.statusText,
-                data 
-            });
-        }
-
-        function logStateTransition(fromState, toState, sessionId) {
-            logInfo(`State 전이: ${fromState} → ${toState}`, { sessionId });
-        }
+    <!-- 중복 스크립트 블록 제거됨 - 위의 스크립트 블록(1043-1230 라인)에서 이미 정의됨 -->

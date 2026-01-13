@@ -27,7 +27,21 @@ def completed_node(state: StateContext) -> Dict[str, Any]:
     try:
         session_id = state["session_id"]
         
-        logger.info(f"[{session_id}] COMPLETED Node 실행: completion_rate={state.get('completion_rate', 0)}%")
+        # 단계 표시
+        print("\n" + "="*70)
+        print("📍 [STEP 7] COMPLETED 노드 실행 (최종 단계)")
+        print("="*70)
+        print(f"📌 세션 ID: {session_id}")
+        print(f"📈 최종 완성도: {state.get('completion_rate', 0)}%")
+        print(f"✅ 세션 상태: COMPLETED")
+        print("="*70 + "\n")
+        logger.info("="*70)
+        logger.info("📍 [STEP 7] COMPLETED 노드 실행 (최종 단계)")
+        logger.info("="*70)
+        logger.info(f"📌 세션 ID: {session_id}")
+        logger.info(f"📈 최종 완성도: {state.get('completion_rate', 0)}%")
+        logger.info(f"✅ 세션 상태: COMPLETED")
+        logger.info("="*70)
         
         # 1. 세션 상태를 COMPLETED로 업데이트
         with db_manager.get_db_session() as db_session:

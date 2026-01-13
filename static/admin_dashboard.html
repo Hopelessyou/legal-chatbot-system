@@ -911,12 +911,13 @@
             }
         }
 
-        // 상세 정보 표시
+            // 상세 정보 표시
         function displayDetail(data) {
             const content = document.getElementById('detailContent');
             const session = data.session;
             const case_info = data.case;
             const files = data.files || [];
+            const conversation_history = data.conversation_history || [];
 
             let html = '';
 
@@ -1118,6 +1119,50 @@
                 }
             }
 
+            // 질답 내용
+            if (conversation_history && conversation_history.length > 0) {
+                html += `
+                    <div class="detail-section">
+                        <h3>질답 내용 (${conversation_history.length}개)</h3>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                `;
+                conversation_history.forEach((qa, index) => {
+                    const field = qa.field || '기타';
+                    const question = qa.question || '(질문 없음)';
+                    const answer = qa.answer || '(답변 없음)';
+                    html += `
+                        <div style="background: #f5f5f7; border-radius: 12px; padding: 16px; border-left: 4px solid #0071e3;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-size: 12px; font-weight: 600; color: #86868b; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    ${index + 1}. ${field}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 12px;">
+                                <div style="font-size: 12px; font-weight: 500; color: #86868b; margin-bottom: 4px;">질문</div>
+                                <div style="font-size: 14px; color: #1d1d1f; background: white; padding: 10px; border-radius: 8px; white-space: pre-wrap;">${escapeHtml(question)}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 12px; font-weight: 500; color: #86868b; margin-bottom: 4px;">답변</div>
+                                <div style="font-size: 14px; color: #1d1d1f; background: white; padding: 10px; border-radius: 8px; white-space: pre-wrap;">${escapeHtml(answer)}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="detail-section">
+                        <h3>질답 내용</h3>
+                        <div class="empty-state" style="padding: 20px;">
+                            <p style="color: #86868b;">질답 내용이 없습니다.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
             // 파일 목록
             if (files.length > 0) {
                 html += `
@@ -1148,6 +1193,14 @@
             }
 
             content.innerHTML = html;
+        }
+
+        // HTML 이스케이프 함수
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // 파일 크기 포맷

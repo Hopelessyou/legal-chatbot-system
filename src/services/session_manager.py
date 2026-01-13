@@ -159,10 +159,34 @@ class SessionManager:
                     context["asked_fields"] = []
                     
                     logger.debug(f"세션 상태 로드 완료: {session_id}, facts={list(facts.keys())}")
+                
+                # conversation_history 복원 (DB 세션 컨텍스트 내에서 접근 - 반드시 with 블록 안에서!)
+                # case가 있든 없든 conversation_history는 복원해야 함
+                if session.conversation_history:
+                    context["conversation_history"] = session.conversation_history
+                    logger.debug(f"conversation_history 복원: session_id={session_id}, {len(session.conversation_history)}개 Q-A 쌍")
+                else:
+                    context["conversation_history"] = []
             
-            # asked_fields가 없으면 초기화
-            if "asked_fields" not in context:
-                context["asked_fields"] = []
+            # asked_fields 복원: conversation_history에서 추출
+            conversation_history = context.get("conversation_history", [])
+            asked_fields = [qa.get("field") for qa in conversation_history if qa.get("field")]
+            context["asked_fields"] = asked_fields
+            
+            # missing_fields 계산: required_fields - asked_fields
+            case_type = context.get("case_type")
+            if case_type:
+                from src.utils.constants import REQUIRED_FIELDS_BY_CASE_TYPE, REQUIRED_FIELDS
+                required_fields = REQUIRED_FIELDS_BY_CASE_TYPE.get(case_type, REQUIRED_FIELDS)
+                missing_fields = [field for field in required_fields if field not in asked_fields]
+                context["missing_fields"] = missing_fields
+                logger.debug(f"missing_fields 계산: session_id={session_id}, required={len(required_fields)}, asked={len(asked_fields)}, missing={len(missing_fields)}")
+            else:
+                context["missing_fields"] = []
+            
+            # skipped_fields는 초기화 (CASE_CLASSIFICATION 노드에서 설정됨)
+            if "skipped_fields" not in context:
+                context["skipped_fields"] = []
             
             return context
         
@@ -215,6 +239,11 @@ def _update_session(session: Session, session_id: str, state: StateContext):
     chat_session.current_state = current_state
     chat_session.completion_rate = state.get("completion_rate", 0)
     chat_session.updated_at = get_kst_now()
+    
+    # conversation_history 저장 (Q-A 쌍 리스트)
+    if "conversation_history" in state:
+        chat_session.conversation_history = state.get("conversation_history", [])
+        logger.debug(f"conversation_history 저장: session_id={session_id}, {len(chat_session.conversation_history)}개 Q-A 쌍")
     
     logger.debug(f"세션 상태 저장: session_id={session_id}, current_state={current_state}, completion_rate={chat_session.completion_rate}")
     session.commit()

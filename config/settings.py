@@ -66,6 +66,13 @@ class Settings(BaseSettings):
     upload_dir: str = "./data/uploads"
     max_file_size_mb: int = 10
     
+    # A/B Testing
+    ab_test_enabled: bool = False  # A/B 테스트 활성화 여부
+    fact_extraction_method: str = "qa_matching"  # "legacy" 또는 "qa_matching"
+    
+    # GPT API Optimization
+    gpt_cache_enabled: bool = False  # GPT API 응답 캐싱 활성화 여부
+    
     @field_validator('openai_api_key')
     @classmethod
     def validate_openai_api_key(cls, v: str) -> str:

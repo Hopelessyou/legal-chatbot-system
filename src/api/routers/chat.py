@@ -128,6 +128,14 @@ async def start_chat(request: ChatStartRequest, _: str = Depends(verify_api_key)
 @router.post("/message")
 async def process_message(request: ChatMessageRequest, _: str = Depends(verify_api_key)):
     """사용자 메시지 처리"""
+    import sys
+    import os
+    # 강제로 stderr에 출력 (uvicorn이 캡처해도 보이도록)
+    os.write(2, b"\n" + b"="*70 + b"\n")
+    os.write(2, "[API] /chat/message 요청 수신!!!\n".encode('utf-8'))
+    os.write(2, f"세션 ID: {request.session_id}\n".encode('utf-8'))
+    os.write(2, f"사용자 메시지: {request.user_message[:100]}...\n".encode('utf-8'))
+    os.write(2, b"="*70 + b"\n\n")
     try:
         # 세션 ID 검증
         if not validate_session_id(request.session_id):
@@ -141,26 +149,67 @@ async def process_message(request: ChatMessageRequest, _: str = Depends(verify_a
         # 사용자 입력 업데이트
         state["last_user_input"] = request.user_message
         
-        # 디버깅 로그
+        # 디버깅 로그 (강제 출력)
+        import sys
+        sys.stderr.write("\n" + "="*70 + "\n")
+        sys.stderr.write(f"📨 [API] 메시지 수신\n")
+        sys.stderr.write(f"📌 세션 ID: {request.session_id}\n")
+        sys.stderr.write(f"📝 사용자 메시지: {request.user_message[:100]}...\n")
+        sys.stderr.write(f"🔄 현재 State: {state.get('current_state')}\n")
+        sys.stderr.write("="*70 + "\n")
+        sys.stderr.flush()
+        logger.info("="*70)
+        logger.info(f"📨 [API] 메시지 수신")
+        logger.info(f"📌 세션 ID: {request.session_id}")
+        logger.info(f"📝 사용자 메시지: {request.user_message[:100]}...")
+        logger.info(f"🔄 현재 State: {state.get('current_state')}")
+        logger.info("="*70)
         logger.info(f"메시지 처리 시작: session_id={request.session_id}, current_state={state.get('current_state')}, user_message={request.user_message[:50]}...")
         
         # LangGraph 1 step 실행
+        sys.stderr.write(f"▶️  LangGraph 실행 시작...\n")
+        sys.stderr.flush()
+        logger.info(f"▶️  LangGraph 실행 시작...")
         result = run_graph_step(state)
+        sys.stderr.write(f"✅ LangGraph 실행 완료\n")
+        sys.stderr.flush()
+        logger.info(f"✅ LangGraph 실행 완료")
         
         bot_message = result.get('bot_message') or ''
         bot_message_preview = bot_message[:50] if bot_message else '(메시지 없음)'
-        logger.info(f"메시지 처리 완료: new_state={result.get('current_state')}, bot_message={bot_message_preview}...")
+        
+        # Q-A 매칭 방식 디버깅 정보 로깅
+        conversation_history = result.get("conversation_history", [])
+        skipped_fields = result.get("skipped_fields", [])
+        initial_analysis = result.get("initial_analysis")
+        
+        logger.info(
+            f"메시지 처리 완료: new_state={result.get('current_state')}, "
+            f"bot_message={bot_message_preview}..., "
+            f"conversation_history={len(conversation_history)}개, "
+            f"skipped_fields={skipped_fields}"
+        )
         
         # 상태 저장
         save_session_state(request.session_id, result)
         
-        return success_response({
+        # 응답 데이터 구성 (Q-A 매칭 방식 디버깅 정보 포함)
+        response_data = {
             "session_id": request.session_id,
             "current_state": result.get("current_state", ""),
             "completion_rate": result.get("completion_rate", 0),
             "bot_message": result.get("bot_message", ""),
-            "expected_input": result.get("expected_input")
-        })
+            "expected_input": result.get("expected_input"),
+            # Q-A 매칭 방식 디버깅 정보
+            "conversation_history": result.get("conversation_history", []),
+            "skipped_fields": result.get("skipped_fields", []),
+            "initial_analysis": result.get("initial_analysis"),
+            "current_question": result.get("current_question")
+        }
+        
+        logger.debug(f"응답 데이터: bot_message={response_data['bot_message'][:100] if response_data['bot_message'] else '(없음)'}, skipped_fields={response_data['skipped_fields']}, conversation_history={len(response_data['conversation_history'])}개")
+        
+        return success_response(response_data)
     
     except SessionNotFoundError as e:
         logger.error(f"메시지 처리 실패 (세션 없음): {str(e)}")
@@ -403,6 +452,18 @@ async def get_session_detail(session_id: str, _: str = Depends(verify_api_key)):
                 logger.warning(f"파일 목록 조회 중 오류 (테이블이 없을 수 있음): {str(e)}")
                 file_list = []
             
+            # conversation_history 가져오기 (DB에서 직접)
+            conversation_history = []
+            try:
+                if session.conversation_history:
+                    conversation_history = session.conversation_history
+                    logger.info(f"conversation_history 로드 완료: {session_id}, {len(conversation_history)}개 Q-A 쌍")
+                else:
+                    logger.debug(f"conversation_history 없음: {session_id}")
+            except Exception as e:
+                logger.warning(f"conversation_history 조회 중 오류: {str(e)}")
+                conversation_history = []
+            
             return success_response({
                 "session": {
                     "session_id": session.session_id,
@@ -415,7 +476,8 @@ async def get_session_detail(session_id: str, _: str = Depends(verify_api_key)):
                     "created_at": session.created_at.isoformat() if session.created_at else None
                 },
                 "case": case_info,
-                "files": file_list
+                "files": file_list,
+                "conversation_history": conversation_history
             })
     
     except SessionNotFoundError as e:

@@ -2,6 +2,7 @@
 API 미들웨어 모듈
 """
 import time
+import sys
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from src.utils.logger import get_logger
@@ -21,6 +22,14 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         client_ip = request.client.host if request.client else "unknown"
         method = request.method
         path = request.url.path
+        
+        # 모든 요청을 콘솔에 강제 출력 (특히 /chat/message)
+        if path.startswith("/chat/"):
+            sys.stderr.write(f"\n{'='*70}\n")
+            sys.stderr.write(f"🌐 [MIDDLEWARE] 요청 수신: {method} {path}\n")
+            sys.stderr.write(f"📌 IP: {client_ip}\n")
+            sys.stderr.write(f"{'='*70}\n\n")
+            sys.stderr.flush()
         
         logger.info(
             f"요청 수신: {method} {path} - IP: {client_ip}"
@@ -56,6 +65,10 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             process_time = time.time() - start_time
             
             # 응답 정보 로깅
+            if path.startswith("/chat/"):
+                sys.stderr.write(f"✅ [MIDDLEWARE] 응답 완료: {method} {path} - 상태: {response.status_code} - 소요 시간: {process_time:.3f}초\n")
+                sys.stderr.flush()
+            
             logger.info(
                 f"응답 완료: {method} {path} - "
                 f"상태: {response.status_code} - "

@@ -119,6 +119,20 @@ def init_node(state: StateContext) -> Dict[str, Any]:
         session_id = state.get("session_id")
         user_input = state.get("last_user_input", "").strip()
         
+        # 단계 표시
+        print("\n" + "="*70)
+        print("📍 [STEP 1] INIT 노드 실행")
+        print("="*70)
+        print(f"📌 세션 ID: {session_id}")
+        print(f"📝 사용자 입력: {user_input[:50] if user_input else '(없음)'}...")
+        print("="*70 + "\n")
+        logger.info("="*70)
+        logger.info("📍 [STEP 1] INIT 노드 실행")
+        logger.info("="*70)
+        logger.info(f"📌 세션 ID: {session_id}")
+        logger.info(f"📝 사용자 입력: {user_input[:50] if user_input else '(없음)'}...")
+        logger.info("="*70)
+        
         # 세션 ID가 없으면 생성
         if not session_id:
             session_id = generate_session_id()
@@ -160,7 +174,8 @@ def init_node(state: StateContext) -> Dict[str, Any]:
             return {
                 **state,
                 "current_state": "CASE_CLASSIFICATION",
-                "next_state": "CASE_CLASSIFICATION"
+                "next_state": "CASE_CLASSIFICATION",
+                "bot_message": "처리 중입니다. 잠시만 기다려주세요."  # bot_message 추가
             }
         
         # 사용자 입력이 없으면 초기 메시지 표시

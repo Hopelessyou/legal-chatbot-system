@@ -8,6 +8,8 @@ from openai import RateLimitError, APIError, APIConnectionError, APITimeoutError
 from config.settings import settings
 from src.utils.logger import get_logger
 from src.utils.exceptions import GPTAPIError
+from src.services.cost_tracker import cost_tracker
+from src.services.gpt_cache import gpt_cache
 
 logger = get_logger(__name__)
 
@@ -90,6 +92,8 @@ class GPTClient:
         messages: List[Dict[str, str]],
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
+        session_id: Optional[str] = None,
+        node_name: Optional[str] = None,
         **kwargs
     ) -> Dict[str, Any]:
         """
@@ -99,11 +103,25 @@ class GPTClient:
             messages: 메시지 리스트
             temperature: 온도 파라미터
             max_tokens: 최대 토큰 수
+            session_id: 세션 ID (비용 추적용, 선택적)
+            node_name: 노드 이름 (비용 추적용, 선택적)
             **kwargs: 추가 파라미터
         
         Returns:
             API 응답 딕셔너리
         """
+        # 캐시 확인 (캐싱이 활성화된 경우)
+        use_cache = getattr(settings, 'gpt_cache_enabled', False)
+        if use_cache:
+            cached_response = gpt_cache.get(messages, self.model, temperature=temperature, max_tokens=max_tokens, **kwargs)
+            if cached_response:
+                logger.debug("GPT API 캐시에서 응답 반환")
+                # 캐시된 응답에도 비용 추적 적용 (실제 API 호출은 없지만 통계용)
+                if session_id:
+                    # 캐시 히트는 비용이 0이지만 통계에는 기록
+                    logger.debug(f"캐시 히트: session_id={session_id}, node={node_name}")
+                return cached_response
+        
         def _call():
             return self.client.chat.completions.create(
                 model=self.model,
@@ -129,7 +147,23 @@ class GPTClient:
                 "finish_reason": response.choices[0].finish_reason
             }
             
-            logger.debug(f"Chat Completion 성공: 토큰 사용량={result['usage']['total_tokens']}")
+            # 비용 추적 (session_id가 있는 경우만)
+            if session_id:
+                cost_info = cost_tracker.track_api_call(
+                    session_id=session_id,
+                    model=response.model,
+                    prompt_tokens=response.usage.prompt_tokens,
+                    completion_tokens=response.usage.completion_tokens,
+                    node_name=node_name
+                )
+                result["cost"] = cost_info["cost"]
+                result["cost_info"] = cost_info
+            
+            # 캐시 저장 (캐싱이 활성화된 경우)
+            if use_cache:
+                gpt_cache.set(messages, self.model, result, temperature=temperature, max_tokens=max_tokens, **kwargs)
+            
+            logger.debug(f"Chat Completion 성공: 토큰 사용량={result['usage']['total_tokens']}, 비용=${result.get('cost', 0):.6f}")
             return result
         
         except Exception as e:

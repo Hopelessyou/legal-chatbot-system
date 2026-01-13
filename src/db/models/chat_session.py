@@ -1,7 +1,7 @@
 """
 ChatSession 모델
 """
-from sqlalchemy import Column, String, Integer, DateTime, CheckConstraint, Index
+from sqlalchemy import Column, String, Integer, DateTime, CheckConstraint, Index, JSON
 from sqlalchemy.orm import relationship
 from src.db.base import BaseModel
 from src.utils.helpers import get_kst_now
@@ -31,6 +31,7 @@ class ChatSession(BaseModel):
     ended_at = Column(DateTime)
     created_at = Column(DateTime, nullable=False, default=get_kst_now)
     updated_at = Column(DateTime, nullable=False, default=get_kst_now, onupdate=get_kst_now)
+    conversation_history = Column(JSON, nullable=True)  # Q-A 쌍 리스트 저장
     
     # Relationships
     state_logs = relationship("ChatSessionStateLog", back_populates="session", cascade="all, delete-orphan")

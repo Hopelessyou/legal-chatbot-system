@@ -19,6 +19,12 @@ class StateContext(TypedDict, total=False):
     asked_fields: List[str]  # 이미 질문한 필드 목록 (중복 질문 방지)
     bot_message: Optional[str]
     expected_input: Optional[Dict[str, Any]]
+    # Q-A 매칭 방식 추가 필드
+    initial_description: Optional[str]  # 1차 서술 (초기 사용자 입력)
+    initial_analysis: Optional[Dict[str, Any]]  # 1차 서술 분석 결과
+    conversation_history: List[Dict[str, Any]]  # Q-A 쌍 리스트
+    skipped_fields: List[str]  # 1차 서술에서 이미 답변된 필드
+    current_question: Optional[Dict[str, Any]]  # 현재 질문 정보
 
 
 class StateContextModel(BaseModel):
@@ -35,6 +41,12 @@ class StateContextModel(BaseModel):
     asked_fields: List[str] = Field(default_factory=list)  # 이미 질문한 필드 목록
     bot_message: Optional[str] = None
     expected_input: Optional[Dict[str, Any]] = None
+    # Q-A 매칭 방식 추가 필드
+    initial_description: Optional[str] = None
+    initial_analysis: Optional[Dict[str, Any]] = None
+    conversation_history: List[Dict[str, Any]] = Field(default_factory=list)
+    skipped_fields: List[str] = Field(default_factory=list)
+    current_question: Optional[Dict[str, Any]] = None
     
     @field_validator('current_state')
     @classmethod
